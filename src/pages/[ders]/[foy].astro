@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import Taban from '../../layouts/Taban.astro';
 import Ilerleme from '../../components/Ilerleme.astro';
+import Direnc from '../../components/Direnc.astro';
 import { tumDersler, dersFoyleri, foyKimligi, foyYolu, yol, type Ders, type Foy } from '../../lib/veri';
 
 export async function getStaticPaths() {
@@ -45,7 +46,7 @@ const kontrolEdilecek = onkosulOgeleri
 const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
 ---
 
-<Taban baslik={baslik} aciklama={d.altbaslik || dd.aciklama}>
+<Taban baslik={baslik} aciklama={d.altbaslik || dd.aciklama} dar>
   <div class="kap dar" style={`--renk:${dd.renk}`}>
     <nav class="ekmek" aria-label="Sayfa yolu">
       <ol>
@@ -63,12 +64,16 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
       data-taban={yol('/')}
       data-pagefind-body
     >
-      <header class="foy-ust">
-        <h1 data-pagefind-meta="title">{baslik}</h1>
+      <header class="foy-ust izgarali">
+        <div class="foy-etiket" aria-hidden="true">
+          <Direnc numara={d.numara} boyut="buyuk" />
+          <span>Föy {String(d.numara).padStart(2, '0')}</span>
+        </div>
+        <h1 data-pagefind-meta="title"><span class="gorunmez">Föy {d.numara} — </span>{d.baslik}</h1>
         {d.altbaslik && <p class="foy-altbaslik">{d.altbaslik}</p>}
         <ul class="foy-bilgi">
-          <li>Süre: <strong>{d.sureDk} dk</strong>{d.dersSaati && ` (${d.dersSaati})`}</li>
-          {d.seviye && <li>Seviye: <strong>{d.seviye}</strong></li>}
+          <li>Süre <strong>{d.sureDk} dk</strong>{d.dersSaati && ` (${d.dersSaati})`}</li>
+          {d.seviye && <li>Seviye <strong>{d.seviye}</strong></li>}
         </ul>
         {
           d.kavramlar.length > 0 && (
@@ -81,22 +86,23 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
         }
         {
           onkosulVar && (
-            <p class="onkosul">
-              <strong>Önkoşul:</strong>{' '}
-              {onkosulOgeleri.map((o, i) => (
-                <>
-                  {i > 0 && ', '}
-                  {o.foy ? (
-                    <>
-                      <a href={foyYolu(o.foy)}>{o.metin}</a>{' '}
-                      <span class="rozet rozet-baslamadi" data-onkosul-foy={foyKimligi(o.foy)} data-adim={o.foy.data.adimSayisi}>Başlamadı</span>
-                    </>
-                  ) : (
-                    o.metin
-                  )}
-                </>
-              ))}
-            </p>
+            <div class="onkosul">
+              <p class="onkosul-etiket">Önkoşul</p>
+              <ul class="onkosul-liste">
+                {onkosulOgeleri.map((o) => (
+                  <li>
+                    {o.foy ? (
+                      <>
+                        <a href={foyYolu(o.foy)}>{o.metin}</a>
+                        <span class="rozet rozet-baslamadi" data-onkosul-foy={foyKimligi(o.foy)} data-adim={o.foy.data.adimSayisi}>Başlamadı</span>
+                      </>
+                    ) : (
+                      o.metin
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )
         }
         {
@@ -121,6 +127,7 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
         Bu tarayıcı kayıt tutmaya izin vermiyor (gizli sekme olabilir). Yazdıkların ve işaretlerin yalnız bu sayfa açıkken kalır.
       </p>
 
+      <div class="ozet-kap">
       <div class="ozet">
         {
           d.hedefler.length > 0 && (
@@ -163,10 +170,11 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
           )
         }
       </div>
+      </div>
 
       <div class="foy-araclar" data-pagefind-ignore>
-        <button type="button" class="dugme" data-hepsini-ac hidden>Tümünü aç</button>
-        <button type="button" class="dugme" data-yazdir hidden>Yazdır (A4)</button>
+        <button type="button" class="dugme dugme-duz" data-hepsini-ac hidden>Tümünü aç</button>
+        <button type="button" class="dugme dugme-duz" data-yazdir hidden>Yazdır (A4)</button>
       </div>
 
       <div class="foy-icerik">

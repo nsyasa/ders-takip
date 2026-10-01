@@ -3,12 +3,12 @@ import Taban from '../layouts/Taban.astro';
 import { yol } from '../lib/veri';
 ---
 
-<Taban baslik="Ara" aktif="ara" aciklama="Föylerde ve genel sayfalarda ara.">
+<Taban baslik="Ara" aktif="ara" aciklama="Föylerde ve genel sayfalarda ara." dar>
   <div class="kap dar" data-ara-kok data-taban={yol('/')}>
     <h1>Ara</h1>
     <form class="arama-alani" role="search" data-ara-form>
       <label class="gorunmez" for="ara-q">Föylerde ve genel sayfalarda ara</label>
-      <input id="ara-q" type="search" name="q" autocomplete="off" enterkeyhint="search" placeholder="Örn. servo, buton, I2C" />
+      <input id="ara-q" type="search" name="q" autocomplete="off" enterkeyhint="search" placeholder="Örn. servo, buton, I2C" autofocus />
       <button class="dugme dugme-vurgu" type="submit">Ara</button>
     </form>
     <p class="durum-iletisi" role="status" aria-live="polite" data-ara-durum></p>

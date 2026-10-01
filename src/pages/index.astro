@@ -10,9 +10,9 @@ const gecerliFoyler = satirlar.flatMap((s) => s.foyler.map(foyKimligi));
 
 <Taban baslik="Derslerim" aktif="ana">
   <div class="kap">
-    <section class="giris">
+    <section class="giris izgarali">
       <h1>Derslerim</h1>
-      <p>Bir ders seç, föyleri sırayla ilerle. Onay kutularını işaretledikçe ilerleme çubuğun dolar.</p>
+      <p>Bir ders seç, föyleri sırayla ilerle. Onay kutularını işaretledikçe ilerleme çizgin dolar.</p>
     </section>
 
     <section
@@ -30,7 +30,7 @@ const gecerliFoyler = satirlar.flatMap((s) => s.foyler.map(foyKimligi));
       <a class="dugme dugme-vurgu" href={yol('/')} data-devam-link>Devam et</a>
     </section>
 
-    <ul class="ders-izgara">
+    <ul class="dersler">
       {satirlar.map(({ ders, foyler }) => <DersKarti ders={ders} foyler={foyler} />)}
     </ul>
 

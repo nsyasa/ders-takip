@@ -1,0 +1,21 @@
+---
+// Föy numarasını direnç renk koduyla çizer: iki basamak + çarpan (×1, siyah) + tolerans (altın, ±%5).
+// Föy 6 → siyah, mavi, siyah, altın = 06 × 1 Ω = 6 Ω. Süs amaçlıdır; numara her yerde yazıyla da verilir.
+interface Props {
+  numara: number;
+  boyut?: 'kucuk' | 'orta' | 'buyuk';
+}
+const { numara, boyut = 'orta' } = Astro.props;
+
+// 0 siyah, 1 kahverengi, 2 kırmızı, 3 turuncu, 4 sarı, 5 yeşil, 6 mavi, 7 mor, 8 gri, 9 beyaz
+const RENKLER = ['#1c1b19', '#7a4a21', '#c0392b', '#e8761b', '#f0c419', '#2f8f4a', '#2563c9', '#7c4bb0', '#8c9199', '#fafafa'];
+const sayi = String(Math.max(0, Math.min(99, numara))).padStart(2, '0');
+const bantlar = [RENKLER[Number(sayi[0])], RENKLER[Number(sayi[1])], RENKLER[0], '#c9a227'];
+const konumlar = [24, 33, 42, 57];
+---
+
+<svg class={`direnc direnc-${boyut}`} viewBox="0 0 84 24" width="84" height="24" aria-hidden="true" focusable="false">
+  <line class="direnc-bacak" x1="2" y1="12" x2="82" y2="12"></line>
+  <rect class="direnc-govde" x="12" y="3" width="60" height="18" rx="9"></rect>
+  {bantlar.map((renk, i) => <rect class="direnc-bant" x={konumlar[i]} y="3" width="5" height="18" fill={renk}></rect>)}
+</svg>

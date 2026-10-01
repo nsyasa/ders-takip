@@ -1,6 +1,7 @@
 ---
 import type { Foy } from '../lib/veri';
 import { foyKimligi, foyYolu } from '../lib/veri';
+import Direnc from './Direnc.astro';
 
 interface Props {
   foy: Foy;
@@ -10,25 +11,28 @@ const d = foy.data;
 ---
 
 <li class="foy-satir" data-foy-satiri={foyKimligi(foy)} data-adim={d.adimSayisi}>
-  <span class="foy-no" aria-hidden="true">{d.numara}</span>
-  <div>
+  <div class="foy-sol" aria-hidden="true">
+    <Direnc numara={d.numara} boyut="kucuk" />
+    <span class="foy-no">Föy {String(d.numara).padStart(2, '0')}</span>
+  </div>
+  <div class="foy-sag">
     <h3 class="foy-baslik">
       <a class="foy-link" href={foyYolu(foy)}><span class="gorunmez">Föy {d.numara}: </span>{d.baslik}</a>
     </h3>
     {d.altbaslik && <p class="foy-alt">{d.altbaslik}</p>}
+    <p class="foy-meta">
+      <span class="rozet rozet-baslamadi" data-durum-rozet>Başlamadı</span>
+      <span>{d.sureDk} dk</span>
+      {d.seviye && <span>{d.seviye}</span>}
+    </p>
+    {
+      d.kavramlar.length > 0 && (
+        <ul class="etiketler" aria-label="Kavramlar">
+          {d.kavramlar.map((k) => (
+            <li>{k}</li>
+          ))}
+        </ul>
+      )
+    }
   </div>
-  <p class="foy-meta">
-    <span class="rozet rozet-baslamadi" data-durum-rozet>Başlamadı</span>
-    <span>Süre: {d.sureDk} dk</span>
-    {d.seviye && <span>Seviye: {d.seviye}</span>}
-  </p>
-  {
-    d.kavramlar.length > 0 && (
-      <ul class="etiketler" aria-label="Kavramlar">
-        {d.kavramlar.map((k) => (
-          <li>{k}</li>
-        ))}
-      </ul>
-    )
-  }
 </li>

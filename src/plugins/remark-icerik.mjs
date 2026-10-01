@@ -220,6 +220,15 @@ export default function remarkIcerik() {
               },
               children: [img],
             },
+            {
+              // Görünür alt yazı (alt metniyle aynı; ekran okuyucuya ikinci kez okutulmaz)
+              type: 'paragraph',
+              data: { hName: 'figcaption', hProperties: { className: ['gorsel-yazi'], ariaHidden: 'true' } },
+              children: [
+                sarmal('span', ['gorsel-ad'], [metin(img.alt || 'Görsel')]),
+                sarmal('span', ['gorsel-ipucu'], [metin('Büyütmek için dokun')]),
+              ],
+            },
           ];
         }
         return SKIP;

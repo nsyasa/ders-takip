@@ -19,7 +19,7 @@ const { ders, sayfa } = Astro.props;
 const { Content } = await render(sayfa);
 ---
 
-<Taban baslik={sayfa.data.baslik} aciklama={`${ders.data.ad}: ${sayfa.data.baslik}`}>
+<Taban baslik={sayfa.data.baslik} aciklama={`${ders.data.ad}: ${sayfa.data.baslik}`} dar>
   <div class="kap dar" style={`--renk:${ders.data.renk}`}>
     <nav class="ekmek" aria-label="Sayfa yolu">
       <ol>

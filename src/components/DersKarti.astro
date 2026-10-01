@@ -11,7 +11,7 @@ const { ders, foyler } = Astro.props;
 const d = ders.data;
 const hazir = d.durum === 'hazir';
 const toplamDk = foyler.reduce((t, f) => t + f.data.sureDk, 0);
-// Her föyün onay kutusu sayısı: ilerleme çubuğu bunlarla hesaplanır.
+// Her föyün onay kutusu sayısı: ilerleme çizgisi bunlarla hesaplanır.
 const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(f), f.data.adimSayisi])));
 ---
 
@@ -21,20 +21,22 @@ const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(
   data-ders-ilerleme={hazir ? ders.id : undefined}
   data-adimlar={hazir ? adimlar : undefined}
 >
-  <span class="ders-ikon" aria-hidden="true">{d.ikon}</span>
-  <h2>
-    {hazir ? <a href={yol(`/${ders.id}/`)}>{d.ad}</a> : d.ad}
-  </h2>
-  <p class="ders-alt">{hazir ? d.altbaslik : <span class="rozet rozet-yakinda">Yakında</span>}</p>
-  <p class="ders-aciklama">{d.aciklama}</p>
-  {
-    hazir ? (
-      <>
-        <p class="ders-meta">
-          {foyler.length} föy · yaklaşık {sureMetni(toplamDk)}
-        </p>
-        <Ilerleme etiket={`${d.ad} ilerlemesi`} metin={`0 / ${foyler.length} föy bitti`} />
-      </>
-    ) : null
-  }
+  <span class="ders-sira" aria-hidden="true">{String(d.sira).padStart(2, '0')}</span>
+  <div class="ders-govde">
+    <h2>
+      {hazir ? <a href={yol(`/${ders.id}/`)}>{d.ad}</a> : d.ad}
+    </h2>
+    <p class="ders-alt">{hazir ? d.altbaslik : <span class="rozet rozet-yakinda">Yakında</span>}</p>
+    <p class="ders-aciklama">{d.aciklama}</p>
+    {
+      hazir ? (
+        <>
+          <p class="ders-meta">
+            {foyler.length} föy · yaklaşık {sureMetni(toplamDk)}
+          </p>
+          <Ilerleme etiket={`${d.ad} ilerlemesi`} metin={`0 / ${foyler.length} föy bitti`} />
+        </>
+      ) : null
+    }
+  </div>
 </li>

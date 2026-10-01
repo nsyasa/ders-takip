@@ -1,21 +1,89 @@
 ---
+import '../styles/yazi-tipleri.css';
 import '../styles/tema.css';
 import '../styles/bilesenler.css';
 import '../styles/yazdir.css';
+import Direnc from '../components/Direnc.astro';
+import literataLatin from '../assets/fonts/literata-latin-wght-normal.woff2?url';
+import literataExt from '../assets/fonts/literata-latin-ext-wght-normal.woff2?url';
+import plex400 from '../assets/fonts/ibm-plex-sans-latin-400-normal.woff2?url';
+import plex400Ext from '../assets/fonts/ibm-plex-sans-latin-ext-400-normal.woff2?url';
+import plex600 from '../assets/fonts/ibm-plex-sans-latin-600-normal.woff2?url';
+import plex600Ext from '../assets/fonts/ibm-plex-sans-latin-ext-600-normal.woff2?url';
+import atkinson from '../assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2?url';
+import atkinsonExt from '../assets/fonts/atkinson-hyperlegible-next-latin-ext-wght-normal.woff2?url';
 import { yol } from '../lib/veri';
 
 interface Props {
   baslik?: string;
   aciklama?: string;
   aktif?: 'ana' | 'verilerim' | 'ara';
+  /** Dar (okuma sütunu) sayfalarda üst çubuk ve alt bilgi de aynı genişliğe hizalanır */
+  dar?: boolean;
 }
 
-const { baslik, aciklama = 'Öğrenciler için reklamsız ders takip sitesi. İlerlemen yalnız bu cihazda saklanır.', aktif } = Astro.props;
+const { baslik, aciklama = 'Öğrenciler için reklamsız ders takip sitesi. İlerlemen yalnız bu cihazda saklanır.', aktif, dar = false } = Astro.props;
 const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
+
+// Prototip önizlemesi: PUBLIC_PROTOTIP=1 ile derlenirse üç tasarım arasında geçiş paneli çıkar.
+const PROTOTIP = import.meta.env.PUBLIC_PROTOTIP === '1';
+const prototipBetigi = `
+(function () {
+  var ADLAR = { '1': 'Defter', '2': 'Teknik föy', '3': 'Okunur' };
+  var kutu = document.createElement('div');
+  kutu.className = 'prototip-secici';
+  kutu.setAttribute('role', 'group');
+  kutu.setAttribute('aria-label', 'Tasarım prototipini seç');
+  var yazi = document.createElement('span');
+  yazi.textContent = 'Prototip';
+  kutu.appendChild(yazi);
+  function guncelle() {
+    var s = document.documentElement.dataset.tasarim;
+    kutu.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.n === s)); });
+  }
+  ['1', '2', '3'].forEach(function (n) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.dataset.n = n;
+    b.textContent = n + ' · ' + ADLAR[n];
+    b.addEventListener('click', function () {
+      document.documentElement.dataset.tasarim = n;
+      try { localStorage.setItem('ders-takip:tasarim', n); } catch (e) {}
+      guncelle();
+    });
+    kutu.appendChild(b);
+  });
+  document.body.appendChild(kutu);
+  guncelle();
+  if (new URLSearchParams(location.search).get('ac') === '1') { // önizleme: ?ac=1 bütün bölümleri açar
+    document.querySelectorAll('details').forEach(function (d) { d.open = true; });
+  }
+})();`;
+const ONYUKLEME = JSON.stringify({
+  '1': [literataLatin, literataExt],
+  '2': [plex400, plex400Ext, plex600, plex600Ext],
+  '3': [atkinson, atkinsonExt],
+});
+const tasarimSecimi = `
+try {
+  var q = new URLSearchParams(location.search).get('tasarim');
+  if (q && /^[123]$/.test(q)) localStorage.setItem('ders-takip:tasarim', q);
+  var d = localStorage.getItem('ders-takip:tasarim');
+  if (d && /^[123]$/.test(d)) document.documentElement.dataset.tasarim = d;
+  // Etkin tasarımın ana yazı tiplerini önceden yükle (yazı tipi gelince sayfa kaymasın)
+  var ONYUKLEME = ${ONYUKLEME};
+  (ONYUKLEME[document.documentElement.dataset.tasarim] || []).forEach(function (u) {
+    var l = document.createElement('link');
+    l.rel = 'preload'; l.as = 'font'; l.type = 'font/woff2'; l.crossOrigin = 'anonymous'; l.href = u;
+    document.head.appendChild(l);
+  });
+  var m = new URLSearchParams(location.search).get('tema'); // önizleme: ?tema=koyu|acik (kaydedilmez)
+  if (m === 'koyu' || m === 'acik') document.documentElement.dataset.tema = m;
+} catch (e) {}`;
 ---
 
 <!doctype html>
-<html lang="tr">
+<html lang="tr" data-tasarim="1">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,26 +98,23 @@ const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
         if (t === 'koyu' || t === 'acik') document.documentElement.dataset.tema = t;
       } catch (e) {}
     </script>
+    {PROTOTIP && <script is:inline set:html={tasarimSecimi} />}
   </head>
   <body>
     <a class="atla" href="#icerik">İçeriğe geç</a>
     <header class="ust">
-      <div class="kap ust-ic">
-        <a class="logo" href={yol('/')}>Ders Takip</a>
-        <button class="dugme tema-dugme" type="button" data-tema-dugme aria-pressed="false" hidden>Koyu mod</button>
+      <div class:list={['kap', 'ust-ic', { dar }]}>
+        <a class="logo" href={yol('/')}>
+          <Direnc numara={12} boyut="kucuk" />
+          <span>Ders Takip</span>
+        </a>
+        <button class="dugme dugme-duz tema-dugme" type="button" data-tema-dugme aria-pressed="false" hidden>Koyu mod</button>
         <nav class="ust-nav" aria-label="Ana menü">
           <ul class="menu">
             <li><a href={yol('/')} aria-current={aktif === 'ana' ? 'page' : undefined}>Derslerim</a></li>
             <li><a href={yol('/verilerim/')} aria-current={aktif === 'verilerim' ? 'page' : undefined}>Verilerim</a></li>
-            <li class="menu-ara-baglanti">
+            <li>
               <a href={yol('/ara/')} aria-current={aktif === 'ara' ? 'page' : undefined}>Ara</a>
-            </li>
-            <li class="menu-ara-form">
-              <form class="arama-formu" role="search" action={yol('/ara/')} method="get">
-                <label class="gorunmez" for="ust-ara">Sitede ara</label>
-                <input id="ust-ara" type="search" name="q" placeholder="Ara…" autocomplete="off" enterkeyhint="search" />
-                <button class="dugme" type="submit">Ara</button>
-              </form>
             </li>
           </ul>
         </nav>
@@ -61,12 +126,13 @@ const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
     </main>
 
     <footer class="alt">
-      <div class="kap">
+      <div class:list={['kap', { dar }]}>
         <p>Bu sitede reklam, çerez ve izleme yoktur. İlerlemen ve yazdıkların yalnız bu cihazda saklanır.</p>
         <p><a href={yol('/verilerim/')}>Başka cihazda devam etmek için yedeğini al</a></p>
       </div>
     </footer>
 
+    {PROTOTIP && <script is:inline set:html={prototipBetigi} />}
     <script>
       // Koyu mod düğmesi: yalnız JS varsa görünür.
       const dugme = document.querySelector<HTMLButtonElement>('[data-tema-dugme]');

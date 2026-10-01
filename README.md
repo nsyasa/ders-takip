@@ -102,6 +102,19 @@ Cloudflare Pages ya da başka bir statik barındırıcıda: derleme komutu `npm 
 
 Ortak bilgisayarda profil/hesap yoktur: işi bitince **Yedeği indir**, sonra **Bu cihazdaki kayıtları sil**.
 
+## Tasarım prototipleri (geçici)
+
+`tasarim-prototip` dalında üç tasarım aynı yapı üzerinde denenebilir: **1 · Defter**, **2 · Teknik föy**, **3 · Okunur**. Ortak fikir: föy = basılı çalışma kâğıdı; renk yalnız föy numarasını gösteren **direnç bantlarında** (0 siyah … 9 beyaz; föy 6 → siyah-mavi-siyah-altın = 6 Ω) ve kutu etiketlerinde taşınır.
+
+```bash
+# PowerShell
+$env:PUBLIC_PROTOTIP = "1"; npm run build; npm run preview; $env:PUBLIC_PROTOTIP = $null
+```
+
+Sayfanın sol altında "Prototip" seçici çıkar. Adres parametreleri: `?tasarim=1|2|3` (hatırlanır), `?tema=koyu|acik` (kaydedilmez), `?ac=1` (föydeki bütün bölümleri açar). `PUBLIC_PROTOTIP` olmadan derlenen sitede seçici ve parametreler yoktur; varsayılan tasarım 1'dir. Tasarım seçilince diğer ikisi, seçici ve bu bölüm silinir.
+
+Yazı tipleri kendi sunucumuzdan verilir (`src/assets/fonts/`, SIL Open Font License; lisans metinleri aynı klasörde): Literata, IBM Plex Sans / Mono, Atkinson Hyperlegible Next, JetBrains Mono. Yazı tipi değişince sayfa kaymasın diye ana yazı tipleri `<link rel="preload">` ile önceden yüklenir ve yedek yazı tipleri ölçülerine göre ayarlanır (`yazi-tipleri.css` sonu).
+
 ## Gizlilik
 
 - Hiçbir kişisel veri toplanmaz, hiçbir yere gönderilmez; çerez ve izleme yoktur.

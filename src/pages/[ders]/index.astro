@@ -29,8 +29,8 @@ const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(
       </ol>
     </nav>
 
-    <header class="ders-baslik" data-ders-ilerleme={ders.id} data-adimlar={adimlar}>
-      <h1><span aria-hidden="true">{d.ikon} </span>{d.ad}</h1>
+    <header class="ders-baslik izgarali" data-ders-ilerleme={ders.id} data-adimlar={adimlar}>
+      <h1>{d.ad}</h1>
       <p class="ders-alt">{d.altbaslik}</p>
       <p>{d.aciklama}</p>
       <p class="ders-meta">{foyler.length} föy · yaklaşık {sureMetni(toplamDk)}</p>
