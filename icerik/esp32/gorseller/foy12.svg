@@ -1,0 +1,31 @@
+<svg viewBox="0 0 1400 656" xmlns="http://www.w3.org/2000/svg" width="1400" height="656" font-family="DejaVu Sans, Verdana, Arial, sans-serif"><rect width="1400" height="656" fill="white"/>
+<text x="700.0" y="44" text-anchor="middle" font-size="38" font-weight="bold" fill="#16324f">Föy 12: İki ESP32 arasında ESP-NOW</text>
+<rect x="60" y="150" width="300" height="200" rx="12" fill="#1b2631"/>
+<text x="210.0" y="250.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">ESP32-A</text>
+<text x="210.0" y="278.0" text-anchor="middle" font-size="22" fill="white">sensör düğümü</text>
+<rect x="60" y="400" width="300" height="110" rx="12" fill="#6d4c41"/>
+<text x="210.0" y="455.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">BMP280</text>
+<text x="210.0" y="483.0" text-anchor="middle" font-size="22" fill="white">I2C: 21/22</text>
+<polyline points="210,350 210,400" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linejoin="round"/>
+<rect x="1040" y="150" width="300" height="200" rx="12" fill="#1b2631"/>
+<text x="1190.0" y="250.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">ESP32-B</text>
+<text x="1190.0" y="278.0" text-anchor="middle" font-size="22" fill="white">merkez düğüm</text>
+<rect x="1040" y="400" width="300" height="110" rx="12" fill="#263238"/>
+<text x="1190.0" y="455.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">OLED</text>
+<text x="1190.0" y="483.0" text-anchor="middle" font-size="22" fill="white">I2C: 21/22</text>
+<polyline points="1190,350 1190,400" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linejoin="round"/>
+<path d="M390,225.0 Q406.6666666666667,250 390,275.0" fill="none" stroke="#1f6fb2" stroke-width="5"/>
+<path d="M1010,225.0 Q993.3333333333334,250 1010,275.0" fill="none" stroke="#1f6fb2" stroke-width="5"/>
+<path d="M418,205.0 Q448.0,250 418,295.0" fill="none" stroke="#1f6fb2" stroke-width="5"/>
+<path d="M982,205.0 Q952.0,250 982,295.0" fill="none" stroke="#1f6fb2" stroke-width="5"/>
+<path d="M446,185.0 Q489.3333333333333,250 446,315.0" fill="none" stroke="#1f6fb2" stroke-width="5"/>
+<path d="M954,185.0 Q910.6666666666666,250 954,315.0" fill="none" stroke="#1f6fb2" stroke-width="5"/>
+<polyline points="500,250 880,250" fill="none" stroke="#1f6fb2" stroke-width="4" stroke-linejoin="round" stroke-dasharray="14,10"/>
+<polygon points="880,236 910,250 880,264" fill="#1f6fb2"/>
+<text x="700" y="140" text-anchor="middle" font-size="25" fill="#1f6fb2" font-weight="bold">paket: düğüm no · paket no</text>
+<text x="700" y="168" text-anchor="middle" font-size="25" fill="#1f6fb2" font-weight="bold">sıcaklık · basınç</text>
+<text x="700" y="340" text-anchor="middle" font-size="23" fill="#555">kanal 1 · modem / internet yok</text>
+<rect x="50" y="530" width="1300" height="106" rx="8" fill="#fdf1e6"/>
+<text x="700" y="566" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">Gönderici, merkezin MAC adresini bilmek zorundadır (Kod 12.1).</text>
+<text x="700" y="606" text-anchor="middle" font-size="25" fill="#7a3d00">Her iki kart da kendi USB kablosuyla beslenir.</text>
+</svg>

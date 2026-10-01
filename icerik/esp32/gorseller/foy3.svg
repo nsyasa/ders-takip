@@ -1,0 +1,58 @@
+<svg viewBox="0 0 1400 782" xmlns="http://www.w3.org/2000/svg" width="1400" height="782" font-family="DejaVu Sans, Verdana, Arial, sans-serif"><rect width="1400" height="782" fill="white"/>
+<text x="700.0" y="44" text-anchor="middle" font-size="38" font-weight="bold" fill="#16324f">Föy 3 devresi: OLED ve BMP280 aynı I2C hattında</text>
+<rect x="50" y="100" width="260" height="330" rx="16" fill="#1b2631"/><text x="150.0" y="145" text-anchor="middle" font-size="34" font-weight="bold" fill="white">ESP32</text>
+<rect x="290" y="155" width="40" height="30" fill="#e07b00"/><text x="280" y="178" text-anchor="end" font-size="27" font-weight="bold" fill="white">3V3</text>
+<rect x="290" y="215" width="40" height="30" fill="#222222"/><text x="280" y="238" text-anchor="end" font-size="27" font-weight="bold" fill="white">GND</text>
+<rect x="290" y="275" width="40" height="30" fill="#2e7d32"/><text x="280" y="298" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO21</text>
+<rect x="290" y="335" width="40" height="30" fill="#6a4ba0"/><text x="280" y="358" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO22</text>
+<polyline points="310,170 1330,170" fill="none" stroke="#e07b00" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,230 1330,230" fill="none" stroke="#222222" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,290 1330,290" fill="none" stroke="#2e7d32" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,350 1330,350" fill="none" stroke="#6a4ba0" stroke-width="6" stroke-linejoin="round"/>
+<text x="1320" y="158" text-anchor="end" font-size="22" fill="#e07b00" font-weight="bold">3V3 hattı</text>
+<text x="1320" y="218" text-anchor="end" font-size="22" fill="#222222" font-weight="bold">GND hattı</text>
+<text x="1320" y="278" text-anchor="end" font-size="22" fill="#2e7d32" font-weight="bold">SDA (GPIO21)</text>
+<text x="1320" y="338" text-anchor="end" font-size="22" fill="#6a4ba0" font-weight="bold">SCL (GPIO22)</text>
+<rect x="470" y="440" width="296" height="150" rx="12" fill="#263238"/>
+<text x="618.0" y="515.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">OLED</text>
+<text x="618.0" y="543.0" text-anchor="middle" font-size="22" fill="white">0x3C</text>
+<polyline points="522,230 522,430" fill="none" stroke="#222222" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="522" cy="230" r="8" fill="#222222"/>
+<rect x="510" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="522" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">GND</text>
+<polyline points="586,170 586,430" fill="none" stroke="#e07b00" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="586" cy="170" r="8" fill="#e07b00"/>
+<rect x="574" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="586" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">VCC</text>
+<polyline points="650,350 650,430" fill="none" stroke="#6a4ba0" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="650" cy="350" r="8" fill="#6a4ba0"/>
+<rect x="638" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="650" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">SCL</text>
+<polyline points="714,290 714,430" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="714" cy="290" r="8" fill="#2e7d32"/>
+<rect x="702" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="714" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">SDA</text>
+<rect x="900" y="440" width="296" height="150" rx="12" fill="#6d4c41"/>
+<text x="1048.0" y="515.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">BMP280</text>
+<text x="1048.0" y="543.0" text-anchor="middle" font-size="22" fill="white">0x76 / 0x77</text>
+<polyline points="952,170 952,430" fill="none" stroke="#e07b00" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="952" cy="170" r="8" fill="#e07b00"/>
+<rect x="940" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="952" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">VCC</text>
+<polyline points="1016,230 1016,430" fill="none" stroke="#222222" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="1016" cy="230" r="8" fill="#222222"/>
+<rect x="1004" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="1016" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">GND</text>
+<polyline points="1080,350 1080,430" fill="none" stroke="#6a4ba0" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="1080" cy="350" r="8" fill="#6a4ba0"/>
+<rect x="1068" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="1080" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">SCL</text>
+<polyline points="1144,290 1144,430" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="1144" cy="290" r="8" fill="#2e7d32"/>
+<rect x="1132" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="1144" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">SDA</text>
+<rect x="50" y="616" width="1300" height="146" rx="8" fill="#fdf1e6"/>
+<text x="700" y="652" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">İki modül aynı dört hatta bağlanır; ESP32 onları adresleriyle ayırt</text>
+<text x="700" y="692" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">eder.</text>
+<text x="700" y="732" text-anchor="middle" font-size="25" fill="#7a3d00">Siyah noktalar bağlantı noktasıdır. Pin sırasını modülün üzerindeki yazıdan oku.</text>
+</svg>

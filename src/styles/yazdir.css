@@ -1,0 +1,233 @@
+/* A4 yazdırma: menüler gizli, bütün bölümler açık, siyah-beyaz dostu, boş yazma alanları elle yazmak için çizgili kutu. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 14mm 16mm;
+  }
+
+  /* Koyu tema seçili olsa da kâğıda açık renkler basılır. */
+  html:root:root:root {
+    --zemin: #fff;
+    --yuzey: #fff;
+    --yuzey2: #eee;
+    --yazi: #000;
+    --soluk: #222;
+    --cizgi: #444;
+    --cizgi-hafif: #888;
+    --vurgu: #000;
+    color-scheme: light;
+  }
+
+  body {
+    display: block;
+    min-height: 0;
+    background: #fff;
+    color: #000;
+    font-size: 10.5pt;
+    line-height: 1.45;
+  }
+  .kap,
+  .dar {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .ust,
+  .alt,
+  .atla,
+  .ekmek,
+  .foy-araclar,
+  .foy-durum,
+  .foy-gezinme,
+  .depo-uyari,
+  .onkosul-uyari,
+  .kod-dugmeler,
+  [data-yazdirma-gizle] {
+    display: none !important;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  h1 {
+    font-size: 18pt;
+    margin: 0 0 2mm;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  /* Bölümler: hepsi açık, başlık çerçeveli */
+  details.bolum {
+    border: 0;
+    margin: 4mm 0;
+    background: none;
+  }
+  details.bolum::details-content {
+    content-visibility: visible;
+    display: block;
+  }
+  details.bolum > summary {
+    display: block;
+    min-height: 0;
+    padding: 0 0 1mm;
+    border-bottom: 1.2pt solid #000 !important;
+    border-radius: 0;
+    background: none !important;
+  }
+  details.bolum > summary::before {
+    display: none;
+  }
+  details.bolum > summary h2 {
+    font-size: 13pt;
+    margin: 0;
+  }
+  .bolum-icerik {
+    padding: 2mm 0 0;
+  }
+
+  .ozet {
+    display: block;
+  }
+  .ozet-kart {
+    border: 1pt solid #000;
+    margin: 0 0 3mm;
+    break-inside: avoid;
+  }
+  .ozet-kart h2 {
+    margin: 2mm 0 1mm;
+  }
+
+  /* Kutular: renksiz; tür etiketi ve kenarlıkla ayırt edilir */
+  .kutu,
+  html:root:root:root .kutu {
+    --k-zemin: #fff;
+    --k-kenar: #000;
+    --k-tur: #000;
+    background: #fff !important;
+    border: 1pt solid #000;
+    border-left: 4pt solid #000;
+    break-inside: avoid;
+    margin: 3mm 0;
+    padding: 2mm 3mm;
+  }
+  .kutu-dikkat {
+    border-style: double !important;
+    border-width: 3pt !important;
+  }
+  .kutu-tur {
+    border-color: #000;
+    color: #000;
+  }
+
+  /* Kod */
+  .kod {
+    border: 1pt solid #000;
+    border-radius: 0;
+    margin: 3mm 0;
+  }
+  .kod-ust {
+    background: #eee !important;
+    border-bottom: 1pt solid #000;
+    padding: 1mm 2mm;
+    font-size: 9pt;
+  }
+  .kod pre.shiki {
+    background: #fff !important;
+    color: #000 !important;
+    overflow: visible;
+    padding: 1mm 0;
+    font-size: 8.5pt;
+    line-height: 1.4;
+  }
+  .kod pre.shiki span {
+    color: var(--shiki-light) !important;
+  }
+  .kod pre.shiki code {
+    width: auto;
+    white-space: normal;
+  }
+  .kod .line {
+    display: block;
+    white-space: pre-wrap;
+    word-break: break-all;
+    padding-left: 11mm;
+    text-indent: -11mm;
+    break-inside: avoid;
+  }
+  .kod .line::before {
+    width: 8mm;
+    padding-right: 3mm;
+    color: #555;
+  }
+
+  /* Tablo, görsel */
+  .tablo-kap {
+    overflow: visible;
+    border: 0;
+  }
+  .tablo-kap table {
+    font-size: 9.5pt;
+    width: 100%;
+  }
+  .tablo-kap th,
+  .tablo-kap td {
+    border: 0.6pt solid #000;
+    padding: 1.2mm 2mm;
+  }
+  .tablo-kap thead th {
+    background: #eee !important;
+  }
+  .tablo-kap td:empty {
+    height: 9mm;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tr {
+    break-inside: avoid;
+  }
+  .gorsel {
+    border: 0.6pt solid #888;
+    break-inside: avoid;
+    padding: 1mm;
+  }
+  .gorsel img {
+    max-height: 150mm;
+    width: auto;
+    max-width: 100%;
+  }
+
+  /* Yazma alanları: yazılmış metin olduğu gibi çıkar, boşsa çizgili kutu */
+  .yaz {
+    break-inside: avoid;
+  }
+  .yaz textarea {
+    border: 1pt solid #000;
+    border-radius: 0;
+    resize: none;
+    overflow: visible;
+    color: #000;
+    background: repeating-linear-gradient(to bottom, #fff 0, #fff 6.3mm, #999 6.3mm, #999 6.6mm);
+    line-height: 6.6mm;
+    padding: 0 2mm;
+  }
+  .yaz-etiket.gorunmez {
+    display: none;
+  }
+
+  /* Onay kutuları */
+  label.adim {
+    border: 0;
+    padding: 0.5mm 0;
+    background: none !important;
+    break-inside: avoid;
+  }
+  .adim-kutu {
+    width: 4.5mm;
+    height: 4.5mm;
+  }
+}

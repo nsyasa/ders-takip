@@ -1,0 +1,35 @@
+<svg viewBox="0 0 1400 882" xmlns="http://www.w3.org/2000/svg" width="1400" height="882" font-family="DejaVu Sans, Verdana, Arial, sans-serif"><rect width="1400" height="882" fill="white"/>
+<text x="700.0" y="44" text-anchor="middle" font-size="38" font-weight="bold" fill="#16324f">Föy 6 devresi: SG90 servo, MB102 ile harici 5 V</text>
+<rect x="50" y="100" width="260" height="340" rx="16" fill="#1b2631"/><text x="150.0" y="145" text-anchor="middle" font-size="34" font-weight="bold" fill="white">ESP32</text>
+<rect x="290" y="185" width="40" height="30" fill="#1f6fb2"/><text x="280" y="208" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO25</text>
+<rect x="290" y="405" width="40" height="30" fill="#222222"/><text x="280" y="428" text-anchor="end" font-size="27" font-weight="bold" fill="white">GND</text>
+<rect x="860" y="110" width="400" height="300" rx="12" fill="#1565c0"/>
+<text x="1120" y="222" text-anchor="middle" font-size="29" font-weight="bold" fill="white">SG90 servo</text>
+<rect x="848" y="160" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="880" y="176" font-size="22" font-weight="bold" fill="white">Sinyal (turuncu)</text>
+<rect x="848" y="260" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="880" y="276" font-size="22" font-weight="bold" fill="white">+5 V (kırmızı)</text>
+<rect x="848" y="360" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="880" y="376" font-size="22" font-weight="bold" fill="white">GND (kahve)</text>
+<rect x="380" y="530" width="300" height="110" rx="12" fill="#b71c1c"/>
+<text x="530.0" y="585.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">MB102 güç kartı</text>
+<text x="530.0" y="613.0" text-anchor="middle" font-size="22" fill="white">5 V seçili · USB adaptör</text>
+<polyline points="350,200 600,200 600,170 848,170" fill="none" stroke="#1f6fb2" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="680,560 740,560 740,270 848,270" fill="none" stroke="#c62828" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="680,610 800,610 800,370 848,370" fill="none" stroke="#222222" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="350,420 530,420 530,518" fill="none" stroke="#222222" stroke-width="6" stroke-linejoin="round"/>
+<text x="545" y="480" text-anchor="start" font-size="25" fill="#222" font-weight="bold">ORTAK GND</text>
+<polyline points="740,450 758,450" fill="none" stroke="#c62828" stroke-width="5" stroke-linejoin="round"/>
+<polyline points="782,450 800,450" fill="none" stroke="#222222" stroke-width="5" stroke-linejoin="round"/>
+<polyline points="758,425 758,475" fill="none" stroke="#333" stroke-width="5" stroke-linejoin="round"/>
+<polyline points="782,425 782,475" fill="none" stroke="#333" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="740" cy="450" r="8" fill="#c62828"/>
+<circle cx="800" cy="450" r="8" fill="#222222"/>
+<text x="758" y="412" text-anchor="middle" font-size="29" fill="#c62828" font-weight="bold">+</text>
+<text x="820" y="458" text-anchor="start" font-size="25" fill="#333" font-weight="bold">470 µF</text>
+<rect x="50" y="676" width="1300" height="186" rx="8" fill="#fdf1e6"/>
+<text x="700" y="712" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">Servo ESP32'nin 3V3 ya da VIN pininden beslenmez. Yalnız GND'ler</text>
+<text x="700" y="752" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">ortaklanır.</text>
+<text x="700" y="792" text-anchor="middle" font-size="25" fill="#7a3d00">MB102 jumper'ı 5 V konumunda; 3,3 V hattı kullanılmaz. Kondansatör: uzun bacak</text>
+<text x="700" y="832" text-anchor="middle" font-size="25" fill="#7a3d00">(+) +5 V hattına. MB102'nin 5 V'unu ESP32'nin VIN pinine BAĞLAMA.</text>
+</svg>

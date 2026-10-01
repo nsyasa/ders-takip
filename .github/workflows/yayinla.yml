@@ -1,0 +1,48 @@
+# main dalına her gönderimde siteyi derler ve GitHub Pages'e yayınlar.
+# Kurulum için README.md → "GitHub Pages ile yayınlama".
+name: Yayınla
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  derle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Derle (içerik denetimi + site + arama dizini)
+        run: npm run build
+        env:
+          # Depo adıyla yayınlanır: https://<kullanici>.github.io/<depo>/ → BASE_PATH=/<depo>
+          # "<kullanici>.github.io" adlı depoda ya da özel alan adında kök kullanılır.
+          # Elle ayarlamak için: Settings → Secrets and variables → Actions → Variables → BASE_PATH (kök için "/")
+          BASE_PATH: ${{ vars.BASE_PATH || (endsWith(github.repository, '.github.io') && '/' || format('/{0}', github.event.repository.name)) }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  yayinla:
+    needs: derle
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.yayin.outputs.page_url }}
+    steps:
+      - id: yayin
+        uses: actions/deploy-pages@v4

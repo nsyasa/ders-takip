@@ -1,0 +1,202 @@
+---
+import { render } from 'astro:content';
+import Taban from '../../layouts/Taban.astro';
+import Ilerleme from '../../components/Ilerleme.astro';
+import { tumDersler, dersFoyleri, foyKimligi, foyYolu, yol, type Ders, type Foy } from '../../lib/veri';
+
+export async function getStaticPaths() {
+  const dersler = (await tumDersler()).filter((d) => d.data.durum === 'hazir');
+  const sonuc: { params: { ders: string; foy: string }; props: { ders: Ders; foy: Foy; foyler: Foy[]; onceki?: Foy; sonraki?: Foy } }[] = [];
+  for (const ders of dersler) {
+    const foyler = await dersFoyleri(ders.id);
+    foyler.forEach((foy, i) => {
+      sonuc.push({
+        params: { ders: ders.id, foy: foy.data.slug },
+        props: { ders, foy, foyler, onceki: foyler[i - 1], sonraki: foyler[i + 1] },
+      });
+    });
+  }
+  return sonuc;
+}
+
+const { ders, foy, foyler, onceki, sonraki } = Astro.props;
+const d = foy.data;
+const dd = ders.data;
+const { Content } = await render(foy);
+const kimlik = foyKimligi(foy);
+const baslik = `Föy ${d.numara} — ${d.baslik}`;
+
+// Önkoşullar: `onkosul` okunabilir metinlerdir ("Föy 5 (millis)"); içlerinde "Föy N" geçenler
+// o föye bağlanır ve durum rozeti alır. `onkosulFoyler`de olup metinlerde geçmeyen numaralar eklenir.
+const foyBul = (n: number) => foyler.find((f) => f.data.numara === n);
+const onkosulOgeleri = d.onkosul.map((metin) => {
+  const n = Number(/Föy\s+(\d+)/i.exec(metin)?.[1]);
+  return { metin, foy: Number.isNaN(n) ? undefined : foyBul(n) };
+});
+for (const n of d.onkosulFoyler) {
+  if (!d.onkosul.some((m) => new RegExp(`Föy\\s+${n}(?!\\d)`, 'i').test(m))) {
+    onkosulOgeleri.push({ metin: `Föy ${n}`, foy: foyBul(n) });
+  }
+}
+const onkosulVar = onkosulOgeleri.length > 0;
+const kontrolEdilecek = onkosulOgeleri
+  .filter((o) => o.foy)
+  .map((o) => ({ id: foyKimligi(o.foy!), adim: o.foy!.data.adimSayisi }));
+const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
+---
+
+<Taban baslik={baslik} aciklama={d.altbaslik || dd.aciklama}>
+  <div class="kap dar" style={`--renk:${dd.renk}`}>
+    <nav class="ekmek" aria-label="Sayfa yolu">
+      <ol>
+        <li><a href={yol('/')}>Derslerim</a></li>
+        <li><a href={yol(`/${ders.id}/`)}>{dd.ad}</a></li>
+        <li aria-current="page">Föy {d.numara}</li>
+      </ol>
+    </nav>
+
+    <article
+      data-foy-kok
+      data-foy={kimlik}
+      data-adim-toplam={d.adimSayisi}
+      data-baslik={baslik}
+      data-taban={yol('/')}
+      data-pagefind-body
+    >
+      <header class="foy-ust">
+        <h1 data-pagefind-meta="title">{baslik}</h1>
+        {d.altbaslik && <p class="foy-altbaslik">{d.altbaslik}</p>}
+        <ul class="foy-bilgi">
+          <li>Süre: <strong>{d.sureDk} dk</strong>{d.dersSaati && ` (${d.dersSaati})`}</li>
+          {d.seviye && <li>Seviye: <strong>{d.seviye}</strong></li>}
+        </ul>
+        {
+          d.kavramlar.length > 0 && (
+            <ul class="etiketler" aria-label="Kavramlar">
+              {d.kavramlar.map((k) => (
+                <li>{k}</li>
+              ))}
+            </ul>
+          )
+        }
+        {
+          onkosulVar && (
+            <p class="onkosul">
+              <strong>Önkoşul:</strong>{' '}
+              {onkosulOgeleri.map((o, i) => (
+                <>
+                  {i > 0 && ', '}
+                  {o.foy ? (
+                    <>
+                      <a href={foyYolu(o.foy)}>{o.metin}</a>{' '}
+                      <span class="rozet rozet-baslamadi" data-onkosul-foy={foyKimligi(o.foy)} data-adim={o.foy.data.adimSayisi}>Başlamadı</span>
+                    </>
+                  ) : (
+                    o.metin
+                  )}
+                </>
+              ))}
+            </p>
+          )
+        }
+        {
+          kontrolEdilecek.length > 0 && (
+            <p class="onkosul-uyari" data-onkosul-uyari={JSON.stringify(kontrolEdilecek)} data-pagefind-ignore hidden>
+              Önkoşul föy henüz bitmemiş görünüyor. Önce onu bitirmen önerilir. Başka bir cihazda bitirdiysen
+              <a href={yol('/verilerim/')}>Verilerim</a> sayfasından yedeğini içe aktarabilirsin.
+            </p>
+          )
+        }
+      </header>
+
+      <section class="foy-durum" aria-label="Bu föydeki ilerlemem" data-pagefind-ignore>
+        <div class="foy-durum-ust">
+          <strong data-foy-adim-metin>0 / {d.adimSayisi} adım</strong>
+          <span class="rozet rozet-baslamadi" data-foy-durum>Başlamadı</span>
+        </div>
+        <Ilerleme etiket="Föy ilerlemesi" />
+      </section>
+
+      <p class="depo-uyari" role="status" data-depo-uyari data-pagefind-ignore hidden>
+        Bu tarayıcı kayıt tutmaya izin vermiyor (gizli sekme olabilir). Yazdıkların ve işaretlerin yalnız bu sayfa açıkken kalır.
+      </p>
+
+      <div class="ozet">
+        {
+          d.hedefler.length > 0 && (
+            <section class="ozet-kart" aria-labelledby="ozet-hedef">
+              <h2 id="ozet-hedef">Hedeflerim</h2>
+              <p>Bu föyün sonunda:</p>
+              <ul>
+                {d.hedefler.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+        {
+          d.malzemeler.length > 0 && (
+            <section class="ozet-kart" aria-labelledby="ozet-malzeme">
+              <h2 id="ozet-malzeme">Malzemeler</h2>
+              <div class="tablo-kap" tabindex="0" role="region" aria-label="Malzemeler tablosu (yatay kaydırılabilir)">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Malzeme</th>
+                      <th>Adet</th>
+                      {malzemeNotu && <th>Not</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {d.malzemeler.map((m) => (
+                      <tr>
+                        <td>{m.ad}</td>
+                        <td>{m.adet}</td>
+                        {malzemeNotu && <td>{m.not}</td>}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )
+        }
+      </div>
+
+      <div class="foy-araclar" data-pagefind-ignore>
+        <button type="button" class="dugme" data-hepsini-ac hidden>Tümünü aç</button>
+        <button type="button" class="dugme" data-yazdir hidden>Yazdır (A4)</button>
+      </div>
+
+      <div class="foy-icerik">
+        <Content />
+      </div>
+    </article>
+
+    <nav class="foy-gezinme" aria-label="Föyler arası gezinme">
+      {
+        onceki && (
+          <a class="onceki" href={foyYolu(onceki)} rel="prev">
+            <small>← Önceki föy</small>
+            Föy {onceki.data.numara} — {onceki.data.baslik}
+          </a>
+        )
+      }
+      {
+        sonraki && (
+          <a class="sonraki" href={foyYolu(sonraki)} rel="next">
+            <small>Sonraki föy →</small>
+            Föy {sonraki.data.numara} — {sonraki.data.baslik}
+          </a>
+        )
+      }
+    </nav>
+    <p><a href={yol(`/${ders.id}/`)}>← {dd.ad} föy listesine dön</a></p>
+  </div>
+</Taban>
+
+<script>
+  import '../../scripts/foy';
+  import '../../scripts/ilerleme-goster';
+</script>

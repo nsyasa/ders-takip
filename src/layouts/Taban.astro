@@ -1,0 +1,95 @@
+---
+import '../styles/tema.css';
+import '../styles/bilesenler.css';
+import '../styles/yazdir.css';
+import { yol } from '../lib/veri';
+
+interface Props {
+  baslik?: string;
+  aciklama?: string;
+  aktif?: 'ana' | 'verilerim' | 'ara';
+}
+
+const { baslik, aciklama = 'Öğrenciler için reklamsız ders takip sitesi. İlerlemen yalnız bu cihazda saklanır.', aktif } = Astro.props;
+const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tamBaslik}</title>
+    <meta name="description" content={aciklama} />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href={yol('favicon.svg')} />
+    <!-- Tema, sayfa çizilmeden önce uygulanır (yanıp sönmeyi önler). -->
+    <script is:inline>
+      try {
+        var t = localStorage.getItem('ders-takip:tema');
+        if (t === 'koyu' || t === 'acik') document.documentElement.dataset.tema = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="atla" href="#icerik">İçeriğe geç</a>
+    <header class="ust">
+      <div class="kap ust-ic">
+        <a class="logo" href={yol('/')}>Ders Takip</a>
+        <button class="dugme tema-dugme" type="button" data-tema-dugme aria-pressed="false" hidden>Koyu mod</button>
+        <nav class="ust-nav" aria-label="Ana menü">
+          <ul class="menu">
+            <li><a href={yol('/')} aria-current={aktif === 'ana' ? 'page' : undefined}>Derslerim</a></li>
+            <li><a href={yol('/verilerim/')} aria-current={aktif === 'verilerim' ? 'page' : undefined}>Verilerim</a></li>
+            <li class="menu-ara-baglanti">
+              <a href={yol('/ara/')} aria-current={aktif === 'ara' ? 'page' : undefined}>Ara</a>
+            </li>
+            <li class="menu-ara-form">
+              <form class="arama-formu" role="search" action={yol('/ara/')} method="get">
+                <label class="gorunmez" for="ust-ara">Sitede ara</label>
+                <input id="ust-ara" type="search" name="q" placeholder="Ara…" autocomplete="off" enterkeyhint="search" />
+                <button class="dugme" type="submit">Ara</button>
+              </form>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="icerik" tabindex="-1">
+      <slot />
+    </main>
+
+    <footer class="alt">
+      <div class="kap">
+        <p>Bu sitede reklam, çerez ve izleme yoktur. İlerlemen ve yazdıkların yalnız bu cihazda saklanır.</p>
+        <p><a href={yol('/verilerim/')}>Başka cihazda devam etmek için yedeğini al</a></p>
+      </div>
+    </footer>
+
+    <script>
+      // Koyu mod düğmesi: yalnız JS varsa görünür.
+      const dugme = document.querySelector<HTMLButtonElement>('[data-tema-dugme]');
+      if (dugme) {
+        const koyuMu = () => {
+          const t = document.documentElement.dataset.tema;
+          return t ? t === 'koyu' : matchMedia('(prefers-color-scheme: dark)').matches;
+        };
+        const guncelle = () => dugme.setAttribute('aria-pressed', String(koyuMu()));
+        dugme.hidden = false;
+        guncelle();
+        dugme.addEventListener('click', () => {
+          const yeni = koyuMu() ? 'acik' : 'koyu';
+          document.documentElement.dataset.tema = yeni;
+          try {
+            localStorage.setItem('ders-takip:tema', yeni);
+          } catch {
+            /* depolama yok */
+          }
+          guncelle();
+        });
+        matchMedia('(prefers-color-scheme: dark)').addEventListener('change', guncelle);
+      }
+    </script>
+  </body>
+</html>

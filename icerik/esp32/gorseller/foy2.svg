@@ -1,0 +1,39 @@
+<svg viewBox="0 0 1400 782" xmlns="http://www.w3.org/2000/svg" width="1400" height="782" font-family="DejaVu Sans, Verdana, Arial, sans-serif"><rect width="1400" height="782" fill="white"/>
+<text x="700.0" y="44" text-anchor="middle" font-size="38" font-weight="bold" fill="#16324f">Föy 2 devresi: OLED ekran I2C hattında</text>
+<rect x="50" y="100" width="260" height="330" rx="16" fill="#1b2631"/><text x="150.0" y="145" text-anchor="middle" font-size="34" font-weight="bold" fill="white">ESP32</text>
+<rect x="290" y="155" width="40" height="30" fill="#e07b00"/><text x="280" y="178" text-anchor="end" font-size="27" font-weight="bold" fill="white">3V3</text>
+<rect x="290" y="215" width="40" height="30" fill="#222222"/><text x="280" y="238" text-anchor="end" font-size="27" font-weight="bold" fill="white">GND</text>
+<rect x="290" y="275" width="40" height="30" fill="#2e7d32"/><text x="280" y="298" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO21</text>
+<rect x="290" y="335" width="40" height="30" fill="#6a4ba0"/><text x="280" y="358" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO22</text>
+<polyline points="310,170 1330,170" fill="none" stroke="#e07b00" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,230 1330,230" fill="none" stroke="#222222" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,290 1330,290" fill="none" stroke="#2e7d32" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,350 1330,350" fill="none" stroke="#6a4ba0" stroke-width="6" stroke-linejoin="round"/>
+<text x="1320" y="158" text-anchor="end" font-size="22" fill="#e07b00" font-weight="bold">3V3 hattı</text>
+<text x="1320" y="218" text-anchor="end" font-size="22" fill="#222222" font-weight="bold">GND hattı</text>
+<text x="1320" y="278" text-anchor="end" font-size="22" fill="#2e7d32" font-weight="bold">SDA (GPIO21)</text>
+<text x="1320" y="338" text-anchor="end" font-size="22" fill="#6a4ba0" font-weight="bold">SCL (GPIO22)</text>
+<rect x="560" y="440" width="296" height="150" rx="12" fill="#263238"/>
+<text x="708.0" y="515.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">OLED 128×64</text>
+<text x="708.0" y="543.0" text-anchor="middle" font-size="22" fill="white">SSD1306 · 0x3C</text>
+<polyline points="612,230 612,430" fill="none" stroke="#222222" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="612" cy="230" r="8" fill="#222222"/>
+<rect x="600" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="612" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">GND</text>
+<polyline points="676,170 676,430" fill="none" stroke="#e07b00" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="676" cy="170" r="8" fill="#e07b00"/>
+<rect x="664" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="676" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">VCC</text>
+<polyline points="740,350 740,430" fill="none" stroke="#6a4ba0" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="740" cy="350" r="8" fill="#6a4ba0"/>
+<rect x="728" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="740" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">SCL</text>
+<polyline points="804,290 804,430" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="804" cy="290" r="8" fill="#2e7d32"/>
+<rect x="792" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="804" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">SDA</text>
+<rect x="50" y="616" width="1300" height="146" rx="8" fill="#fdf1e6"/>
+<text x="700" y="652" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">Pin sırası modüle göre değişir: bazı OLED'lerde GND önce, bazılarında</text>
+<text x="700" y="692" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">VCC önce gelir.</text>
+<text x="700" y="732" text-anchor="middle" font-size="25" fill="#7a3d00">Kablolamadan önce modülün üzerindeki yazıyı oku. VCC → 3V3.</text>
+</svg>

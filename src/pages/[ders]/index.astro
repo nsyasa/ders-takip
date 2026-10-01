@@ -1,0 +1,66 @@
+---
+import Taban from '../../layouts/Taban.astro';
+import FoySatiri from '../../components/FoySatiri.astro';
+import Ilerleme from '../../components/Ilerleme.astro';
+import { tumDersler, dersFoyleri, dersGenel, foyKimligi, sureMetni, yol } from '../../lib/veri';
+
+export async function getStaticPaths() {
+  const dersler = (await tumDersler()).filter((d) => d.data.durum === 'hazir');
+  return Promise.all(
+    dersler.map(async (ders) => ({
+      params: { ders: ders.id },
+      props: { ders, foyler: await dersFoyleri(ders.id), genel: await dersGenel(ders) },
+    })),
+  );
+}
+
+const { ders, foyler, genel } = Astro.props;
+const d = ders.data;
+const toplamDk = foyler.reduce((t, f) => t + f.data.sureDk, 0);
+const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(f), f.data.adimSayisi])));
+---
+
+<Taban baslik={d.ad} aciklama={d.aciklama}>
+  <div class="kap" style={`--renk:${d.renk}`}>
+    <nav class="ekmek" aria-label="Sayfa yolu">
+      <ol>
+        <li><a href={yol('/')}>Derslerim</a></li>
+        <li aria-current="page">{d.ad}</li>
+      </ol>
+    </nav>
+
+    <header class="ders-baslik" data-ders-ilerleme={ders.id} data-adimlar={adimlar}>
+      <h1><span aria-hidden="true">{d.ikon} </span>{d.ad}</h1>
+      <p class="ders-alt">{d.altbaslik}</p>
+      <p>{d.aciklama}</p>
+      <p class="ders-meta">{foyler.length} föy · yaklaşık {sureMetni(toplamDk)}</p>
+      <Ilerleme etiket={`${d.ad} ilerlemesi`} metin={`0 / ${foyler.length} föy bitti`} />
+    </header>
+
+    <section aria-labelledby="foyler-baslik">
+      <h2 id="foyler-baslik">Föyler</h2>
+      <ol class="foy-listesi">
+        {foyler.map((f) => <FoySatiri foy={f} />)}
+      </ol>
+    </section>
+
+    {
+      genel.length > 0 && (
+        <section aria-labelledby="genel-baslik">
+          <h2 id="genel-baslik">Genel bilgiler</h2>
+          <ul class="genel-liste">
+            {genel.map((g) => (
+              <li>
+                <a href={yol(`/${ders.id}/genel/${g.data.slug}/`)}>{g.data.baslik}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
+</Taban>
+
+<script>
+  import '../../scripts/ilerleme-goster';
+</script>

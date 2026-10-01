@@ -1,0 +1,51 @@
+<svg viewBox="0 0 1400 902" xmlns="http://www.w3.org/2000/svg" width="1400" height="902" font-family="DejaVu Sans, Verdana, Arial, sans-serif"><rect width="1400" height="902" fill="white"/>
+<text x="700.0" y="44" text-anchor="middle" font-size="38" font-weight="bold" fill="#16324f">Föy 10 devresi: WS2812 8'li halka (diyotlu besleme)</text>
+<rect x="50" y="100" width="260" height="460" rx="16" fill="#1b2631"/><text x="150.0" y="145" text-anchor="middle" font-size="34" font-weight="bold" fill="white">ESP32</text>
+<rect x="290" y="185" width="40" height="30" fill="#c62828"/><text x="280" y="208" text-anchor="end" font-size="27" font-weight="bold" fill="white">VIN</text>
+<rect x="290" y="385" width="40" height="30" fill="#222222"/><text x="280" y="408" text-anchor="end" font-size="27" font-weight="bold" fill="white">GND</text>
+<rect x="290" y="455" width="40" height="30" fill="#1f6fb2"/><text x="280" y="478" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO16</text>
+<polyline points="350,200 463.0,200" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/>
+<polyline points="507.0,200 620,200" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="463.0,178 463.0,222 505.0,200" fill="#555" stroke="#333" stroke-width="3"/>
+<polyline points="507.0,176 507.0,224" fill="none" stroke="#333" stroke-width="5" stroke-linejoin="round"/>
+<text x="485.0" y="166" text-anchor="middle" font-size="23" fill="#333" font-weight="bold">1N4007</text>
+<polyline points="620,200 780,200 780,280 848,280" fill="none" stroke="#c62828" stroke-width="6" stroke-linejoin="round"/>
+<text x="700" y="170" text-anchor="middle" font-size="25" fill="#c62828" font-weight="bold">≈ 4 V</text>
+<rect x="860" y="250" width="130" height="250" rx="12" fill="#212121"/>
+<text x="925.0" y="383.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white"></text>
+<rect x="848" y="270" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="880" y="286" font-size="22" font-weight="bold" fill="white">VCC</text>
+<rect x="848" y="390" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="880" y="406" font-size="22" font-weight="bold" fill="white">GND</text>
+<rect x="848" y="460" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="880" y="476" font-size="22" font-weight="bold" fill="white">DIN</text>
+<polyline points="350,400 848,400" fill="none" stroke="#222222" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="810,280 810,316" fill="none" stroke="#c62828" stroke-width="5" stroke-linejoin="round"/>
+<polyline points="790,320 830,320" fill="none" stroke="#333" stroke-width="5" stroke-linejoin="round"/>
+<polyline points="790,350 830,350" fill="none" stroke="#333" stroke-width="5" stroke-linejoin="round"/>
+<polyline points="810,354 810,400" fill="none" stroke="#222222" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="810" cy="280" r="8" fill="#c62828"/>
+<circle cx="810" cy="400" r="8" fill="#222222"/>
+<text x="845" y="318" text-anchor="start" font-size="29" fill="#c62828" font-weight="bold">+</text>
+<text x="775" y="345" text-anchor="end" font-size="25" fill="#333" font-weight="bold">470 µF</text>
+<polyline points="350,470 560,470" fill="none" stroke="#1f6fb2" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="560,470 580,470 593.3333333333334,452 620.0,488 646.6666666666666,452 673.3333333333334,488 700.0,452 726.6666666666667,488 740,470 760,470" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/>
+<text x="660.0" y="444" text-anchor="middle" font-size="23" fill="#333" font-weight="bold">330 Ω</text>
+<polyline points="760,470 848,470" fill="none" stroke="#1f6fb2" stroke-width="6" stroke-linejoin="round"/>
+<line x1="990" y1="375" x2="1030" y2="375" stroke="#555" stroke-width="6"/>
+<circle cx="1180" cy="375" r="150" fill="#212121"/><circle cx="1180" cy="375" r="68" fill="white"/>
+<circle cx="1180" cy="265" r="22" fill="#e53935" stroke="#999" stroke-width="2"/>
+<circle cx="1258" cy="297" r="22" fill="#fb8c00" stroke="#999" stroke-width="2"/>
+<circle cx="1290" cy="375" r="22" fill="#fdd835" stroke="#999" stroke-width="2"/>
+<circle cx="1258" cy="453" r="22" fill="#43a047" stroke="#999" stroke-width="2"/>
+<circle cx="1180" cy="485" r="22" fill="#00acc1" stroke="#999" stroke-width="2"/>
+<circle cx="1102" cy="453" r="22" fill="#1e88e5" stroke="#999" stroke-width="2"/>
+<circle cx="1070" cy="375" r="22" fill="#8e24aa" stroke="#999" stroke-width="2"/>
+<circle cx="1102" cy="297" r="22" fill="#ffffff" stroke="#999" stroke-width="2"/>
+<text x="1180" y="383" text-anchor="middle" font-size="31" fill="#222" font-weight="bold">8 LED</text>
+<rect x="50" y="696" width="1300" height="186" rx="8" fill="#fdf1e6"/>
+<text x="700" y="732" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">Diyot (1N4007) halkanın beslemesini ≈0,7 V düşürür; ESP32'nin 3,3 V</text>
+<text x="700" y="772" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">veri sinyali böylece güvenle "1" okunur.</text>
+<text x="700" y="812" text-anchor="middle" font-size="25" fill="#7a3d00">470 µF kondansatör halkaya yakın: uzun bacak (+) VCC hattında. Diyotun çizgili</text>
+<text x="700" y="852" text-anchor="middle" font-size="25" fill="#7a3d00">ucu halkaya bakar. 330 Ω direnç halkaya yakın. DOUT pedi boş kalır.</text>
+</svg>

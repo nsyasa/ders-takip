@@ -1,0 +1,46 @@
+---
+import Taban from '../layouts/Taban.astro';
+import DersKarti from '../components/DersKarti.astro';
+import { tumDersler, dersFoyleri, yol, foyKimligi } from '../lib/veri';
+
+const dersler = await tumDersler();
+const satirlar = await Promise.all(dersler.map(async (ders) => ({ ders, foyler: await dersFoyleri(ders.id) })));
+const gecerliFoyler = satirlar.flatMap((s) => s.foyler.map(foyKimligi));
+---
+
+<Taban baslik="Derslerim" aktif="ana">
+  <div class="kap">
+    <section class="giris">
+      <h1>Derslerim</h1>
+      <p>Bir ders seç, föyleri sırayla ilerle. Onay kutularını işaretledikçe ilerleme çubuğun dolar.</p>
+    </section>
+
+    <section
+      class="devam-karti"
+      aria-label="Kaldığın yerden devam et"
+      data-devam
+      data-taban={yol('/')}
+      data-gecerli={JSON.stringify(gecerliFoyler)}
+      hidden
+    >
+      <p>
+        <strong>Kaldığın yerden devam et</strong><br />
+        <span data-devam-baslik></span>
+      </p>
+      <a class="dugme dugme-vurgu" href={yol('/')} data-devam-link>Devam et</a>
+    </section>
+
+    <ul class="ders-izgara">
+      {satirlar.map(({ ders, foyler }) => <DersKarti ders={ders} foyler={foyler} />)}
+    </ul>
+
+    <p class="bilgi-notu">
+      <strong>Başka bir cihazda mı devam edeceksin?</strong> İlerlemen yalnız bu cihazda saklanır.
+      <a href={yol('/verilerim/')}>Verilerim</a> sayfasından yedeğini indir, diğer cihazda aynı sayfadan içe aktar.
+    </p>
+  </div>
+</Taban>
+
+<script>
+  import '../scripts/ilerleme-goster';
+</script>

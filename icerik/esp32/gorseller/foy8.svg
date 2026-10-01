@@ -1,0 +1,60 @@
+<svg viewBox="0 0 1400 941" xmlns="http://www.w3.org/2000/svg" width="1400" height="941" font-family="DejaVu Sans, Verdana, Arial, sans-serif"><rect width="1400" height="941" fill="white"/>
+<text x="700.0" y="44" text-anchor="middle" font-size="38" font-weight="bold" fill="#16324f">Föy 8 devresi: INA219 akım yoluna SERİ, buzzer yük</text>
+<rect x="50" y="100" width="260" height="690" rx="16" fill="#1b2631"/><text x="150.0" y="145" text-anchor="middle" font-size="34" font-weight="bold" fill="white">ESP32</text>
+<rect x="290" y="155" width="40" height="30" fill="#e07b00"/><text x="280" y="178" text-anchor="end" font-size="27" font-weight="bold" fill="white">3V3</text>
+<rect x="290" y="215" width="40" height="30" fill="#222222"/><text x="280" y="238" text-anchor="end" font-size="27" font-weight="bold" fill="white">GND</text>
+<rect x="290" y="275" width="40" height="30" fill="#2e7d32"/><text x="280" y="298" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO21</text>
+<rect x="290" y="335" width="40" height="30" fill="#6a4ba0"/><text x="280" y="358" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO22</text>
+<rect x="290" y="705" width="40" height="30" fill="#1f6fb2"/><text x="280" y="728" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO33</text>
+<polyline points="310,170 1330,170" fill="none" stroke="#e07b00" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,230 1330,230" fill="none" stroke="#222222" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,290 1330,290" fill="none" stroke="#2e7d32" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="310,350 1330,350" fill="none" stroke="#6a4ba0" stroke-width="6" stroke-linejoin="round"/>
+<text x="1320" y="158" text-anchor="end" font-size="22" fill="#e07b00" font-weight="bold">3V3 hattı</text>
+<text x="1320" y="218" text-anchor="end" font-size="22" fill="#222222" font-weight="bold">GND hattı</text>
+<text x="1320" y="278" text-anchor="end" font-size="22" fill="#2e7d32" font-weight="bold">SDA (GPIO21)</text>
+<text x="1320" y="338" text-anchor="end" font-size="22" fill="#6a4ba0" font-weight="bold">SCL (GPIO22)</text>
+<rect x="420" y="440" width="296" height="150" rx="12" fill="#4527a0"/>
+<text x="568.0" y="515.0" text-anchor="middle" font-size="29" font-weight="bold" fill="white">INA219</text>
+<text x="568.0" y="543.0" text-anchor="middle" font-size="22" fill="white">0x40</text>
+<polyline points="472,170 472,430" fill="none" stroke="#e07b00" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="472" cy="170" r="8" fill="#e07b00"/>
+<rect x="460" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="472" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">VCC</text>
+<polyline points="536,230 536,430" fill="none" stroke="#222222" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="536" cy="230" r="8" fill="#222222"/>
+<rect x="524" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="536" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">GND</text>
+<polyline points="600,350 600,430" fill="none" stroke="#6a4ba0" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="600" cy="350" r="8" fill="#6a4ba0"/>
+<rect x="588" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="600" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">SCL</text>
+<polyline points="664,290 664,430" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="664" cy="290" r="8" fill="#2e7d32"/>
+<rect x="652" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="664" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">SDA</text>
+<rect x="716" y="440" width="190" height="150" rx="12" fill="#4527a0"/>
+<rect x="748" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="760" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">VIN+</text>
+<rect x="848" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="860" y="472" text-anchor="middle" font-size="21" font-weight="bold" fill="white">VIN−</text>
+<text x="811" y="560" text-anchor="middle" font-size="22" fill="white">ölçüm uçları</text>
+<polyline points="1000,170 1000,390 760,390 760,430" fill="none" stroke="#e07b00" stroke-width="6" stroke-linejoin="round"/>
+<circle cx="1000" cy="170" r="8" fill="#e07b00"/>
+<polyline points="860,430 860,410 1120,410 1120,640" fill="none" stroke="#ff8f00" stroke-width="6" stroke-linejoin="round"/>
+<text x="1130" y="540" text-anchor="start" font-size="22" fill="#ff8f00" font-weight="bold">VIN− → yükün VCC'si</text>
+<rect x="1000" y="640" width="300" height="150" rx="12" fill="#2e6b3a"/>
+<text x="1150.0" y="760" text-anchor="middle" font-size="29" font-weight="bold" fill="white">Buzzer (yük)</text>
+<rect x="1038" y="630" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="1050" y="672" text-anchor="middle" font-size="21" font-weight="bold" fill="white">S</text>
+<rect x="1108" y="630" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="1120" y="672" text-anchor="middle" font-size="21" font-weight="bold" fill="white">VCC</text>
+<rect x="1208" y="630" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="1220" y="672" text-anchor="middle" font-size="21" font-weight="bold" fill="white">GND</text>
+<polyline points="350,720 960,720 960,610 1050,610 1050,630" fill="none" stroke="#1f6fb2" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="1220,630 1220,600 1350,600 1350,230 1330,230" fill="none" stroke="#222222" stroke-width="6" stroke-linejoin="round"/>
+<circle cx="1330" cy="230" r="8" fill="#222222"/>
+<rect x="50" y="815" width="1300" height="106" rx="8" fill="#fdf1e6"/>
+<text x="700" y="851" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">Akım: 3V3 → VIN+ → (0,1 Ω şönt) → VIN− → buzzer. INA219 bu yola SERİ</text>
+<text x="700" y="891" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">girer.</text>
+</svg>

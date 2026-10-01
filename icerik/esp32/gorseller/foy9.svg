@@ -1,0 +1,43 @@
+<svg viewBox="0 0 1400 922" xmlns="http://www.w3.org/2000/svg" width="1400" height="922" font-family="DejaVu Sans, Verdana, Arial, sans-serif"><rect width="1400" height="922" fill="white"/>
+<text x="700.0" y="44" text-anchor="middle" font-size="38" font-weight="bold" fill="#16324f">Föy 9 devresi: MicroSD (SPI) + BMP280 (I2C)</text>
+<rect x="50" y="100" width="260" height="540" rx="16" fill="#1b2631"/><text x="150.0" y="145" text-anchor="middle" font-size="34" font-weight="bold" fill="white">ESP32</text>
+<rect x="290" y="135" width="40" height="30" fill="#c62828"/><text x="280" y="158" text-anchor="end" font-size="27" font-weight="bold" fill="white">VIN</text>
+<rect x="290" y="200" width="40" height="30" fill="#e07b00"/><text x="280" y="223" text-anchor="end" font-size="27" font-weight="bold" fill="white">3V3</text>
+<rect x="290" y="275" width="40" height="30" fill="#222222"/><text x="280" y="298" text-anchor="end" font-size="27" font-weight="bold" fill="white">GND</text>
+<rect x="290" y="365" width="40" height="30" fill="#00838f"/><text x="280" y="388" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO18</text>
+<rect x="290" y="425" width="40" height="30" fill="#00838f"/><text x="280" y="448" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO19</text>
+<rect x="290" y="485" width="40" height="30" fill="#00838f"/><text x="280" y="508" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO23</text>
+<rect x="290" y="545" width="40" height="30" fill="#00838f"/><text x="280" y="568" text-anchor="end" font-size="27" font-weight="bold" fill="white">GPIO27</text>
+<rect x="900" y="150" width="330" height="500" rx="12" fill="#37474f"/>
+<text x="1065" y="610" text-anchor="middle" font-size="29" font-weight="bold" fill="white">MicroSD modülü</text>
+<text x="1065" y="638" text-anchor="middle" font-size="22" fill="white">kart FAT32</text>
+<rect x="888" y="190" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="920" y="206" font-size="22" font-weight="bold" fill="white">VCC</text>
+<rect x="888" y="280" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="920" y="296" font-size="22" font-weight="bold" fill="white">GND</text>
+<rect x="888" y="370" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="920" y="386" font-size="22" font-weight="bold" fill="white">SCK</text>
+<rect x="888" y="430" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="920" y="446" font-size="22" font-weight="bold" fill="white">MISO</text>
+<rect x="888" y="490" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="920" y="506" font-size="22" font-weight="bold" fill="white">MOSI</text>
+<rect x="888" y="550" width="24" height="20" fill="#d8c27a" stroke="#8a6d1f"/>
+<text x="920" y="566" font-size="22" font-weight="bold" fill="white">CS</text>
+<polyline points="350,150 640,150 640,200 888,200" fill="none" stroke="#c62828" stroke-width="6" stroke-linejoin="round" stroke-dasharray="16,10"/>
+<polyline points="350,215 720,215 720,200 888,200" fill="none" stroke="#e07b00" stroke-width="6" stroke-linejoin="round" stroke-dasharray="16,10"/>
+<text x="520" y="128" text-anchor="middle" font-size="25" fill="#c62828" font-weight="bold">Regülatörlü modül → VIN</text>
+<text x="520" y="262" text-anchor="middle" font-size="25" fill="#e07b00" font-weight="bold">Regülatörsüz modül → 3V3</text>
+<polyline points="350,290 888,290" fill="none" stroke="#222222" stroke-width="6" stroke-linejoin="round"/>
+<polyline points="350,380 888,380" fill="none" stroke="#00838f" stroke-width="6" stroke-linejoin="round"/>
+<text x="620" y="368" text-anchor="middle" font-size="22" fill="#00838f" font-weight="bold">saat</text>
+<polyline points="350,440 888,440" fill="none" stroke="#00838f" stroke-width="6" stroke-linejoin="round"/>
+<text x="620" y="428" text-anchor="middle" font-size="22" fill="#00838f" font-weight="bold">kart → ESP32</text>
+<polyline points="350,500 888,500" fill="none" stroke="#00838f" stroke-width="6" stroke-linejoin="round"/>
+<text x="620" y="488" text-anchor="middle" font-size="22" fill="#00838f" font-weight="bold">ESP32 → kart</text>
+<polyline points="350,560 888,560" fill="none" stroke="#00838f" stroke-width="6" stroke-linejoin="round"/>
+<text x="620" y="548" text-anchor="middle" font-size="22" fill="#00838f" font-weight="bold">kart seçimi</text>
+<rect x="50" y="756" width="1300" height="146" rx="8" fill="#fdf1e6"/>
+<text x="700" y="792" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">VCC için modülünün türüne göre YALNIZ BİRİNİ bağla (aşağıdaki tablo).</text>
+<text x="700" y="832" text-anchor="middle" font-size="25" fill="#7a3d00" font-weight="bold">İkisini birden bağlama.</text>
+<text x="700" y="872" text-anchor="middle" font-size="25" fill="#7a3d00">BMP280 Föy 3'teki gibi I2C hattında kalır (GPIO21 / GPIO22).</text>
+</svg>

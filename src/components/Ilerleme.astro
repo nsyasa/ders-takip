@@ -1,0 +1,12 @@
+---
+interface Props {
+  etiket: string;
+  metin?: string;
+}
+const { etiket, metin = '' } = Astro.props;
+---
+
+<div class="ilerleme" role="progressbar" aria-label={etiket} aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-ilerleme-cubuk>
+  <span class="ilerleme-dolgu"></span>
+</div>
+{metin && <p class="ilerleme-metni" data-ilerleme-metin>{metin}</p>}

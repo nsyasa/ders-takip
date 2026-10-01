@@ -1,0 +1,20 @@
+{
+  "kod": "esp32",
+  "ad": "ESP32 Robot Kulübü",
+  "altbaslik": "IoT ve Sensör Uygulamaları",
+  "aciklama": "Arduino temeli olan ortaokul ve lise öğrencileri için ESP32 ile sensör, veri kaydı, web paneli ve kablosuz haberleşme. 13 föy (Föy 0–12).",
+  "renk": "#1F6FB2",
+  "ikon": "🤖",
+  "sira": 1,
+  "durum": "hazir",
+  "foySayisi": 13,
+  "toplamSureDk": 1160,
+  "genelSayfalar": [
+    "kitap-hakkinda",
+    "kit-ve-surum",
+    "malzemelerimizi-taniyalim",
+    "rutin-kartlari",
+    "ogrenme-zinciri",
+    "yz-kullanimi"
+  ]
+}

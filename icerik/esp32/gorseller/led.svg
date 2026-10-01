@@ -1,0 +1,29 @@
+<svg viewBox="0 0 1400 640" xmlns="http://www.w3.org/2000/svg" width="1400" height="640" font-family="DejaVu Sans, Verdana, Arial, sans-serif"><rect width="1400" height="640" fill="white"/>
+<text x="700" y="45" text-anchor="middle" font-size="38" font-weight="bold" fill="#16324f">Etkinlik 3 devresi: GPIO33 → 330 Ω → LED → GND</text>
+<rect x="60" y="120" width="260" height="400" rx="16" fill="#1b2631"/><text x="190" y="170" text-anchor="middle" font-size="32" font-weight="bold" fill="white">ESP32</text>
+<rect x="300" y="215" width="40" height="30" fill="#1f6fb2"/><text x="285" y="238" text-anchor="end" font-size="28" fill="white" font-weight="bold">GPIO33</text>
+<rect x="300" y="425" width="40" height="30" fill="#222"/><text x="285" y="448" text-anchor="end" font-size="28" fill="white" font-weight="bold">GND</text>
+<line x1="340" y1="230" x2="470" y2="230" stroke="#1f6fb2" stroke-width="6"/>
+<polyline points="470,230 490,205 520,255 550,205 580,255 610,205 640,255 660,230" fill="none" stroke="#333" stroke-width="5"/>
+<text x="565" y="185" text-anchor="middle" font-size="30" font-weight="bold" fill="#333">330 Ω</text>
+<line x1="660" y1="230" x2="820" y2="230" stroke="#1f6fb2" stroke-width="6"/>
+<line x1="820" y1="230" x2="820" y2="290" stroke="#1f6fb2" stroke-width="6"/>
+<polygon points="780,290 860,290 820,350" fill="#e53935" stroke="#333" stroke-width="4"/>
+<line x1="775" y1="352" x2="865" y2="352" stroke="#333" stroke-width="6"/>
+<line x1="870" y1="300" x2="905" y2="275" stroke="#e53935" stroke-width="4"/><line x1="880" y1="325" x2="915" y2="300" stroke="#e53935" stroke-width="4"/>
+<text x="760" y="310" text-anchor="end" font-size="25" fill="#333">anot (+) uzun bacak</text>
+<text x="760" y="375" text-anchor="end" font-size="25" fill="#333">katot (−) kısa bacak</text>
+<line x1="820" y1="352" x2="820" y2="440" stroke="#222" stroke-width="6"/>
+<line x1="820" y1="440" x2="340" y2="440" stroke="#222" stroke-width="6"/>
+<rect x="1030" y="150" width="280" height="370" rx="22" fill="#f2c230" stroke="#8a6d1f" stroke-width="4"/>
+<rect x="1065" y="185" width="210" height="90" rx="8" fill="#cfe3c8"/><text x="1170" y="248" text-anchor="middle" font-size="55" font-family="DejaVu Sans Mono" fill="#1b2631">?.??</text>
+<text x="1170" y="330" text-anchor="middle" font-size="32" font-weight="bold" fill="#333">DC V ayarı</text>
+<circle cx="1110" cy="440" r="20" fill="#c62828"/><text x="1110" y="490" text-anchor="middle" font-size="25" fill="#333">V</text>
+<circle cx="1230" cy="440" r="20" fill="#222"/><text x="1275" y="490" text-anchor="middle" font-size="25" fill="#333">COM</text>
+<path d="M1110,440 C1000,440 980,120 400,120 L400,225" fill="none" stroke="#c62828" stroke-width="4" stroke-dasharray="12,8"/>
+<circle cx="400" cy="230" r="9" fill="#c62828"/>
+<path d="M1230,440 C1230,600 500,600 400,450" fill="none" stroke="#222" stroke-width="4" stroke-dasharray="12,8"/>
+<circle cx="400" cy="440" r="9" fill="#222"/>
+<text x="700" y="110" text-anchor="middle" font-size="25" fill="#c62828">kırmızı prob → GPIO33 hattı</text>
+<text x="700" y="625" text-anchor="middle" font-size="25" fill="#222">siyah prob → GND</text>
+</svg>

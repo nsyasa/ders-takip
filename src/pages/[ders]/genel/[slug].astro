@@ -1,0 +1,41 @@
+---
+import { render } from 'astro:content';
+import Taban from '../../../layouts/Taban.astro';
+import { tumDersler, dersGenel, yol, type Ders, type Genel } from '../../../lib/veri';
+
+export async function getStaticPaths() {
+  const dersler = (await tumDersler()).filter((d) => d.data.durum === 'hazir');
+  const sonuc: { params: { ders: string; slug: string }; props: { ders: Ders; sayfa: Genel } }[] = [];
+  for (const ders of dersler) {
+    const sayfalar = await dersGenel(ders);
+    for (const sayfa of sayfalar) {
+      sonuc.push({ params: { ders: ders.id, slug: sayfa.data.slug }, props: { ders, sayfa } });
+    }
+  }
+  return sonuc;
+}
+
+const { ders, sayfa } = Astro.props;
+const { Content } = await render(sayfa);
+---
+
+<Taban baslik={sayfa.data.baslik} aciklama={`${ders.data.ad}: ${sayfa.data.baslik}`}>
+  <div class="kap dar" style={`--renk:${ders.data.renk}`}>
+    <nav class="ekmek" aria-label="Sayfa yolu">
+      <ol>
+        <li><a href={yol('/')}>Derslerim</a></li>
+        <li><a href={yol(`/${ders.id}/`)}>{ders.data.ad}</a></li>
+        <li aria-current="page">{sayfa.data.baslik}</li>
+      </ol>
+    </nav>
+    <article data-pagefind-body>
+      <h1 data-pagefind-meta="title">{sayfa.data.baslik}</h1>
+      <Content />
+    </article>
+    <p><a href={yol(`/${ders.id}/`)}>← {ders.data.ad} sayfasına dön</a></p>
+  </div>
+</Taban>
+
+<script>
+  import '../../../scripts/icerik';
+</script>

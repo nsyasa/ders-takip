@@ -1,0 +1,114 @@
+---
+import Taban from '../layouts/Taban.astro';
+---
+
+<Taban baslik="Verilerim" aktif="verilerim" aciklama="İlerlemeni ve yazdıklarını yedekle ya da başka cihaza taşı.">
+  <div class="kap dar">
+    <h1>Verilerim</h1>
+    <p>
+      İlerlemen ve yazdıkların <strong>yalnız bu cihazın tarayıcısında</strong> saklanır. Hesap, sunucu ya da internet
+      üzerinde bir kopya yoktur. Bu yüzden başka bir cihazda (örneğin evdeki bilgisayarda) kaldığın yerden devam etmek
+      için yedeğini kendin taşırsın: <strong>burada indir, diğer cihazda yükle.</strong>
+    </p>
+
+    <section class="panel" aria-labelledby="v-ozet">
+      <h2 id="v-ozet">Bu cihazda kayıtlı olanlar</h2>
+      <p data-ozet>Yükleniyor…</p>
+    </section>
+
+    <section class="panel" aria-labelledby="v-disa">
+      <h2 id="v-disa">1. Yedeğini indir (dışa aktar)</h2>
+      <p>İşaretlediğin adımlar ve yazdığın cevaplar tek bir dosyaya (JSON) kaydedilir.</p>
+      <div class="satir-dugmeler">
+        <button type="button" class="dugme dugme-vurgu" data-disa>Yedeği indir</button>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="v-ice">
+      <h2 id="v-ice">2. Yedeğini yükle (içe aktar)</h2>
+      <p>
+        Daha önce indirdiğin dosyayı seç. <strong>Bu cihazdaki mevcut kayıtların yerine geçer.</strong>
+      </p>
+      <div class="satir-dugmeler">
+        <label for="v-dosya" class="gorunmez">Yedek dosyası (.json)</label>
+        <input id="v-dosya" type="file" accept=".json,application/json" data-dosya />
+        <button type="button" class="dugme dugme-vurgu" data-ice disabled>Yükle</button>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="v-sil">
+      <h2 id="v-sil">Kayıtları sil</h2>
+      <p>Okuldaki ortak bir bilgisayardaysan işin bitince önce yedeğini indir, sonra bu cihazdaki kayıtları sil.</p>
+      <div class="satir-dugmeler">
+        <button type="button" class="dugme dugme-tehlike" data-sil>Bu cihazdaki kayıtları sil</button>
+      </div>
+    </section>
+
+    <p class="durum-iletisi" role="status" aria-live="polite" data-mesaj></p>
+  </div>
+</Taban>
+
+<script>
+  import { oku, disaAktar, iceAktar, hepsiniSil, depoKullanilabilir, DEGISTI } from '../lib/depo';
+
+  const mesaj = document.querySelector<HTMLElement>('[data-mesaj]')!;
+  const ozet = document.querySelector<HTMLElement>('[data-ozet]')!;
+  const dosya = document.querySelector<HTMLInputElement>('[data-dosya]')!;
+  const iceDugme = document.querySelector<HTMLButtonElement>('[data-ice]')!;
+
+  function ozetiYaz(): void {
+    if (!depoKullanilabilir()) {
+      ozet.textContent = 'Bu tarayıcı kayıt tutmaya izin vermiyor (gizli sekme olabilir).';
+      return;
+    }
+    const d = oku();
+    const foyler = new Set([...Object.keys(d.adimlar), ...Object.keys(d.yazilar)]);
+    const adim = Object.values(d.adimlar).reduce((t, l) => t + l.length, 0);
+    const yazi = Object.values(d.yazilar).reduce((t, f) => t + Object.keys(f).length, 0);
+    ozet.textContent =
+      foyler.size === 0
+        ? 'Henüz kayıt yok.'
+        : `${foyler.size} föyde ${adim} adım işaretli, ${yazi} yazma alanı dolu.`;
+  }
+  ozetiYaz();
+  window.addEventListener(DEGISTI, ozetiYaz);
+
+  document.querySelector('[data-disa]')!.addEventListener('click', () => {
+    const blob = new Blob([disaAktar()], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `ders-takip-yedek-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    mesaj.textContent = 'Yedek dosyası indirildi. Onu güvenli bir yerde sakla.';
+  });
+
+  dosya.addEventListener('change', () => {
+    iceDugme.disabled = !dosya.files?.length;
+  });
+
+  iceDugme.addEventListener('click', async () => {
+    const f = dosya.files?.[0];
+    if (!f) return;
+    if (f.size > 5_000_000) {
+      mesaj.textContent = 'Dosya çok büyük; bu bir Ders Takip yedeği olamaz.';
+      return;
+    }
+    const varMi = Object.keys(oku().adimlar).length + Object.keys(oku().yazilar).length > 0;
+    if (varMi && !confirm('Bu cihazdaki mevcut kayıtların yerine yedekteki kayıtlar geçecek. Devam edilsin mi?')) return;
+    const sonuc = iceAktar(await f.text());
+    mesaj.textContent = sonuc.ok ? 'Yedek yüklendi. Kaldığın yerden devam edebilirsin.' : sonuc.hata;
+    if (sonuc.ok) {
+      dosya.value = '';
+      iceDugme.disabled = true;
+    }
+  });
+
+  document.querySelector('[data-sil]')!.addEventListener('click', () => {
+    if (!confirm('Bu cihazdaki bütün ilerleme ve yazdıkların silinecek. Bu geri alınamaz. Emin misin?')) return;
+    hepsiniSil();
+    mesaj.textContent = 'Bu cihazdaki kayıtlar silindi.';
+  });
+</script>

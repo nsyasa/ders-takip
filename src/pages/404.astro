@@ -1,0 +1,12 @@
+---
+import Taban from '../layouts/Taban.astro';
+import { yol } from '../lib/veri';
+---
+
+<Taban baslik="Sayfa bulunamadı">
+  <div class="kap dar">
+    <h1>Sayfa bulunamadı</h1>
+    <p>Aradığın sayfa yok ya da taşınmış olabilir.</p>
+    <p><a class="dugme dugme-vurgu" href={yol('/')}>Derslerime dön</a></p>
+  </div>
+</Taban>

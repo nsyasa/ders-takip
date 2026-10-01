@@ -1,0 +1,127 @@
+---
+import Taban from '../layouts/Taban.astro';
+import { yol } from '../lib/veri';
+---
+
+<Taban baslik="Ara" aktif="ara" aciklama="Föylerde ve genel sayfalarda ara.">
+  <div class="kap dar" data-ara-kok data-taban={yol('/')}>
+    <h1>Ara</h1>
+    <form class="arama-alani" role="search" data-ara-form>
+      <label class="gorunmez" for="ara-q">Föylerde ve genel sayfalarda ara</label>
+      <input id="ara-q" type="search" name="q" autocomplete="off" enterkeyhint="search" placeholder="Örn. servo, buton, I2C" />
+      <button class="dugme dugme-vurgu" type="submit">Ara</button>
+    </form>
+    <p class="durum-iletisi" role="status" aria-live="polite" data-ara-durum></p>
+    <ul class="arama-sonuc" data-ara-sonuc></ul>
+    <noscript><p>Arama için JavaScript gerekir. Föyleri ders sayfasından açabilirsin.</p></noscript>
+  </div>
+</Taban>
+
+<script>
+  // Pagefind dizini derleme sonunda üretilir; yalnız bu sayfada, ilk aramada yüklenir.
+  const kok = document.querySelector<HTMLElement>('[data-ara-kok]')!;
+  const form = kok.querySelector<HTMLFormElement>('[data-ara-form]')!;
+  const girdi = form.querySelector<HTMLInputElement>('input')!;
+  const durum = kok.querySelector<HTMLElement>('[data-ara-durum]')!;
+  const liste = kok.querySelector<HTMLElement>('[data-ara-sonuc]')!;
+  const taban = kok.dataset.taban ?? '/';
+  const oneki = taban === '/' ? '' : taban.replace(/\/$/, '');
+
+  interface Alt {
+    title: string;
+    url: string;
+    excerpt: string;
+  }
+  interface Veri {
+    url: string;
+    excerpt: string;
+    meta: { title?: string };
+    sub_results?: Alt[];
+  }
+  interface Pagefind {
+    init?: () => Promise<void>;
+    search: (q: string) => Promise<{ results: { data: () => Promise<Veri> }[] }>;
+  }
+
+  // Pagefind dosyası derleme sonunda üretilir; Vite'ın bilmediği bir adres olduğu için
+  // import() çağrısı Vite'a gösterilmez (Vite onu, satır içi betikte tanımsız kalan bir
+  // "preload" yardımcısıyla sarıyor).
+  const dinamikImport = new Function('adres', 'return import(adres)') as (adres: string) => Promise<Pagefind>;
+
+  let pf: Pagefind | null | undefined;
+  async function pagefindYukle(): Promise<Pagefind | null> {
+    if (pf !== undefined) return pf;
+    try {
+      pf = await dinamikImport(`${location.origin}${taban}pagefind/pagefind.js`);
+      await pf.init?.();
+    } catch {
+      pf = null;
+    }
+    return pf;
+  }
+
+  const adres = (u: string) => oneki + u;
+
+  async function ara(q: string): Promise<void> {
+    const sorgu = q.trim();
+    liste.replaceChildren();
+    if (sorgu.length < 2) {
+      durum.textContent = sorgu ? 'En az 2 harf yaz.' : '';
+      return;
+    }
+    durum.textContent = 'Aranıyor…';
+    const motor = await pagefindYukle();
+    if (!motor) {
+      durum.textContent =
+        'Arama dizini bulunamadı. Arama yalnız derlenmiş sitede çalışır (npm run build, sonra npm run preview).';
+      return;
+    }
+    const sonuc = await motor.search(sorgu);
+    const veriler = await Promise.all(sonuc.results.slice(0, 15).map((r) => r.data()));
+    durum.textContent = veriler.length ? `${sonuc.results.length} sonuç bulundu.` : 'Sonuç bulunamadı. Başka bir sözcük dene.';
+    for (const v of veriler) {
+      const li = document.createElement('li');
+      const h = document.createElement('h3');
+      const a = document.createElement('a');
+      a.href = adres(v.url);
+      a.textContent = v.meta.title ?? v.url;
+      h.append(a);
+      const p = document.createElement('p');
+      p.innerHTML = v.excerpt; // Pagefind kaynak metni kaçışlayıp yalnız <mark> ekler; içerik bize ait.
+      li.append(h, p);
+      const altlar = (v.sub_results ?? []).filter((s) => s.url.includes('#')).slice(0, 3);
+      if (altlar.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'arama-alt';
+        for (const s of altlar) {
+          const ali = document.createElement('li');
+          const aa = document.createElement('a');
+          aa.href = adres(s.url);
+          aa.textContent = s.title;
+          ali.append(aa);
+          ul.append(ali);
+        }
+        li.append(ul);
+      }
+      liste.append(li);
+    }
+  }
+
+  let zaman = 0;
+  girdi.addEventListener('input', () => {
+    clearTimeout(zaman);
+    zaman = window.setTimeout(() => ara(girdi.value), 300);
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = girdi.value.trim();
+    history.replaceState(null, '', q ? `?q=${encodeURIComponent(q)}` : location.pathname);
+    ara(q);
+  });
+
+  const ilk = new URLSearchParams(location.search).get('q');
+  if (ilk) {
+    girdi.value = ilk;
+    ara(ilk);
+  }
+</script>

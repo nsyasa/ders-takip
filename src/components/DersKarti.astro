@@ -1,0 +1,40 @@
+---
+import type { Ders, Foy } from '../lib/veri';
+import { sureMetni, yol, foyKimligi } from '../lib/veri';
+import Ilerleme from './Ilerleme.astro';
+
+interface Props {
+  ders: Ders;
+  foyler: Foy[];
+}
+const { ders, foyler } = Astro.props;
+const d = ders.data;
+const hazir = d.durum === 'hazir';
+const toplamDk = foyler.reduce((t, f) => t + f.data.sureDk, 0);
+// Her föyün onay kutusu sayısı: ilerleme çubuğu bunlarla hesaplanır.
+const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(f), f.data.adimSayisi])));
+---
+
+<li
+  class:list={['ders-karti', { yakinda: !hazir }]}
+  style={`--renk:${d.renk}`}
+  data-ders-ilerleme={hazir ? ders.id : undefined}
+  data-adimlar={hazir ? adimlar : undefined}
+>
+  <span class="ders-ikon" aria-hidden="true">{d.ikon}</span>
+  <h2>
+    {hazir ? <a href={yol(`/${ders.id}/`)}>{d.ad}</a> : d.ad}
+  </h2>
+  <p class="ders-alt">{hazir ? d.altbaslik : <span class="rozet rozet-yakinda">Yakında</span>}</p>
+  <p class="ders-aciklama">{d.aciklama}</p>
+  {
+    hazir ? (
+      <>
+        <p class="ders-meta">
+          {foyler.length} föy · yaklaşık {sureMetni(toplamDk)}
+        </p>
+        <Ilerleme etiket={`${d.ad} ilerlemesi`} metin={`0 / ${foyler.length} föy bitti`} />
+      </>
+    ) : null
+  }
+</li>

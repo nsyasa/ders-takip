@@ -1,0 +1,33 @@
+{
+  "name": "ders-takip",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Öğrenciler için reklamsız, mobil öncelikli, tamamen statik ders takip sitesi.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "dogrula": "node scripts/dogrula.mjs",
+    "check": "astro check",
+    "build": "node scripts/dogrula.mjs && astro build && pagefind --site dist",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "~7.2.0",
+    "astro": "~6.4.8",
+    "fflate": "^0.8.3",
+    "github-slugger": "^2.0.0",
+    "remark-directive": "^4.0.0",
+    "shiki": "^4.5.0",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^22.20.4",
+    "js-yaml": "^5.4.2",
+    "pagefind": "^1.5.2",
+    "typescript": "^6.0.3"
+  }
+}
