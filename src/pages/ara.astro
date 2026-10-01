@@ -60,7 +60,9 @@ import { yol } from '../lib/veri';
     return pf;
   }
 
-  const adres = (u: string) => oneki + u;
+  // Pagefind, kendi dosyasının yüklendiği adresten alt yolu çıkarıp sonuç adresine ekler;
+  // yalnız eklenmemişse önek koy.
+  const adres = (u: string) => (oneki && !u.startsWith(`${oneki}/`) ? oneki + u : u);
 
   async function ara(q: string): Promise<void> {
     const sorgu = q.trim();
