@@ -1,13 +1,11 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
 import Taban from '../../layouts/Taban.astro';
 import FoySatiri from '../../components/FoySatiri.astro';
 import ProjeKarti from '../../components/ProjeKarti.astro';
 import Ilerleme from '../../components/Ilerleme.astro';
 import LedPanel from '../../components/LedPanel.astro';
-import { tumDersler, dersFoyleri, dersGenel, foyKimligi, sureMetni, yol, sozluk, sevimliMi, uniteGrupla } from '../../lib/veri';
-import { rasterBoyutu } from '../../lib/gorsel-boyut.mjs';
+import { tumDersler, dersFoyleri, dersGenel, foyKimligi, foyYolu, sureMetni, yol, sozluk, sevimliMi, uniteGrupla } from '../../lib/veri';
+import { kapakBilgisi } from '../../lib/kapak';
 
 export async function getStaticPaths() {
   const dersler = (await tumDersler()).filter((d) => d.data.durum === 'hazir');
@@ -29,16 +27,10 @@ const adimlar = adimHaritasi(foyler);
 const gruplar = uniteGrupla(ders, foyler);
 const iki = (n: number) => String(n).padStart(2, '0');
 
-// Kapak çizimi (sevimli): kaymasın diye en-boy oranı dosyadan okunur
-const kapakDosya = d.kapak ? `${d.kapak}.webp` : '';
-let kapakBoyut: { w: number; h: number } | null = null;
-if (kapakDosya) {
-  try {
-    kapakBoyut = rasterBoyutu(fs.readFileSync(path.join(process.cwd(), 'icerik', ders.id, 'gorseller', kapakDosya)));
-  } catch {
-    kapakBoyut = null;
-  }
-}
+// Kapak çizimleri (sevimli): kaymasın diye en-boy oranı dosyadan okunur
+const kapak = sevimli ? kapakBilgisi(ders.id, d.kapak) : null;
+const kapak2 = sevimli ? kapakBilgisi(ders.id, d.kapak2) : null;
+const ilkFoy = foyler[0];
 ---
 
 <Taban baslik={d.ad} aciklama={d.aciklama} tema={d.tema}>
@@ -65,13 +57,15 @@ if (kapakDosya) {
               </ol>
             )}
           </div>
-          {kapakDosya && (
+          {kapak && (
             <img
               class="kahraman-resim"
-              src={yol(`/${ders.id}/gorseller/${kapakDosya}`)}
+              src={kapak.src}
+              srcset={kapak.srcset}
+              sizes="(min-width: 52rem) 480px, calc(100vw - 2.5rem)"
               alt={d.kapakAlt}
-              width={kapakBoyut?.w}
-              height={kapakBoyut?.h}
+              width={kapak.width}
+              height={kapak.height}
               decoding="async"
               fetchpriority="high"
             />
@@ -138,6 +132,29 @@ if (kapakDosya) {
             ))}
           </ol>
         </section>
+      )
+    }
+
+    {
+      sevimli && kapak2 && ilkFoy && (
+        <aside class="kapanis" aria-label="Başla">
+          <img
+            class="kapanis-resim"
+            src={kapak2.src}
+            srcset={kapak2.srcset}
+            sizes="(min-width: 52rem) 420px, calc(100vw - 2.5rem)"
+            alt={d.kapak2Alt}
+            width={kapak2.width}
+            height={kapak2.height}
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="kapanis-yazi">
+            {d.slogan && <p class="kapanis-slogan">{d.slogan}</p>}
+            <p>Bak, tahmin et, kodla, dene, anlat, değiştir. Küçük bir fikirle başla.</p>
+            <a class="dugme dugme-sari" href={foyYolu(ilkFoy)}>İlk projeyi aç →</a>
+          </div>
+        </aside>
       )
     }
 

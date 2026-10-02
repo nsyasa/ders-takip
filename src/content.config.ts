@@ -31,6 +31,10 @@ const dersler = defineCollection({
     /** gorseller/<kapak>.webp: ders kartı ve ders sayfası başlığındaki çizim */
     kapak: z.string().default(''),
     kapakAlt: z.string().default(''),
+    /** Ders sayfasının sonundaki "başla" şeridi: ikinci çizim (gorseller/<kapak2>.webp) ve sloganı */
+    kapak2: z.string().default(''),
+    kapak2Alt: z.string().default(''),
+    slogan: z.string().default(''),
     etiketler: z.array(z.string()).default([]),
     /** Föy/proje sayfasının üstündeki adım yolu (ör. Bak, Tahmin et, Kodla…): her adım bir onay kutusudur */
     adimEtiketleri: z.array(z.object({ ad: z.string(), aciklama: z.string().default('') })).default([]),

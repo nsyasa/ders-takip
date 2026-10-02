@@ -66,8 +66,9 @@ const RASTER = {
 };
 // Kapak çizimleri (kitabın kapak/arka kapak resimlerinden kesilir; ders kartı ve ders sayfası başlığında kullanılır)
 const KAPAKLAR = [
-  { kaynak: 'cover-final-45-projects.png', ad: 'kapak.webp', kes: { left: 0, top: 590, width: 1055, height: 700 }, genislik: 1000, kalite: 80 },
-  { kaynak: 'back-cover-editorial-corrected.png', ad: 'kapak-ogrenciler.webp', kes: { left: 0, top: 250, width: 1024, height: 780 }, genislik: 960, kalite: 78 },
+  // kucuk: dar ekranlar için ikinci boyut (srcset); sayfalar dosya adı kuralıyla bulur: <ad>-kucuk.webp
+  { kaynak: 'cover-final-45-projects.png', ad: 'kapak.webp', kes: { left: 0, top: 590, width: 1055, height: 700 }, genislik: 1000, kalite: 80, kucuk: 760 },
+  { kaynak: 'back-cover-editorial-corrected.png', ad: 'kapak-ogrenciler.webp', kes: { left: 0, top: 250, width: 1024, height: 780 }, genislik: 960, kalite: 78, kucuk: 600 },
 ];
 
 const rapor = { uyari: [], bilgi: [] };
@@ -334,8 +335,13 @@ function blokla(n, ctx, out) {
       for (const sec of cs) {
         const kapsa = [];
         yurut(cocuklar(sec), ctx, kapsa);
-        // bölüm başlığı bu sayfa türünde bir alt başlıktır
-        for (const b of kapsa) out.push(b.tur === 'baslik' ? { ...b, tur: 'altbaslik' } : b);
+        // bölüm başlığı bu sayfa türünde bir alt başlıktır; kart rehberindeki maddeler kendi (görseldeki) numaralarını taşır,
+        // otomatik 1., 2., 3. numaralar onlarla karışmasın diye madde işaretli liste olur
+        for (const b of kapsa) {
+          if (b.tur === 'baslik') out.push({ ...b, tur: 'altbaslik' });
+          else if (b.tur === 'liste' && s('board-guide')) out.push({ ...b, sirali: false });
+          else out.push(b);
+        }
       }
       return;
     }
@@ -650,6 +656,10 @@ const dersJson = {
   tema: 'sevimli',
   kapak: 'kapak',
   kapakAlt: 'Çocuk, kedi, MakeCode blokları ve ekranında bir ışık yanan micro:bit olan renkli sınıf çizimi',
+  // Arka kapak: ders sayfasının sonundaki "Başla" şeridi
+  slogan: 'Bir fikrin var mı? Onu çalıştır.',
+  kapak2: 'kapak-ogrenciler',
+  kapak2Alt: 'İki öğrencinin sınıf masasında 5 × 5 LED ekranlı micro:bit V2 kartını incelediği metinsiz illüstrasyon',
   etiketler: ['5. sınıf', '10–11 yaş'],
   adimEtiketleri: ADIMLAR,
   uniteler: UNITELER,
@@ -696,6 +706,11 @@ async function gorselleriUret() {
     const arabellek = await sharp(path.join(VARLIKLAR, k.kaynak)).extract(k.kes).resize({ width: k.genislik }).webp({ quality: k.kalite, effort: 5 }).toBuffer();
     yaz(k.ad, arabellek);
     rapor.bilgi.push(`${k.ad}: ${(arabellek.length / 1024).toFixed(0)} KB`);
+    if (k.kucuk) {
+      const kucuk = await sharp(path.join(VARLIKLAR, k.kaynak)).extract(k.kes).resize({ width: k.kucuk }).webp({ quality: k.kalite - 4, effort: 5 }).toBuffer();
+      yaz(k.ad.replace('.webp', '-kucuk.webp'), kucuk);
+      rapor.bilgi.push(`${k.ad.replace('.webp', '-kucuk.webp')}: ${(kucuk.length / 1024).toFixed(0)} KB`);
+    }
   }
   rapor.bilgi.push(`SVG toplamı: ${(svgToplam / 1024).toFixed(0)} KB (${[...gerekenGorseller].filter((g) => g.endsWith('.svg')).length} dosya)`);
 }

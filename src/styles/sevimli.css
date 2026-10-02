@@ -91,6 +91,10 @@ body.sevimli {
 }
 
 /* ── Genel ────────────────────────────────────────────────────────────────── */
+/* "text-wrap: pretty" uzun metinlerde yerleşimi pahalılaştırır; kısa çocuk sayfalarında gerekmez */
+.sevimli p {
+  text-wrap: wrap;
+}
 .sevimli h1,
 .sevimli h2,
 .sevimli h3 {
@@ -560,6 +564,43 @@ body.sevimli {
 }
 .sevimli .rozet {
   font-size: 0.74rem;
+}
+
+/* Ders sayfasının sonu: "Başla" şeridi (arka kapak çizimi) */
+.kapanis {
+  display: grid;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0 1rem;
+  padding: 1rem;
+  border: 3px solid var(--yazi);
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--sari) 24%, var(--yuzey-2));
+  box-shadow: 5px 5px 0 var(--golge);
+}
+.kapanis-resim {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 2.5px solid var(--yazi);
+  border-radius: 16px;
+}
+.kapanis-slogan {
+  margin: 0 0 0.3rem;
+  font-family: var(--f-baslik);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.kapanis-yazi p {
+  margin: 0.3rem 0 1rem;
+}
+@media (min-width: 52rem) {
+  .kapanis {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 1.2rem 1.5rem;
+  }
 }
 
 /* ── Proje sayfası: başlık ────────────────────────────────────────────────── */
@@ -1151,11 +1192,38 @@ body.sevimli {
   font-family: var(--f-govde);
   font-size: 0.85rem;
 }
+/* Kutular (bilgi, dikkat …): yuvarlak, kalın çizgili, türüne göre renk tonu */
 .sevimli .kutu {
-  border-radius: 0 14px 14px 0;
+  --k: var(--vurgu);
+  margin: 1.4rem 0;
+  padding: 0.7rem 1rem 0.8rem;
+  border: 2.5px solid var(--yazi);
+  border-left: 8px solid var(--k);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--k) 10%, var(--yuzey-2));
+}
+.sevimli .kutu-dikkat {
+  --k: var(--k-dikkat);
+}
+.sevimli .kutu-fen {
+  --k: var(--k-fen);
+}
+.sevimli .kutu-rutin {
+  --k: var(--k-rutin);
+}
+.sevimli .kutu-yz {
+  --k: var(--k-yz);
 }
 .sevimli .kutu-baslik {
   font-family: var(--f-baslik);
+}
+.sevimli .kutu-tur {
+  padding: 0.05rem 0.55rem;
+  border-radius: 999px;
+  background: var(--k);
+  color: var(--zemin);
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
 }
 
 /* ── Genel sayfalar ───────────────────────────────────────────────────────── */

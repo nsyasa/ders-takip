@@ -1,9 +1,7 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
 import type { Ders, Foy } from '../lib/veri';
 import { sureMetni, yol, foyKimligi, sozluk, sevimliMi } from '../lib/veri';
-import { rasterBoyutu } from '../lib/gorsel-boyut.mjs';
+import { kapakBilgisi } from '../lib/kapak';
 import Ilerleme from './Ilerleme.astro';
 import LedPanel from './LedPanel.astro';
 
@@ -21,16 +19,7 @@ const toplamDk = foyler.reduce((t, f) => t + f.data.sureDk, 0);
 const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(f), f.data.adimSayisi])));
 
 // Kapak çizimi (yalnız "sevimli" ders kartı): en-boy oranı korunur, sayfa yüklenirken kaymaz.
-const kapakDosya = d.kapak ? `${d.kapak}.webp` : '';
-const kapakYolu = kapakDosya ? yol(`/${ders.id}/gorseller/${kapakDosya}`) : '';
-let kapakBoyut: { w: number; h: number } | null = null;
-if (kapakDosya) {
-  try {
-    kapakBoyut = rasterBoyutu(fs.readFileSync(path.join(process.cwd(), 'icerik', ders.id, 'gorseller', kapakDosya)));
-  } catch {
-    kapakBoyut = null;
-  }
-}
+const kapak = sevimli ? kapakBilgisi(ders.id, d.kapak) : null;
 ---
 
 <li
@@ -43,13 +32,16 @@ if (kapakDosya) {
   {
     sevimli ? (
       <>
-        {kapakYolu && (
+        {kapak && (
           <img
             class="kart-resim"
-            src={kapakYolu}
+            src={kapak.src}
+            srcset={kapak.srcset}
+            sizes="(min-width: 70rem) 984px, calc(100vw - 2.5rem)"
             alt={d.kapakAlt}
-            width={kapakBoyut?.w}
-            height={kapakBoyut?.h}
+            width={kapak.width}
+            height={kapak.height}
+            loading="lazy"
             decoding="async"
           />
         )}
