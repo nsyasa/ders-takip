@@ -1073,6 +1073,21 @@ input[type='file']::file-selector-button:hover {
 .ders-karti-resimli.yakinda .kart-resim {
   filter: saturate(0.55);
 }
+/* "Yakında" kartı içeriği kadar uzar (yanındaki kartlar uzunsa altında boş beyaz alan kalmasın) */
+.ders-karti-resimli.yakinda {
+  align-self: start;
+}
+/* Dar kartta (üç sütunlu görünüm) ilerleme göstergesi ile yazısı alt alta */
+.ders-karti-resimli {
+  container-type: inline-size;
+}
+@container (max-width: 24rem) {
+  .ders-karti-resimli .kart-ilerleme {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+}
 .ders-karti-resimli .kart-govde {
   display: flex;
   flex-direction: column;
@@ -1098,6 +1113,7 @@ input[type='file']::file-selector-button:hover {
 }
 .kart-cubuk {
   flex: 1;
+  width: 100%; /* ilerleme çizgisi kartın tam genişliğini alsın */
 }
 .kart-cubuk .ders-meta {
   margin: 0 0 0.5rem;

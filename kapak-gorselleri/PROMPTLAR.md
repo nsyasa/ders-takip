@@ -10,7 +10,7 @@ Görselleri bu klasöre koyun (`esp32.png`, `microbit.png`, `arduino.png`); geri
 | **Oran** | **3:2 yatay** (kartlar 3:2 kutuda gösterilir; kırpma gerekmesin) |
 | **Boyut / çözünürlük** | **1536 × 1024 px** (GPT'nin "yatay" çıktısı). Daha büyükse sorun değil; **1200 px genişliğin altı olmasın** |
 | **Dosya türü** | **PNG** (kayıpsız), sRGB, **şeffaflık yok**. JPG verirseniz kalite %90+ olsun |
-| **Dosya boyutu** | 1–5 MB normaldir. Ben WebP'ye çevirip yaklaşık 70 KB'a (1000 px) ve 45 KB'a (760 px, dar ekranlar için) indiririm |
+| **Dosya boyutu** | 1–5 MB normaldir. Ben WebP'ye çevirip yaklaşık 60–110 KB'a (1000 px) ve 40–60 KB'a (700 px, telefonlar için) indiririm |
 | **Dosya adı** | `esp32.png`, `microbit.png`, `arduino.png` |
 | **Konum** | Bu klasör: `ders-sitesi-icerik\kapak-gorselleri\` (PNG/JPG dosyaları git'e girmez) |
 | **Yazı** | **Hiç yazı, harf, rakam, logo, filigran, imza olmasın.** Başlığı sitede ben yazarım. Ekranlardaki, çiplerdeki, posterlerdeki, defterlerdeki yazılar da yok (soyut şekil olsun) |
@@ -93,4 +93,4 @@ node scripts/kapak-ekle.mjs microbit kapak-gorselleri/microbit.png --alt "…"
 node scripts/kapak-ekle.mjs arduino kapak-gorselleri/arduino.png  --alt "…"
 ```
 
-Her biri 3:2'ye getirir, `icerik/<ders>/gorseller/kapak.webp` (1000 px) ve `kapak-kucuk.webp` (760 px) üretir, `ders.json`'a `kapak` ve alt metni yazar. Alt metinleri görsellere bakarak ben yazarım. Ana sayfa üç kapak kartlı galeriye dönüşür; Arduino kartı "Yakında" rozetiyle görünür.
+Her biri 3:2'ye getirir, `icerik/<ders>/gorseller/kapak.webp` (1000 px) ve `kapak-kucuk.webp` (700 px) üretir, `ders.json`'a `kapak` ve alt metni yazar. Alt metinleri görsellere bakarak ben yazarım. Ana sayfa üç kapak kartlı galeriye dönüşür; Arduino kartı "Yakında" rozetiyle görünür.

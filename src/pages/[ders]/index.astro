@@ -4,6 +4,7 @@ import FoySatiri from '../../components/FoySatiri.astro';
 import ProjeKarti from '../../components/ProjeKarti.astro';
 import Ilerleme from '../../components/Ilerleme.astro';
 import LedPanel from '../../components/LedPanel.astro';
+import Bit from '../../components/Bit.astro';
 import { tumDersler, dersFoyleri, dersGenel, foyKimligi, foyYolu, sureMetni, yol, sozluk, sevimliMi, uniteGrupla } from '../../lib/veri';
 import { kapakBilgisi } from '../../lib/kapak';
 
@@ -49,6 +50,10 @@ const ilkFoy = foyler[0];
             <h1>{d.ad}</h1>
             <p class="ders-alt">{d.altbaslik}</p>
             <p class="kahraman-aciklama">{d.aciklama}</p>
+            <div class="bit-selam">
+              <Bit yuz="mutlu" sinif="bit-selam-resim" />
+              <p>Merhaba, ben Bit! Her projede seninle birlikte kodlayacağım.</p>
+            </div>
             {d.adimEtiketleri.length > 0 && (
               <ol class="adim-yolu" aria-label="Her projede bu altı adımı izlersin">
                 {d.adimEtiketleri.map((a) => (
@@ -58,17 +63,23 @@ const ilkFoy = foyler[0];
             )}
           </div>
           {kapak && (
-            <img
-              class="kahraman-resim"
-              src={kapak.src}
-              srcset={kapak.srcset}
-              sizes="(min-width: 52rem) 480px, calc(100vw - 2.5rem)"
-              alt={d.kapakAlt}
-              width={kapak.width}
-              height={kapak.height}
-              decoding="async"
-              fetchpriority="high"
-            />
+            <div class="kahraman-resim-kap">
+              <img
+                class="kahraman-resim"
+                src={kapak.src}
+                srcset={kapak.srcset}
+                sizes="(min-width: 52rem) 480px, calc(100vw - 2.5rem)"
+                alt={d.kapakAlt}
+                width={kapak.width}
+                height={kapak.height}
+                decoding="async"
+                fetchpriority="high"
+              />
+              <span class="kahraman-etiket" aria-hidden="true">
+                <strong>{foyler.length}</strong>
+                <small>{s.kucuk}</small>
+              </span>
+            </div>
           )}
           <div class="kahraman-ilerleme">
             <LedPanel kimlikler={foyler.map(foyKimligi)} sinif="led-panel-buyuk" />

@@ -3,10 +3,12 @@
   "ad": "Arduino",
   "altbaslik": "Yakında",
   "aciklama": "Bu ders yakında eklenecek.",
-  "renk": "#00838F",
+  "renk": "#C2410C",
   "ikon": "♾️",
   "sira": 3,
   "durum": "yakinda",
   "foySayisi": 0,
-  "toplamSureDk": 0
+  "toplamSureDk": 0,
+  "kapak": "kapak",
+  "kapakAlt": "Gözlüklü, kıvırcık saçlı bir öğrenci breadboard üzerinde ilk devresini kuruyor; kırmızı, sarı ve yeşil LED'ler yanıyor, yanında Arduino kartı, dizüstü bilgisayar ve devre çizimli bir defter var."
 }

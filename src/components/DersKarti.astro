@@ -10,8 +10,10 @@ interface Props {
   foyler: Foy[];
   /** Ana sayfadaki bütün kartlar kapak çizimli mi? Öyleyse resimsiz bir ders de aynı yapıda (resim yeri boş) çizilir. */
   galeri?: boolean;
+  /** Sayfanın ilk kartı: görseli ekranın üstünde olduğu için geç yüklenmez (LCP) */
+  oncelik?: boolean;
 }
-const { ders, foyler, galeri = false } = Astro.props;
+const { ders, foyler, galeri = false, oncelik = false } = Astro.props;
 const d = ders.data;
 const hazir = d.durum === 'hazir';
 const s = sozluk(ders);
@@ -45,7 +47,8 @@ const resimli = Boolean(kapak) || galeri;
               alt={d.kapakAlt}
               width={kapak.width}
               height={kapak.height}
-              loading="lazy"
+              loading={oncelik ? 'eager' : 'lazy'}
+              fetchpriority={oncelik ? 'high' : undefined}
               decoding="async"
             />
           )}

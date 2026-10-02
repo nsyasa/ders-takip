@@ -171,6 +171,11 @@ function dersDenetle(ad) {
   if (!['hazir', 'yakinda'].includes(ders.durum)) hata(dj, `durum "hazir" ya da "yakinda" olmalı: ${ders.durum}`);
   if (ders.birim !== undefined && !['foy', 'proje'].includes(ders.birim)) hata(dj, `birim "foy" ya da "proje" olmalı: ${ders.birim}`);
   if (ders.tema !== undefined && !['okunur', 'sevimli'].includes(ders.tema)) hata(dj, `tema "okunur" ya da "sevimli" olmalı: ${ders.tema}`);
+  // Kapak çizimi ana sayfa kartında kullanılır (Yakında dersler dahil)
+  if (ders.kapak && !fs.existsSync(path.join(klasor, 'gorseller', `${ders.kapak}.webp`))) {
+    hata(dj, `kapak görseli yok: gorseller/${ders.kapak}.webp`);
+  }
+  if (ders.kapak && !ders.kapakAlt) uyari(dj, 'kapakAlt (kapak görselinin alt metni) yok');
   if (ders.durum !== 'hazir') return;
 
   const onek = ders.birim === 'proje' ? 'proje' : 'foy';
@@ -208,9 +213,6 @@ function dersDenetle(ad) {
   // Adım yolu: sayfa şablonundaki onay kutuları
   if (Array.isArray(ders.adimEtiketleri) && ders.adimEtiketleri.some((a) => !a || typeof a.ad !== 'string' || !a.ad)) {
     hata(dj, 'adimEtiketleri {ad, aciklama} listesi olmalı');
-  }
-  if (ders.kapak && !fs.existsSync(path.join(klasor, 'gorseller', `${ders.kapak}.webp`))) {
-    hata(dj, `kapak görseli yok: gorseller/${ders.kapak}.webp`);
   }
 
   // Genel sayfalar

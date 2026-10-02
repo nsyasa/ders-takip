@@ -33,7 +33,7 @@ const galeri = satirlar.some((s) => Boolean(s.ders.data.kapak));
     </section>
 
     <ul class:list={['dersler', { 'dersler-galeri': galeri }]}>
-      {satirlar.map(({ ders, foyler }) => <DersKarti ders={ders} foyler={foyler} galeri={galeri} />)}
+      {satirlar.map(({ ders, foyler }, i) => <DersKarti ders={ders} foyler={foyler} galeri={galeri} oncelik={i === 0} />)}
     </ul>
 
     <p class="bilgi-notu">

@@ -3,7 +3,7 @@
 //   node scripts/kapak-ekle.mjs <ders> <resim.png> [--alt "Görselin alt metni"] [--kuru]
 //   örnek: node scripts/kapak-ekle.mjs esp32 "C:\Users\Enes\Documents\vibe coding\kodlama ogreniyorum\kapak-gorselleri\esp32.png" --alt "Robot kulübünde üç öğrenci…"
 //
-// Çıktı (icerik/<ders>/gorseller/): kapak.webp (1000 px geniş) ve kapak-kucuk.webp (760 px; dar ekranlar için srcset).
+// Çıktı (icerik/<ders>/gorseller/): kapak.webp (1000 px geniş) ve kapak-kucuk.webp (700 px; telefon ekranları için srcset).
 // ders.json'da "kapak": "kapak" yazılır; --alt verilirse "kapakAlt" da yazılır.
 // Kaynak resim değiştirilmez. 3:2'den belirgin sapan görsel ortadan kırpılır (uyarı verir).
 import fs from 'node:fs';
@@ -54,8 +54,9 @@ if (Math.abs(oran - 1.5) > 0.01) {
 
 const hedefKlasor = path.join(dersKlasoru, 'gorseller');
 const uret = async (genislik, kalite) => sharp(resim).extract(kes).resize({ width: genislik, withoutEnlargement: true }).webp({ quality: kalite, effort: 6 }).toBuffer();
-const buyuk = await uret(1000, 80);
-const kucuk = await uret(760, 76);
+// 700 px: Lighthouse'un mobil ölçümünde (412 px ekran, 1,75 oran) kart 651 px ister; bu boyut yetiyor, dosya küçük kalıyor.
+const buyuk = await uret(1000, 74);
+const kucuk = await uret(700, 70);
 console.log(`kapak.webp ${(buyuk.length / 1024).toFixed(0)} KB, kapak-kucuk.webp ${(kucuk.length / 1024).toFixed(0)} KB`);
 
 if (!kuru) {

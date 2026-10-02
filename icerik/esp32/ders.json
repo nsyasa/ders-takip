@@ -16,5 +16,11 @@
     "rutin-kartlari",
     "ogrenme-zinciri",
     "yz-kullanimi"
+  ],
+  "kapak": "kapak",
+  "kapakAlt": "Robot kulübünde üç öğrenci: biri telefondan kontrol ediyor, biri dizüstündeki grafiği gösteriyor; masada ESP32'li tekerlekli bir robot ve havada kablosuz sinyal yayları var.",
+  "etiketler": [
+    "Ortaokul",
+    "Lise"
   ]
 }
