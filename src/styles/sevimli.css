@@ -815,6 +815,31 @@ body.sevimli {
   color: var(--yazi);
 }
 
+/* Önceki / sonraki proje: yapışkan kart gibi */
+.sevimli .foy-gezinme {
+  gap: 0.8rem;
+  border-top: 0;
+}
+.sevimli .foy-gezinme a {
+  padding: 0.8rem 1rem;
+  border: 2.5px solid var(--yazi);
+  border-radius: 16px;
+  background: var(--yuzey-2);
+  box-shadow: 3px 3px 0 var(--golge);
+  font-family: var(--f-baslik);
+  font-weight: 600;
+  text-decoration: none;
+}
+.sevimli .foy-gezinme a:hover {
+  background: var(--sari);
+  color: var(--sari-ustu);
+  text-decoration: none;
+}
+.sevimli .foy-gezinme small {
+  font-family: var(--f-mono);
+  font-weight: 400;
+}
+
 /* Sayfanın sonunda: adımları işaretlemek için yola dön */
 .yol-alt {
   margin: 1.5rem 0 0;
@@ -1175,16 +1200,24 @@ body.sevimli {
 
 /* Görseller: MakeCode blokları ve şemalar */
 .sevimli .gorsel-link {
+  --gz: color-mix(in srgb, var(--yuzey) 55%, var(--yuzey-2));
   border: 2px solid var(--yazi);
   border-radius: 16px;
-  background: color-mix(in srgb, var(--yuzey) 55%, var(--yuzey-2));
+  background: var(--gz);
 }
-/* MakeCode blokları: doğal boyutun en az %78'i korunur (yazı okunsun); dar ekranda kutu yatay kayar */
+/* MakeCode blokları: doğal boyutun en az %72'si korunur (yazı okunsun); dar ekranda kutu yatay kayar.
+   Kayabildiğini göstermek için kenarlarda "kaydırma gölgesi" (yalnız içerik taştığında görünür; JS gerekmez). */
 .sevimli .gorsel-blok {
   overflow-x: auto;
+  background:
+    linear-gradient(90deg, var(--gz) 30%, transparent) 0 50% / 28px 100% no-repeat local,
+    linear-gradient(270deg, var(--gz) 30%, transparent) 100% 50% / 28px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgb(0 0 0 / 0.32), transparent) 0 50% / 12px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgb(0 0 0 / 0.32), transparent) 100% 50% / 12px 100% no-repeat scroll,
+    var(--gz);
 }
 .sevimli .gorsel-blok svg {
-  width: clamp(calc(var(--dogal) * 0.78), 100%, var(--dogal));
+  width: clamp(calc(var(--dogal) * 0.72), 100%, var(--dogal));
   max-width: none;
   height: auto;
 }
