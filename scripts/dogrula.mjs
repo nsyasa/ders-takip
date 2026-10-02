@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { load as yamlYukle } from 'js-yaml';
+import { svgSorunlari } from '../src/lib/sema-boya.mjs';
 
 const KOK = path.resolve(process.cwd(), 'icerik');
 const SEVIYELER = ['Başlangıç', 'Başlangıç+', 'Orta', 'Orta+', 'İleri'];
@@ -174,6 +175,17 @@ function dersDenetle(ad) {
       for (const a of kodAcilis) {
         const dk = a.match(/\bdosya=(\S+)/)?.[1];
         if (dk && !fs.existsSync(path.join(klasor, 'kodlar', dk))) hata(goreli(yol), `kod bloğunun klasörü yok: kodlar/${dk}`);
+      }
+    }
+  }
+  // Şemalar (SVG): geçersiz XML tarayıcıda görsel olarak bozuk çıkar. Derlemede otomatik düzeltilir (src/lib/sema-boya.mjs),
+  // ama kaynak dosyanın da düzeltilmesi önerilir; bu yüzden yalnız UYARI.
+  const gorselKlasor = path.join(klasor, 'gorseller');
+  if (fs.existsSync(gorselKlasor)) {
+    for (const f of fs.readdirSync(gorselKlasor).filter((x) => x.endsWith('.svg'))) {
+      const yol = path.join(gorselKlasor, f);
+      for (const sorun of svgSorunlari(fs.readFileSync(yol, 'utf8'))) {
+        uyari(goreli(yol), `${sorun}; derlemede otomatik düzeltiliyor, kaynak dosyayı da düzeltin`);
       }
     }
   }

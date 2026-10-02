@@ -35,7 +35,7 @@ npm run check      # TypeScript / Astro tür denetimi
 | `- [ ] …` | İlerleme adımı. Hepsi işaretlenince föy "bitti" olur. |
 | ` ```cpp title=… start=… dosya=… ` | Renkli, satır numaralı kod; **Kopyala** ve **İndir** (`kodlar/<dosya>/` klasörünün `.zip`'i; Arduino IDE için klasör adı = `.ino` adı korunur). |
 | `icerik/<ders>/genel/*.md` | `/<ders>/genel/<slug>/` sayfaları; ders sayfasında "Genel bilgiler" altında `ders.json > genelSayfalar` sırasıyla listelenir. |
-| `icerik/<ders>/gorseller/*.svg` | `/<ders>/gorseller/…`; föyde dokununca büyür. |
+| `icerik/<ders>/gorseller/*.svg` | Föyde **satır içi**, temaya göre yeniden boyanmış (aşağıda *Şemalar*); dokununca büyür, alt yazı alt metinden gelir. Ayrı dosya olarak da yayınlanır. |
 
 Kod yapısı:
 
@@ -44,7 +44,8 @@ src/
   content.config.ts        koleksiyonlar (kimlik = ders/slug)
   plugins/                 remark-icerik (kutular, ::yaz, onay kutusu, tablo, görsel),
                            remark-kod (kod bloğu), remark-bolumler (## → akordeon)
-  lib/                     depo.ts (localStorage), veri.ts, dosyalar.ts (zip), ayar.mjs (BASE_PATH)
+  lib/                     depo.ts (localStorage), veri.ts, dosyalar.ts (zip), ayar.mjs (BASE_PATH),
+                           sema-boya.mjs (SVG şemaları temaya göre yeniden boyar)
   scripts/                 küçük istemci betikleri (ilerleme, föy, kod kopyalama)
   pages/                   index, [ders]/index, [ders]/[foy], [ders]/genel/[slug], verilerim, ara, 404
   styles/                  tema.css, bilesenler.css, yazdir.css (A4)
@@ -102,18 +103,26 @@ Cloudflare Pages ya da başka bir statik barındırıcıda: derleme komutu `npm 
 
 Ortak bilgisayarda profil/hesap yoktur: işi bitince **Yedeği indir**, sonra **Bu cihazdaki kayıtları sil**.
 
-## Tasarım prototipleri (geçici)
+## Tasarım
 
-`tasarim-prototip` dalında üç tasarım aynı yapı üzerinde denenebilir: **1 · Defter**, **2 · Teknik föy**, **3 · Okunur**. Ortak fikir: föy = basılı çalışma kâğıdı; renk yalnız föy numarasını gösteren **direnç bantlarında** (0 siyah … 9 beyaz; föy 6 → siyah-mavi-siyah-altın = 6 Ω) ve kutu etiketlerinde taşınır.
+**Kimlik:** föy = basılı çalışma kâğıdı. Kutu ve gölge yok, ince çizgiler; yazı tipi okunurluk için tasarlanmış Atkinson Hyperlegible Next, kod ve küçük etiketler JetBrains Mono. Renk yalnız iki yerde taşınır: föy numarasını gösteren **direnç bantları** ve kutu etiketleri (bilgi / dikkat / fen / rutin / YZ).
 
-```bash
-# PowerShell
-$env:PUBLIC_PROTOTIP = "1"; npm run build; npm run preview; $env:PUBLIC_PROTOTIP = $null
-```
+- **Direnç bandı** (`src/components/Direnc.astro`): iki basamak + çarpan (×1, siyah) + tolerans (altın). 0 siyah, 1 kahverengi, 2 kırmızı, 3 turuncu, 4 sarı, 5 yeşil, 6 mavi, 7 mor, 8 gri, 9 beyaz. Föy 6 → siyah-mavi-siyah-altın = 6 Ω; Föy 0 = 0 Ω'luk direnç (gerçekte atlama teli). Numara her yerde yazıyla da verilir; renk tek başına bilgi taşımaz.
+- **Renkler ve ölçüler** `src/styles/tema.css` içindeki belirteçlerdir; açık/koyu tema `light-dark()` ile tek yerde tanımlıdır (desteklemeyen eski tarayıcıda açık değerler kullanılır).
+- **Yazı tipleri** kendi sunucumuzdan verilir (`src/assets/fonts/`, SIL Open Font License; lisans metinleri aynı klasörde). Üçüncü tarafa istek atılmaz. Yazı tipi değişince sayfa kaymasın diye ana yazı tipleri `<link rel="preload">` ile önceden yüklenir ve yedek yazı tipleri ölçülerine göre ayarlanır (`yazi-tipleri.css` sonu; değerler `@capsizecss/unpack` ile yazı tipi dosyalarından hesaplandı). Yazı tipini değiştirirseniz bu değerleri yeniden hesaplayın. Fontsource paketlerinden alınan dosyalar yalnız Latin ve Latin-ext alt kümeleridir; italik yoktur (içerikte italik kullanılmıyor).
+- **Baskı (A4):** `src/styles/yazdir.css`. Bölümler açık basılır, tema ne olursa olsun kâğıda açık renkler basılır.
 
-Sayfanın sol altında "Prototip" seçici çıkar. Adres parametreleri: `?tasarim=1|2|3` (hatırlanır), `?tema=koyu|acik` (kaydedilmez), `?ac=1` (föydeki bütün bölümleri açar). `PUBLIC_PROTOTIP` olmadan derlenen sitede seçici ve parametreler yoktur; varsayılan tasarım 1'dir. Tasarım seçilince diğer ikisi, seçici ve bu bölüm silinir.
+### Şemalar (SVG)
 
-Yazı tipleri kendi sunucumuzdan verilir (`src/assets/fonts/`, SIL Open Font License; lisans metinleri aynı klasörde): Literata, IBM Plex Sans / Mono, Atkinson Hyperlegible Next, JetBrains Mono. Yazı tipi değişince sayfa kaymasın diye ana yazı tipleri `<link rel="preload">` ile önceden yüklenir ve yedek yazı tipleri ölçülerine göre ayarlanır (`yazi-tipleri.css` sonu).
+`icerik/<ders>/gorseller/*.svg` dosyaları **değiştirilmez**; derlemede `src/lib/sema-boya.mjs` ile yeniden boyanır ve föy sayfasına **satır içi** konur (böylece sitenin açık/koyu seçimini, yazı tipini ve baskı ayarını izler). Aynı dönüştürülmüş sürüm ayrı dosya olarak da yayınlanır (`/<ders>/gorseller/<ad>.svg`, yeni sekmede açılır; sistemin açık/koyu tercihini izler).
+
+Boyama kuralları:
+
+- **Değişenler:** zemin, ince çizgiler ve semboller, nötr yazı renkleri, açık tonlu not kutuları, yazı tipi. Koyu temada çok koyu kartlara ince bir kontur çizilir.
+- **Değişmeyenler (anlam taşıyan renkler):** kablo renkleri (kırmızı 5 V, turuncu 3,3 V, siyah GND, sinyal renkleri) ve kart/modül renkleri. Koyu temada siyah kabloların altına ince, açık renkli bir kenar çizilir; kablo siyah kalır ama koyu zeminde kaybolmaz.
+- Bir şemanın içindeki yazı, **üzerinde durduğu şekle göre** boyanır: zeminde ya da not kutusundaysa temaya uyar; bir kartın/modülün üzerindeyse (ör. beyaz yazı, gri çip üzerindeki koyu yazı) olduğu gibi kalır.
+- Yeni şema eklemek yeterli: `icerik/<ders>/gorseller/` altına koyup föyde `![açıklama](./gorseller/ad.svg)` yazın. Sınırlar: yalnız `fill`/`stroke` nitelikleri işlenir (`style="…"` ve `<style>` içindeki renklere dokunulmaz), `transform`'lu öğeler "nesne" sayılır; `<script>`, `<foreignObject>`, `on…=` nitelikleri ve `javascript:` bağlantıları atılır.
+- Geçersiz XML (ör. aynı niteliğin iki kez yazılması) tarayıcıda görseli bozar. Dönüştürücü bunu derlemede düzeltir, `npm run dogrula` ise kaynak dosya için **UYARI** verir (şu an `esp32/gorseller/pinout.svg`'de `viewBox` iki kez tanımlı; içerik dosyası değiştirilmediği için düzeltme yalnız derlemede yapılır).
 
 ## Gizlilik
 

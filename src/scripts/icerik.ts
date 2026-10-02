@@ -80,9 +80,22 @@ if (baglantilar.length > 0 && typeof HTMLDialogElement !== 'undefined') {
   baglantilar.forEach((a) => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      const kopya = document.createElement('img');
-      kopya.src = a.href;
-      kopya.alt = a.querySelector('img')?.alt ?? '';
+      const ad = a.closest('figure')?.querySelector('.gorsel-ad')?.textContent ?? '';
+      const sema = a.querySelector('svg'); // şemalar satır içi SVG: aynısı büyük gösterilir
+      let kopya: Element;
+      if (sema) {
+        kopya = sema.cloneNode(true) as SVGElement;
+        kopya.removeAttribute('aria-hidden');
+        kopya.removeAttribute('width');
+        kopya.removeAttribute('height');
+        kopya.setAttribute('role', 'img');
+        kopya.setAttribute('aria-label', ad || 'Şema');
+      } else {
+        const resim = document.createElement('img');
+        resim.src = a.href;
+        resim.alt = a.querySelector('img')?.alt ?? '';
+        kopya = resim;
+      }
       kaydir.replaceChildren(kopya);
       dialog.showModal();
       kapat.focus();

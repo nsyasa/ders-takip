@@ -8,13 +8,13 @@
   overflow: visible;
 }
 .direnc-kucuk {
-  width: 3.5rem;
+  width: 4rem;
 }
 .direnc-orta {
   width: 5rem;
 }
 .direnc-buyuk {
-  width: 7.5rem;
+  width: 9rem;
 }
 .direnc-bacak {
   stroke: var(--soluk);
@@ -29,12 +29,6 @@
 .direnc-bant {
   stroke: rgb(0 0 0 / 0.3);
   stroke-width: 0.5;
-}
-:root[data-tasarim='3'] .direnc-kucuk {
-  width: 4rem;
-}
-:root[data-tasarim='3'] .direnc-buyuk {
-  width: 9rem;
 }
 
 /* ── Durum (başlamadı / devam / bitti): metin + küçük simge ──────────────── */
@@ -73,7 +67,6 @@
 .rozet-yakinda {
   padding: 0.05rem 0.45rem;
   border: 1px solid var(--cizgi);
-  text-transform: var(--etiket-donusum);
 }
 
 /* Kavram etiketleri: düz metin, noktayla ayrılmış */
@@ -277,7 +270,6 @@
   font-family: var(--f-mono);
   font-size: 0.78rem;
   letter-spacing: 0.04em;
-  text-transform: var(--etiket-donusum);
 }
 .foy-baslik {
   margin: 0;
@@ -510,11 +502,9 @@
 
 /* ── Akordeon ────────────────────────────────────────────────────────────── */
 .foy-icerik {
-  counter-reset: bolum;
   border-top: var(--kalin) solid var(--yazi);
 }
 details.bolum {
-  counter-increment: bolum;
   border-bottom: 1px solid var(--cizgi-hafif);
 }
 details.bolum > summary {
@@ -528,14 +518,6 @@ details.bolum > summary {
 }
 details.bolum > summary::-webkit-details-marker {
   display: none;
-}
-details.bolum > summary::before {
-  content: var(--bolum-no, none);
-  flex: none;
-  min-width: 1.7rem;
-  color: var(--soluk);
-  font-family: var(--f-mono);
-  font-size: 0.8rem;
 }
 details.bolum > summary::after {
   content: '+';
@@ -592,7 +574,6 @@ details.bolum > summary h2 {
   color: var(--soluk);
   font-family: var(--f-mono);
   font-size: 0.75rem;
-  text-transform: var(--etiket-donusum);
 }
 @media (min-width: 40rem) {
   .foy-gezinme {
@@ -609,8 +590,10 @@ details.bolum > summary h2 {
 .kutu {
   --k: var(--k-bilgi);
   margin: 1.5rem 0;
-  padding: 0.1rem 0 0.1rem 1.1rem;
+  padding: 0.7rem 1rem 0.7rem 1.1rem;
   border-left: 3px solid var(--k);
+  border-radius: 0 var(--yaricap) var(--yaricap) 0;
+  background: color-mix(in srgb, var(--k) 9%, var(--zemin));
 }
 .kutu-dikkat {
   --k: var(--k-dikkat);
@@ -647,11 +630,6 @@ details.bolum > summary h2 {
 }
 .kutu-icerik > :last-child {
   margin-bottom: 0.3rem;
-}
-:root[data-tasarim='3'] .kutu {
-  padding: 0.7rem 1rem 0.7rem 1.1rem;
-  border-radius: 0 var(--yaricap) var(--yaricap) 0;
-  background: color-mix(in srgb, var(--k) 9%, var(--zemin));
 }
 
 /* ── Onay kutuları ve yazma alanları ─────────────────────────────────────── */
@@ -721,7 +699,7 @@ label.adim:has(.adim-kutu:checked) .adim-metin {
   display: block;
   width: 100%;
   padding: 0.4rem 0.8rem;
-  border: 1px solid var(--cizgi);
+  border: 2px solid var(--cizgi);
   border-radius: var(--yaricap);
   background: var(--zemin);
   color: var(--yazi);
@@ -731,28 +709,6 @@ label.adim:has(.adim-kutu:checked) .adim-metin {
 }
 .yaz textarea:focus-visible {
   border-color: var(--odak);
-}
-/* 1 · Defter: çizgili defter sayfası */
-:root[data-tasarim='1'] .yaz textarea {
-  padding-block: 0.1rem 0;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent calc(1.9rem - 1px),
-    var(--cizgi-hafif) calc(1.9rem - 1px),
-    var(--cizgi-hafif) 1.9rem
-  );
-  background-attachment: local;
-}
-/* 2 · Teknik föy: laboratuvar kaydı gibi mono */
-:root[data-tasarim='2'] .yaz textarea {
-  font-family: var(--f-mono);
-  font-size: 0.92rem;
-  line-height: 1.7rem;
-}
-/* 3 · Okunur: kalın çerçeve */
-:root[data-tasarim='3'] .yaz textarea {
-  border-width: 2px;
 }
 
 /* ── Kod blokları ────────────────────────────────────────────────────────── */
@@ -905,7 +861,7 @@ label.adim:has(.adim-kutu:checked) .adim-metin {
 .gorsel-link {
   display: block;
   padding: 0.5rem;
-  background: #fff; /* SVG'ler beyaz zeminli çizilmiş; koyu temada da okunur kalsın */
+  background: var(--zemin); /* şema satır içi ve temaya göre boyanmış (src/lib/sema-boya.mjs) */
   border: 1px solid var(--cizgi);
   border-radius: var(--yaricap);
   cursor: zoom-in;
@@ -924,7 +880,8 @@ label.adim:has(.adim-kutu:checked) .adim-metin {
 .gorsel-ad {
   color: var(--yazi);
 }
-.gorsel img {
+.gorsel img,
+.gorsel svg {
   display: block;
   max-width: 100%;
   height: auto;
@@ -937,8 +894,8 @@ dialog.gorsel-dialog {
   padding: 0.5rem;
   border: 2px solid var(--yazi);
   border-radius: var(--yaricap);
-  background: #fff;
-  color: #14130f;
+  background: var(--zemin);
+  color: var(--yazi);
 }
 dialog.gorsel-dialog::backdrop {
   background: rgb(0 0 0 / 0.65);
@@ -947,7 +904,8 @@ dialog.gorsel-dialog::backdrop {
   overflow: auto;
   max-height: calc(92vh - 5rem);
 }
-.gorsel-dialog-kaydir img {
+.gorsel-dialog-kaydir img,
+.gorsel-dialog-kaydir svg {
   display: block;
   width: max(100%, 1000px); /* şemadaki küçük yazılar telefonda da okunsun; yatay kaydırılır / sıkıştırılarak yakınlaştırılır */
   height: auto;
@@ -957,10 +915,10 @@ dialog.gorsel-dialog::backdrop {
   margin: 0 0 0.5rem auto;
   min-height: 44px;
   padding: 0 1rem;
-  border: 2px solid #14130f;
+  border: 2px solid var(--yazi);
   border-radius: var(--yaricap);
-  background: #fff;
-  color: #14130f;
+  background: var(--zemin);
+  color: var(--yazi);
   font: inherit;
   font-weight: 600;
   cursor: pointer;

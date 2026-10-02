@@ -1,12 +1,10 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    TASARIM BELİRTEÇLERİ + TEMEL STİLLER
-   Üç prototip (aynı yapı, farklı kimlik): <html data-tasarim="1|2|3">
-     1 · Defter       sıcak kâğıt, Literata (serif), mürekkep mavisi, çizgili yazma alanı
-     2 · Teknik föy   soğuk kâğıt + nokta ızgara, IBM Plex, turuncu vurgu, bölüm numaraları
-     3 · Okunur       Atkinson Hyperlegible Next, iri punto, 2 px çizgiler, hafif tonlu kutular
-   Ortak fikir: föy = basılı çalışma kâğıdı; renk yalnız föy numarasını gösteren
-   direnç bantlarında (0 siyah … 9 beyaz) ve kutu etiketlerinde taşınır.
-   Açık/koyu: light-dark() ile tek yerde. Desteklemeyen eski tarayıcıda açık değerler kullanılır.
+   Kimlik: föy = basılı çalışma kâğıdı. Kutu ve gölge yok, ince çizgiler; Atkinson Hyperlegible Next
+   (okunurluk için tasarlanmış) + JetBrains Mono. Renk yalnız föy numarasını gösteren direnç
+   bantlarında (0 siyah … 9 beyaz) ve kutu etiketlerinde taşınır.
+   Açık/koyu: light-dark() ile tek yerde. Desteklemeyen eski tarayıcıda açık (yedek) değerler kullanılır.
+   Yazı tipi değişirse src/styles/yazi-tipleri.css sonundaki yedek yazı tipi ölçüleri yeniden hesaplanmalı.
    ───────────────────────────────────────────────────────────────────────────── */
 
 :root {
@@ -19,131 +17,24 @@
   color-scheme: dark;
 }
 
-/* ── Ortak (renk dışı) varsayılanlar ─────────────────────────────────────── */
+/* ── Yazı tipleri, ölçüler ───────────────────────────────────────────────── */
 :root {
-  --kenar: 1.25rem; /* sayfa yan boşluğu */
-  --kalin: 1px; /* kural kalınlığı */
-  --yaricap: 2px;
-  --olcu: 38rem; /* okuma sütunu genişliği */
-  --bas-agirlik: 600;
-  --bas-aralik: -0.01em;
-  --govde-boyut: 1.125rem;
-  --govde-lh: 1.7;
-  --etiket-donusum: none;
-  --izgara-resim: none;
-  --bolum-no: none;
-}
-
-/* ── 1 · DEFTER ──────────────────────────────────────────────────────────── */
-:root[data-tasarim='1'] {
-  --f-baslik: 'Literata', 'Literata Yedek', Georgia, 'Times New Roman', serif;
-  --f-govde: 'Literata', 'Literata Yedek', Georgia, 'Times New Roman', serif;
-  --f-mono: 'JetBrains Mono', 'JetBrains Mono Yedek', ui-monospace, 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
-  --olcu: 38rem;
-  --govde-boyut: 1.125rem;
-  --govde-lh: 1.72;
-  --bas-agirlik: 600;
-  --bas-aralik: -0.012em;
-  --yaricap: 2px;
-}
-/* açık (yedek) */
-:root[data-tasarim='1'] {
-  --zemin: #f5f0e4;
-  --yuzey: #ece5d3;
-  --yazi: #1f1b14;
-  --soluk: #5a5244;
-  --cizgi: #8c8372;
-  --cizgi-hafif: #d8cfba;
-  --vurgu: #1b3f8f;
-  --vurgu-ustu: #ffffff;
-  --odak: #1b3f8f;
-  --bitti: #1f6b34;
-  --devam: #8a4b00;
-  --kod-zemin: #fffdf7;
-  --kod-satir: #6b6455;
-}
-@supports (color: light-dark(#000, #fff)) {
-  :root[data-tasarim='1'] {
-    --zemin: light-dark(#f5f0e4, #17140f);
-    --yuzey: light-dark(#ece5d3, #211d16);
-    --yazi: light-dark(#1f1b14, #ece5d6);
-    --soluk: light-dark(#5a5244, #b9b09c);
-    --cizgi: light-dark(#8c8372, #6f6856);
-    --cizgi-hafif: light-dark(#d8cfba, #3a3429);
-    --vurgu: light-dark(#1b3f8f, #a9c1f5);
-    --vurgu-ustu: light-dark(#ffffff, #0c1530);
-    --odak: light-dark(#1b3f8f, #a9c1f5);
-    --bitti: light-dark(#1f6b34, #8fd7a0);
-    --devam: light-dark(#8a4b00, #ffc27a);
-    --kod-zemin: light-dark(#fffdf7, #1d1a14);
-    --kod-satir: light-dark(#6b6455, #9a917d);
-  }
-}
-
-/* ── 2 · TEKNİK FÖY ──────────────────────────────────────────────────────── */
-:root[data-tasarim='2'] {
-  --f-baslik: 'IBM Plex Sans', 'IBM Plex Sans Yedek', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  --f-govde: 'IBM Plex Sans', 'IBM Plex Sans Yedek', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  --f-mono: 'IBM Plex Mono', 'IBM Plex Mono Yedek', ui-monospace, 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
-  --olcu: 44rem;
-  --govde-boyut: 1.0625rem;
-  --govde-lh: 1.62;
-  --bas-agirlik: 600;
-  --bas-aralik: -0.02em;
-  --yaricap: 0;
-  --etiket-donusum: uppercase;
-  --bolum-no: counter(bolum, decimal-leading-zero);
-  --izgara-resim: radial-gradient(circle at 1px 1px, var(--izgara) 1px, transparent 1.4px);
-}
-:root[data-tasarim='2'] {
-  --zemin: #f4f6f3;
-  --yuzey: #e8ece7;
-  --yazi: #0e1411;
-  --soluk: #46524b;
-  --cizgi: #78867e;
-  --cizgi-hafif: #cbd3cd;
-  --vurgu: #b23a08;
-  --vurgu-ustu: #ffffff;
-  --odak: #b23a08;
-  --bitti: #17683a;
-  --devam: #8f4600;
-  --kod-zemin: #ffffff;
-  --kod-satir: #66726b;
-  --izgara: #b9c4bc;
-}
-@supports (color: light-dark(#000, #fff)) {
-  :root[data-tasarim='2'] {
-    --zemin: light-dark(#f4f6f3, #0d1210);
-    --yuzey: light-dark(#e8ece7, #151c18);
-    --yazi: light-dark(#0e1411, #e8eeea);
-    --soluk: light-dark(#46524b, #a9b7af);
-    --cizgi: light-dark(#78867e, #5f6e66);
-    --cizgi-hafif: light-dark(#cbd3cd, #2a3530);
-    --vurgu: light-dark(#b23a08, #ff9b63);
-    --vurgu-ustu: light-dark(#ffffff, #1a0b02);
-    --odak: light-dark(#b23a08, #ff9b63);
-    --bitti: light-dark(#17683a, #86dba0);
-    --devam: light-dark(#8f4600, #ffbf80);
-    --kod-zemin: light-dark(#ffffff, #121a16);
-    --kod-satir: light-dark(#66726b, #93a29a);
-    --izgara: light-dark(#b9c4bc, #26332c);
-  }
-}
-
-/* ── 3 · OKUNUR ──────────────────────────────────────────────────────────── */
-:root[data-tasarim='3'] {
   --f-baslik: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible Next Yedek', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --f-govde: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible Next Yedek', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --f-mono: 'JetBrains Mono', 'JetBrains Mono Yedek', ui-monospace, 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
-  --olcu: 42rem;
-  --govde-boyut: 1.1875rem;
-  --govde-lh: 1.7;
+  --kenar: 1.25rem; /* sayfa yan boşluğu */
+  --kalin: 2px; /* kural kalınlığı */
+  --yaricap: 6px;
+  --olcu: 42rem; /* okuma sütunu genişliği */
   --bas-agirlik: 700;
   --bas-aralik: 0;
-  --kalin: 2px;
-  --yaricap: 6px;
+  --govde-boyut: 1.1875rem;
+  --govde-lh: 1.7;
 }
-:root[data-tasarim='3'] {
+
+/* ── Renkler ─────────────────────────────────────────────────────────────── */
+/* açık (yedek) */
+:root {
   --zemin: #fbfaf6;
   --yuzey: #f0eee6;
   --yazi: #14130f;
@@ -159,7 +50,7 @@
   --kod-satir: #666253;
 }
 @supports (color: light-dark(#000, #fff)) {
-  :root[data-tasarim='3'] {
+  :root {
     --zemin: light-dark(#fbfaf6, #111416);
     --yuzey: light-dark(#f0eee6, #1a1f22);
     --yazi: light-dark(#14130f, #eef0ec);
@@ -176,7 +67,7 @@
   }
 }
 
-/* ── Kutu türü renkleri (üç prototipte ortak) ────────────────────────────── */
+/* ── Kutu türü renkleri ──────────────────────────────────────────────────── */
 :root {
   --k-bilgi: #1f4f9a;
   --k-dikkat: #a3201a;
@@ -522,61 +413,6 @@ hr {
 }
 .ekmek a {
   color: var(--soluk);
-}
-
-/* Nokta ızgara (yalnız prototip 2): başlık bölgesinin arkasında, aşağı doğru solar */
-.izgarali {
-  position: relative;
-  isolation: isolate;
-}
-.izgarali::before {
-  content: '';
-  position: absolute;
-  inset: 0 calc(-1 * var(--kenar)) auto;
-  height: 14rem;
-  z-index: -1;
-  background-image: var(--izgara-resim);
-  background-size: 18px 18px;
-  -webkit-mask-image: linear-gradient(#000 30%, transparent);
-  mask-image: linear-gradient(#000 30%, transparent);
-  pointer-events: none;
-}
-
-/* ── Prototip seçici (yalnız PUBLIC_PROTOTIP=1 ile derlenen önizlemede) ──── */
-.prototip-secici {
-  position: fixed;
-  left: 0.75rem;
-  bottom: 0.75rem;
-  z-index: 60;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem;
-  max-width: calc(100vw - 1.5rem);
-  padding: 0.3rem 0.4rem;
-  background: var(--yazi);
-  color: var(--zemin);
-  font: 500 0.75rem var(--f-mono);
-  border-radius: 6px;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 0.35);
-}
-.prototip-secici span {
-  padding: 0 0.35rem;
-  opacity: 0.8;
-}
-.prototip-secici button {
-  min-height: 36px;
-  padding: 0 0.6rem;
-  border: 1px solid currentColor;
-  border-radius: 4px;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
-.prototip-secici button[aria-pressed='true'] {
-  background: var(--zemin);
-  color: var(--yazi);
 }
 
 @media (prefers-reduced-motion: reduce) {

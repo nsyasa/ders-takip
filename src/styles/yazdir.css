@@ -6,7 +6,7 @@
     margin: 14mm 14mm 16mm;
   }
 
-  /* Hangi tema/prototip seçili olursa olsun kâğıda açık ve sade renkler basılır. */
+  /* Hangi tema seçili olursa olsun kâğıda açık ve sade renkler basılır. */
   html:root:root:root {
     color-scheme: light;
     --zemin: #fff;
@@ -53,12 +53,8 @@
   .depo-uyari,
   .onkosul-uyari,
   .kod-dugmeler,
-  .prototip-secici,
   [data-yazdirma-gizle] {
     display: none !important;
-  }
-  .izgarali::before {
-    display: none;
   }
 
   a {
@@ -128,8 +124,7 @@
   }
 
   /* Kutular: renksiz; tür etiketi ve kenar çizgisi ile ayırt edilir */
-  .kutu,
-  :root[data-tasarim] .kutu {
+  .kutu {
     margin: 3mm 0;
     padding: 1mm 0 1mm 3mm;
     border-left: 2.5pt solid #000;
@@ -145,8 +140,7 @@
     orphans: 3;
     widows: 3;
   }
-  .kutu-dikkat,
-  :root[data-tasarim] .kutu-dikkat {
+  .kutu-dikkat {
     border-left: 4.5pt double #000;
   }
   .kutu-tur {

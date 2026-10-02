@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { visit, SKIP } from 'unist-util-visit';
 import { yolYap } from '../lib/ayar.mjs';
+import { semayiBoya } from '../lib/sema-boya.mjs';
 
 const KUTULAR = {
   bilgi: 'Bilgi',
@@ -56,6 +57,7 @@ export default function remarkIcerik() {
 
     let adimNo = 0;
     let yazNo = 0;
+    let semaNo = 0;
 
     function gorselDuzenle(img) {
       const url = decodeURI(img.url ?? '');
@@ -66,6 +68,17 @@ export default function remarkIcerik() {
         return false;
       }
       img.url = yolYap(`${ders}/gorseller/${path.basename(dosya)}`);
+      img.satirIci = null;
+      if (/\.svg$/i.test(dosya)) {
+        // Şema derlemede yeniden boyanır (içerik dosyası değişmez) ve satır içi verilir:
+        // sitenin açık/koyu temasına, yazı tipine ve baskı ayarına uyar. Başarısız olursa <img> kalır.
+        try {
+          semaNo += 1;
+          img.satirIci = semayiBoya(fs.readFileSync(dosya, 'utf8'), { onek: `sb${semaNo}` });
+        } catch (e) {
+          uyar(`şema boyanamadı, düz görsel olarak gösterilecek: ${path.basename(dosya)} (${e.message})`);
+        }
+      }
       const boyut = svgBoyutu(dosya);
       img.data = {
         ...img.data,
@@ -218,7 +231,7 @@ export default function remarkIcerik() {
                   ariaLabel: `${img.alt || 'Görsel'} (büyük görünüm, yeni sekmede açılır)`,
                 },
               },
-              children: [img],
+              children: [img.satirIci ? { type: 'html', value: img.satirIci } : img],
             },
             {
               // Görünür alt yazı (alt metniyle aynı; ekran okuyucuya ikinci kez okutulmaz)

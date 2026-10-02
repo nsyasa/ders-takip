@@ -8,6 +8,7 @@ Amaç: Öğrencilere yönelik, reklamsız, mobil öncelikli ders takip sitesi. �
 - Kutular ve yazma alanları için `remark-directive` ile küçük bir eklenti yaz.
 - Varsayılan sıfır JavaScript; yalnız ilerleme takibi, kod kopyalama, yazma alanları ve arama küçük adalar olsun.
 - Dış font, CDN, analitik, çerez, reklam yok. Kişisel veri toplanmaz (kullanıcılar çocuk).
+- Yazı tipleri kendi sunucumuzdan verilebilir (`src/assets/fonts/`, açık lisanslı, lisans metni yanında); üçüncü tarafa istek atılmaz.
 
 ## Kalite
 - Mobil öncelikli; Lighthouse performans ve erişilebilirlik ≥ 95 (mobil).
