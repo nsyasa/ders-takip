@@ -148,6 +148,13 @@ export default function remarkIcerik() {
 
       // — Yaprak direktifler: ::yaz[Etiket]{satir=3}, ::jest, ::sira, ::kunye
       if (node.type === 'leafDirective') {
+        // Yaprak direktiflerin etiketleri sonradan ziyaret edilmez (SKIP): içlerindeki bağlantıları şimdi çöz
+        const baglantilariCoz = (d) => {
+          if (d.type === 'link') d.url = baglantiCoz(d.url);
+          (d.children ?? []).forEach(baglantilariCoz);
+        };
+        node.children.forEach(baglantilariCoz);
+
         if (node.name === 'yaz') {
           yazNo += 1;
           const id = `yaz-${yazNo}`;
