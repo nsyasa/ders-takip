@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 360" role="img" aria-labelledby="title desc">
+  <title id="title">Harici butonun P2 bağlantısı</title>
+  <desc id="desc">Genişletme kartı P2 ucu dört ayaklı butonun bir tarafına, GND karşı tarafına bağlanır. Buton breadboard orta yarığını aşar. P1 LED devresi ayrı kalır.</desc>
+  <rect width="1100" height="360" rx="18" fill="#fff"/>
+  <rect x="30" y="65" width="255" height="230" rx="12" fill="#e8f2f4" stroke="#8ab5bf" stroke-width="3"/>
+  <text x="55" y="112" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#174e70">Genişletme kartı</text>
+  <text x="60" y="176" font-family="Arial,sans-serif" font-size="24" fill="#19303c">P2</text>
+  <text x="60" y="255" font-family="Arial,sans-serif" font-size="24" fill="#19303c">GND</text>
+  <path d="M285 165 H442 M285 245 H442" fill="none" stroke="#174e70" stroke-width="7"/>
+  <rect x="435" y="72" width="595" height="218" rx="12" fill="#f7f9f7" stroke="#b4cacc" stroke-width="3"/>
+  <text x="460" y="111" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#174e70">Deney tahtası</text>
+  <rect x="560" y="142" width="180" height="105" rx="13" fill="#d9dee3" stroke="#526873" stroke-width="4"/>
+  <rect x="643" y="132" width="14" height="125" fill="#fff" stroke="#b4cacc" stroke-width="2"/>
+  <circle cx="603" cy="195" r="21" fill="#f6b555" stroke="#9b6824" stroke-width="4"/>
+  <path d="M442 165 H560 M740 245 H442" fill="none" stroke="#174e70" stroke-width="7"/>
+  <text x="775" y="174" font-family="Arial,sans-serif" font-size="22" fill="#19303c">Basınca P2–GND birleşir</text>
+  <text x="775" y="216" font-family="Arial,sans-serif" font-size="22" fill="#19303c">Bırakınca yol açılır</text>
+  <text x="30" y="337" font-family="Arial,sans-serif" font-size="19" fill="#526873">Öğretmen, gerçek butonun karşı uçlarını güç kapalıyken süreklilik ölçeriyle doğrular.</text>
+</svg>

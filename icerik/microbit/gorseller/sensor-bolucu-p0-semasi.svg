@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 370" role="img">
+<style>
+text{font-family:Arial,sans-serif;fill:#163b4b} .title{font-size:27px;font-weight:700}
+.label{font-size:21px;font-weight:700}.small{font-size:16px}
+.box{fill:#eef8f8;stroke:#35849a;stroke-width:3;rx:16}
+.power{stroke:#d34d43}.ground{stroke:#344e59}.signal{stroke:#5b8c38}
+path,line{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<text class="title" x="35" y="43">Analog sensör → güvenli P0 ölçümü</text>
+<rect class="box" x="35" y="80" width="180" height="195"/>
+<text class="label" x="64" y="124">Pil kutusu</text><text class="small" x="64" y="167">Yalnız sensör</text>
+<text class="small" x="64" y="230">+4,5 V GND</text>
+<rect class="box" x="320" y="80" width="210" height="195"/>
+<text class="label" x="352" y="124">Sensör kartı</text><text class="small" x="352" y="159" text-anchor="middle">VCC</text><text class="small" x="420" y="159" text-anchor="middle">GND</text><text class="small" x="495" y="159" text-anchor="middle">S/A0</text>
+<rect class="box" x="775" y="80" width="190" height="195"/>
+<text class="label" x="815" y="124">micro:bit</text><text class="small" x="820" y="159" text-anchor="middle">P0</text><text class="small" x="880" y="159" text-anchor="middle">GND</text>
+<path class="power" d="M95 244 V300 H352 V174"/>
+<path class="ground" d="M169 244 V334 H420 V174 M420 334 H880 V174"/>
+<path class="signal" d="M495 174 H560"/>
+<rect class="box" x="560" y="150" width="94" height="45"/>
+<text class="small" x="578" y="179">10 kΩ</text>
+<path class="signal" d="M654 174 H820"/>
+<circle cx="709" cy="174" r="8" fill="#5b8c38"/>
+<path class="ground" d="M709 182 V244"/>
+<rect class="box" x="662" y="244" width="95" height="44"/>
+<text class="small" x="680" y="273">15 kΩ</text>
+<path class="ground" d="M709 288 V334"/>
+<text class="small" x="560" y="125">S/A0'dan gelen yol</text>
+<text class="small" x="659" y="145">ölçüm düğümü</text>
+<text class="small" x="35" y="360">Pil kutusu artısı micro:bit 3V, pil veya P0 ucuna doğrudan bağlanmaz. GND ortaktır.</text>
+</svg>

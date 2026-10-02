@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 360" role="img" aria-labelledby="title desc">
+  <title id="title">10 kiloohm potansiyometrenin P2 bağlantısı</title>
+  <desc id="desc">Potansiyometrenin doğrulanmış iki dış ucu micro:bit 3V ve GND uçlarına, orta ucu P2 analog girişine gider. 5V bağlantısı yoktur.</desc>
+  <rect width="1100" height="360" rx="18" fill="#fff"/>
+  <rect x="30" y="55" width="265" height="250" rx="12" fill="#e8f2f4" stroke="#8ab5bf" stroke-width="3"/>
+  <text x="50" y="103" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#174e70">Genişletme kartı</text>
+  <text x="60" y="158" font-family="Arial,sans-serif" font-size="24" fill="#19303c">3V</text>
+  <text x="60" y="218" font-family="Arial,sans-serif" font-size="24" fill="#19303c">P2</text>
+  <text x="60" y="278" font-family="Arial,sans-serif" font-size="24" fill="#19303c">GND</text>
+  <rect x="445" y="75" width="560" height="225" rx="16" fill="#f7f9f7" stroke="#b4cacc" stroke-width="3"/>
+  <text x="485" y="116" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#174e70">10 kΩ potansiyometre</text>
+  <circle cx="720" cy="204" r="57" fill="#f3d9a9" stroke="#9e7539" stroke-width="5"/>
+  <circle cx="720" cy="204" r="13" fill="#fff" stroke="#9e7539" stroke-width="4"/>
+  <path d="M295 148 H570 V180 H660 M295 208 H660 M295 268 H570 V230 H660" fill="none" stroke="#174e70" stroke-width="7"/>
+  <text x="830" y="159" font-family="Arial,sans-serif" font-size="22" fill="#19303c">dış uç → 3V</text>
+  <text x="830" y="211" font-family="Arial,sans-serif" font-size="22" fill="#19303c">orta uç → P2</text>
+  <text x="830" y="263" font-family="Arial,sans-serif" font-size="22" fill="#19303c">dış uç → GND</text>
+  <text x="30" y="340" font-family="Arial,sans-serif" font-size="19" fill="#526873">Şema uç görevlerini gösterir; fiziksel bacak sırasını öğretmen gerçek modelde doğrular.</text>
+</svg>

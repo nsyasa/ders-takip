@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" role="img">
+<style>
+text{font-family:Arial,sans-serif;fill:#163b4b} .title{font-size:27px;font-weight:700}
+.label{font-size:21px;font-weight:700}.small{font-size:16px}
+.box{fill:#eef8f8;stroke:#35849a;stroke-width:3;rx:16}
+.power{stroke:#d34d43}.ground{stroke:#344e59}.signal{stroke:#5b8c38}
+path,line{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<text class="title" x="35" y="43">Ortak anot RGB LED · aynı anda tek kanal</text>
+<rect class="box" x="35" y="90" width="230" height="205"/>
+<text class="label" x="90" y="135">micro:bit</text>
+<text class="small" x="70" y="179">3V      P0      P1      P2</text>
+<rect class="box" x="720" y="90" width="245" height="205"/>
+<text class="label" x="772" y="135">RGB LED</text>
+<text class="small" x="748" y="179">ortak +      R   G   B</text>
+<path class="power" d="M90 185 V315 H315"/>
+<rect class="box" x="315" y="291" width="120" height="45"/>
+<text class="small" x="334" y="320">220 Ω × 3</text>
+<path class="power" d="M435 315 H765 V185"/>
+<path class="signal" d="M145 185 V240 H817 V185"/>
+<path class="signal" d="M198 185 V260 H866 V185"/>
+<path class="signal" d="M245 185 V280 H919 V185"/>
+<text class="small" x="462" y="309">660 Ω seri · toplam akım sınırı</text>
+</svg>

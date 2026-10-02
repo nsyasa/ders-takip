@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 150" width="360" height="150">
+  <rect width="360" height="150" fill="#ffffff"/>
+  <!-- 8 numaralı grup: a–e delikleri birbirine bağlı -->
+  <text x="12" y="46" font-size="24" font-weight="700" fill="#14213d">8</text>
+  <rect x="44" y="16" width="170" height="44" rx="10" fill="#ece8dc" stroke="#7a7667" stroke-width="2"/>
+  <path d="M66 38H186" stroke="#0e7c86" stroke-width="5" stroke-linecap="round"/>
+  <g fill="#14213d">
+    <circle cx="66" cy="38" r="7"/><circle cx="96" cy="38" r="7"/><circle cx="126" cy="38" r="7"/><circle cx="156" cy="38" r="7"/><circle cx="186" cy="38" r="7"/>
+  </g>
+  <text x="226" y="43" font-size="15" fill="#14213d">a–e: aynı grup</text>
+  <!-- 10 numaralı grup: ayrı grup -->
+  <text x="6" y="116" font-size="24" font-weight="700" fill="#14213d">10</text>
+  <rect x="44" y="86" width="170" height="44" rx="10" fill="#ece8dc" stroke="#7a7667" stroke-width="2"/>
+  <path d="M66 108H186" stroke="#b85400" stroke-width="5" stroke-linecap="round"/>
+  <g fill="#14213d">
+    <circle cx="66" cy="108" r="7"/><circle cx="96" cy="108" r="7"/><circle cx="126" cy="108" r="7"/><circle cx="156" cy="108" r="7"/><circle cx="186" cy="108" r="7"/>
+  </g>
+  <text x="226" y="113" font-size="15" fill="#14213d">ayrı grup</text>
+</svg>

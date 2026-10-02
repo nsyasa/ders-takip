@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 390" role="img" aria-labelledby="title desc">
+  <title id="title">P1 ile üç seri 220 ohm dirençli LED yolu</title>
+  <desc id="desc">Genişletme kartı P1 çıkışı, birbirine seri bağlı üç 220 ohm direnç, LED uzun artı bacağı, LED kısa eksi bacağı ve GND aynı elektrik yolundadır. 3V hattı kullanılmaz.</desc>
+  <rect width="1200" height="390" rx="18" fill="#fff"/>
+  <text x="45" y="61" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#174e70">Tek yol: P1 → dirençler → LED → GND</text>
+  <path d="M160 188 H1060" stroke="#174e70" stroke-width="8" fill="none"/>
+  <circle cx="120" cy="188" r="40" fill="#e8f2f4" stroke="#174e70" stroke-width="5"/>
+  <text x="100" y="198" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#174e70">P1</text>
+  <g fill="#eac39a" stroke="#9e5c24" stroke-width="4">
+    <rect x="225" y="163" width="90" height="50" rx="10"/>
+    <rect x="380" y="163" width="90" height="50" rx="10"/>
+    <rect x="535" y="163" width="90" height="50" rx="10"/>
+  </g>
+  <g font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#714713">
+    <text x="233" y="198">220 Ω</text><text x="388" y="198">220 Ω</text><text x="543" y="198">220 Ω</text>
+  </g>
+  <path d="M760 145 L820 188 L760 231 Z" fill="#e65b54" stroke="#b54d41" stroke-width="5"/>
+  <path d="M823 143 V233" stroke="#b54d41" stroke-width="6"/>
+  <circle cx="1097" cy="188" r="40" fill="#e8f2f4" stroke="#174e70" stroke-width="5"/>
+  <text x="1062" y="198" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#174e70">GND</text>
+  <text x="691" y="103" font-family="Arial,sans-serif" font-size="22" fill="#19303c">LED uzun (+) → kısa (−)</text>
+  <rect x="55" y="284" width="1090" height="67" rx="10" fill="#fff3cf"/>
+  <text x="80" y="324" font-family="Arial,sans-serif" font-size="24" fill="#674600">Üç direnç seri: 220 + 220 + 220 = 660 Ω. Güç kapalıyken öğretmenle kur.</text>
+</svg>

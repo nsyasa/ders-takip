@@ -1,12 +1,82 @@
 {
   "kod": "microbit",
-  "ad": "micro:bit",
-  "altbaslik": "Yakında",
-  "aciklama": "Bu ders yakında eklenecek.",
-  "renk": "#7B1FA2",
+  "ad": "micro:bit Başlangıç",
+  "altbaslik": "MakeCode bloklarıyla 45 kısa proje",
+  "aciklama": "Bu kitapta 45 kısa projeyle micro:bit V2’yi tanıyacak; önce kartın ekranı, düğmeleri ve sensörleriyle, sonra setindeki elektronik parçalarla yeni fikirler deneyeceksin.",
+  "renk": "#0E7C86",
   "ikon": "🟣",
   "sira": 2,
-  "durum": "yakinda",
-  "foySayisi": 0,
-  "toplamSureDk": 0
+  "durum": "hazir",
+  "foySayisi": 45,
+  "toplamSureDk": 1020,
+  "birim": "proje",
+  "tema": "sevimli",
+  "kapak": "kapak",
+  "kapakAlt": "Çocuk, kedi, MakeCode blokları ve ekranında bir ışık yanan micro:bit olan renkli sınıf çizimi",
+  "etiketler": [
+    "5. sınıf",
+    "10–11 yaş"
+  ],
+  "adimEtiketleri": [
+    {
+      "ad": "Bak",
+      "aciklama": "Yeni parçayı veya kart özelliğini bul."
+    },
+    {
+      "ad": "Tahmin et",
+      "aciklama": "“Sence ne olacak?” sorusunu cevapla."
+    },
+    {
+      "ad": "Kodla",
+      "aciklama": "MakeCode bloklarını doğru sıraya koy."
+    },
+    {
+      "ad": "Dene",
+      "aciklama": "Simülatörde ve micro:bit’te çalıştır."
+    },
+    {
+      "ad": "Anlat",
+      "aciklama": "Ne gördüğünü ve nedenini açıkla."
+    },
+    {
+      "ad": "Değiştir",
+      "aciklama": "Tek bir şeyi değiştirip yeniden dene."
+    }
+  ],
+  "uniteler": [
+    {
+      "ad": "Kartla tanış ve oyna",
+      "ilk": 1,
+      "son": 12,
+      "renk": "#1565C0"
+    },
+    {
+      "ad": "Sensörleri keşfet",
+      "ilk": 13,
+      "son": 23,
+      "renk": "#A8149A"
+    },
+    {
+      "ad": "Yeni fikirler ve devreye geçiş",
+      "ilk": 24,
+      "son": 34,
+      "renk": "#00796B"
+    },
+    {
+      "ad": "Harici devre ve tasarım",
+      "ilk": 35,
+      "son": 45,
+      "renk": "#B85400"
+    }
+  ],
+  "genelSayfalar": [
+    "hos-geldin",
+    "nasil-calisir",
+    "karti-tani",
+    "kod-bloklari",
+    "blok-sozlugu",
+    "devre-kurma-kurallari",
+    "sozluk",
+    "kaynaklar"
+  ]
 }
