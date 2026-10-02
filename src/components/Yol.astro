@@ -1,0 +1,31 @@
+---
+// Proje sayfasının üstündeki adım yolu (ders.json: adimEtiketleri): her adım gerçek bir onay kutusudur.
+// Kutular `input.adim-kutu` olduğu için ilerleme depoya foy.ts tarafından kaydedilir (data-adim = 1, 2, …).
+interface Props {
+  adimlar: { ad: string; aciklama: string }[];
+}
+const { adimlar } = Astro.props;
+---
+
+<ol class="yol" data-yol>
+  {
+    adimlar.map((a, i) => (
+      <li class="yol-adim" data-ad={a.ad} data-aciklama={a.aciklama}>
+        <label class="yol-etiket">
+          <input type="checkbox" class="adim-kutu yol-kutu" data-adim={i + 1} />
+          <span class="yol-halka" aria-hidden="true">
+            <span class="yol-no">{i + 1}</span>
+            <svg class="yol-tik" viewBox="0 0 16 16" focusable="false">
+              <path d="M3.4 8.6l3.1 3.1 6.1-7.3" />
+            </svg>
+          </span>
+          <span class="yol-ad">
+            {a.ad}
+            <span class="gorunmez">. {a.aciklama}</span>
+          </span>
+        </label>
+      </li>
+    ))
+  }
+</ol>
+<p class="yol-ipucu" data-yol-ipucu aria-live="polite" data-pagefind-ignore></p>

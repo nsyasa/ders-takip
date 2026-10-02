@@ -41,7 +41,7 @@ Oyunun ilk parçasını kur: kart sallanınca 1, 2 ya da 3 seçsin. Sonraki kıs
 3. Değeri, **“rastgele değer seçimi 1 ila 3”** bloğuyla doldur.
 4. Altına **“sayıyı göster secim”** ekle. Simülatörde birkaç kez salla.
 
-![Sallanınca 1 ila 3 arasında rastgele sayı seçip secim değişkenine kaydeden ve sayıyı gösteren MakeCode blokları](./gorseller/uc-secim-makecode.svg "Seçilen sayı **secim** değişkeninde saklanır.")
+![Sallanınca 1 ila 3 arasında rastgele sayı seçip secim değişkenine kaydeden ve sayıyı gösteren MakeCode blokları](./gorseller/uc-secim-makecode.svg "Seçilen sayı secim değişkeninde saklanır.")
 
 ### Kartında dene
 

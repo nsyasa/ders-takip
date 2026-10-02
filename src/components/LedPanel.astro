@@ -1,0 +1,12 @@
+---
+// Dersin bütün projeleri için 9 sütunlu LED paneli: her LED bir proje; proje bitince yanar (ilerleme-goster.ts).
+import { ledPanelSvg } from '../lib/led.mjs';
+
+interface Props {
+  kimlikler: string[]; // "microbit/proje-01" … proje sırasıyla
+  sinif?: string;
+}
+const { kimlikler, sinif = '' } = Astro.props;
+---
+
+<Fragment set:html={ledPanelSvg(kimlikler, sinif)} />

@@ -1,0 +1,12 @@
+---
+// Bit: micro:bit'in yüzlü maskotu. Çizim sayfada bir kez tanımlıdır (SevimliSemboller.astro); burada <use> ile çağrılır.
+import { bitSvg } from '../lib/led.mjs';
+
+interface Props {
+  yuz?: 'mutlu' | 'dusun' | 'kutla';
+  sinif?: string;
+}
+const { yuz = 'mutlu', sinif = '' } = Astro.props;
+---
+
+<Fragment set:html={bitSvg(yuz, sinif)} />

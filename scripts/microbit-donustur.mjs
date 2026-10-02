@@ -101,7 +101,7 @@ function gorselBlogu(fig, ctx) {
     tur: 'gorsel',
     ad: gorselKaydet(src, ctx),
     alt: (nitelik(img, 'alt') ?? '').trim(),
-    yazi: cap ? satirIci(cocuklar(cap), ctx.baglam, { tekSatir: true }) : '',
+    yazi: cap ? duzMetin(cap) : '', // alt yazı (title) düz metindir: **kalın** gibi işaretler görünmez
     makecode: sinifVar(fig, 'real-blocks'),
   };
 }
@@ -388,7 +388,7 @@ const cumleHarfi = (s) => {
 };
 const yaziAlani = (etiket, satir = 2) => `::yaz[${etiket}]{satir=${satir}}\n\n`;
 const nitelikDegeri = (s) => String(s).replace(/"/g, '”').replace(/\s+/g, ' ').trim();
-const resimYaz = (g) => `![${kac(g.alt)}](./gorseller/${g.ad}${g.yazi ? ` "${g.yazi.replace(/"/g, '\\"')}"` : ''})\n\n`;
+const resimYaz = (g, onek = './gorseller/') => `![${kac(g.alt)}](${onek}${g.ad}${g.yazi ? ` "${g.yazi.replace(/"/g, '\\"')}"` : ''})\n\n`;
 
 function blokYaz(b, ust, say) {
   switch (b.tur) {
@@ -397,9 +397,9 @@ function blokYaz(b, ust, say) {
     case 'liste':
       return `${b.ogeler.map((o, i) => `${b.sirali ? `${i + 1}.` : '-'} ${o}`).join('\n')}\n\n`;
     case 'gorsel':
-      return resimYaz(b);
+      return resimYaz(b, say.gorselOnek);
     case 'galeri':
-      return `:::galeri\n${b.gorseller.map(resimYaz).join('')}:::\n\n`;
+      return `:::galeri\n${b.gorseller.map((g) => resimYaz(g, say.gorselOnek)).join('')}:::\n\n`;
     case 'olmadiysa':
       return `:::olmadiysa\n${b.md}\n:::\n\n`;
     case 'bilgi':
@@ -577,7 +577,7 @@ function projeUret(p) {
 // ── Genel sayfalar ───────────────────────────────────────────────────────────
 function genelUret(g, sira) {
   let govde = '';
-  const say = { yaz: 0 };
+  const say = { yaz: 0, gorselOnek: '../gorseller/' }; // genel sayfalar genel/ altındadır
   const gorseller = new Set();
   let ikiVar = false; // sayfada ## başlık yazıldı mı? Yoksa ilk alt başlıklar ## olur (h1'den h3'e atlanmasın)
   const baslikYaz = (metin, ikinci) => {

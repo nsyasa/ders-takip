@@ -35,7 +35,7 @@ Ortam yeniden aydınlanınca yıldız ekranda kalır mı?
 3. **Eğer** bölümüne yıldızlı **“simgeyi göster”**; **değilse** bölümüne **“ekranı temizle”** koy.
 4. Yapının altına **“duraklat (ms) 200”** ekle. Simülatörde ışığı azaltıp artır.
 
-![Işık seviyesi 80 altındaysa yıldız gösteren, değilse ekranı temizleyen ve 200 milisaniye bekleyen MakeCode blokları](./gorseller/karanlikta-yildiz-makecode.svg "**80** kesin karanlık ölçüsü değil, değiştirilebilir eşiktir.")
+![Işık seviyesi 80 altındaysa yıldız gösteren, değilse ekranı temizleyen ve 200 milisaniye bekleyen MakeCode blokları](./gorseller/karanlikta-yildiz-makecode.svg "80 kesin karanlık ölçüsü değil, değiştirilebilir eşiktir.")
 
 ## Kartında dene
 

@@ -1,0 +1,13 @@
+---
+// Proje numarasını micro:bit LED'leriyle çizer (iki basamak, 3×5 rakamlar). Süs amaçlıdır; numara her yerde yazıyla da verilir.
+// Tamamlanan projede LED'ler parlar (CSS: [data-bitti] ya da .proje-karti[data-durum='bitti']).
+import { ledSayiSvg } from '../lib/led.mjs';
+
+interface Props {
+  numara: number;
+  boyut?: 'kucuk' | 'orta' | 'buyuk';
+}
+const { numara, boyut = 'orta' } = Astro.props;
+---
+
+<Fragment set:html={ledSayiSvg(numara, `led-sayi-${boyut}`)} />

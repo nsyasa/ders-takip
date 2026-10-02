@@ -36,7 +36,7 @@ A’ya ikinci kez basınca ilk görünen sayı yine kaç olur?
 4. Tekrarın içine sırayla **“sayıyı göster sayac”**, **“duraklat (ms) 500”**, **“sayac değişkenini -1 değiştir”** koy.
 5. Tekrar bloğunun altına **“onay simgesini göster”** ekle. Simülatörde A’ya bas; 3, 2, 1 ve ardından işareti izle.
 
-![A basıldığında 3, 2, 1 sayıp ardından onay simgesini gösteren MakeCode blokları](./gorseller/geri-sayim-makecode.svg "**-1 değiştir** sayıyı azaltır; onay işareti tekrar bittikten sonra çıkar.")
+![A basıldığında 3, 2, 1 sayıp ardından onay simgesini gösteren MakeCode blokları](./gorseller/geri-sayim-makecode.svg "-1 değiştir sayıyı azaltır; onay işareti tekrar bittikten sonra çıkar.")
 
 ## Kartında dene
 

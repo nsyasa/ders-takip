@@ -1,23 +1,24 @@
 ---
-import type { Foy } from '../lib/veri';
-import { foyKimligi, foyYolu } from '../lib/veri';
+import type { Foy, Sozluk } from '../lib/veri';
+import { foyKimligi, foyYolu, FOY_SOZLUGU } from '../lib/veri';
 import Direnc from './Direnc.astro';
 
 interface Props {
   foy: Foy;
+  s?: Sozluk;
 }
-const { foy } = Astro.props;
+const { foy, s = FOY_SOZLUGU } = Astro.props;
 const d = foy.data;
 ---
 
 <li class="foy-satir" data-foy-satiri={foyKimligi(foy)} data-adim={d.adimSayisi}>
   <div class="foy-sol" aria-hidden="true">
     <Direnc numara={d.numara} boyut="kucuk" />
-    <span class="foy-no">Föy {String(d.numara).padStart(2, '0')}</span>
+    <span class="foy-no">{s.tek} {String(d.numara).padStart(2, '0')}</span>
   </div>
   <div class="foy-sag">
     <h3 class="foy-baslik">
-      <a class="foy-link" href={foyYolu(foy)}><span class="gorunmez">Föy {d.numara}: </span>{d.baslik}</a>
+      <a class="foy-link" href={foyYolu(foy)}><span class="gorunmez">{s.tek} {d.numara}: </span>{d.baslik}</a>
     </h3>
     {d.altbaslik && <p class="foy-alt">{d.altbaslik}</p>}
     <p class="foy-meta">

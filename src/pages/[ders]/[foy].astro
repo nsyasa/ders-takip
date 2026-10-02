@@ -3,7 +3,10 @@ import { render } from 'astro:content';
 import Taban from '../../layouts/Taban.astro';
 import Ilerleme from '../../components/Ilerleme.astro';
 import Direnc from '../../components/Direnc.astro';
-import { tumDersler, dersFoyleri, foyKimligi, foyYolu, yol, type Ders, type Foy } from '../../lib/veri';
+import LedSayi from '../../components/LedSayi.astro';
+import Yol from '../../components/Yol.astro';
+import Bit from '../../components/Bit.astro';
+import { tumDersler, dersFoyleri, foyKimligi, foyYolu, yol, sozluk, sevimliMi, type Ders, type Foy } from '../../lib/veri';
 
 export async function getStaticPaths() {
   const dersler = (await tumDersler()).filter((d) => d.data.durum === 'hazir');
@@ -23,20 +26,28 @@ export async function getStaticPaths() {
 const { ders, foy, foyler, onceki, sonraki } = Astro.props;
 const d = foy.data;
 const dd = ders.data;
+const s = sozluk(ders);
+const sevimli = sevimliMi(ders);
 const { Content } = await render(foy);
 const kimlik = foyKimligi(foy);
-const baslik = `Föy ${d.numara} — ${d.baslik}`;
+const nn = String(d.numara).padStart(2, '0');
+const baslik = `${s.tek} ${d.numara} — ${d.baslik}`;
 
-// Önkoşullar: `onkosul` okunabilir metinlerdir ("Föy 5 (millis)"); içlerinde "Föy N" geçenler
+// "Sevimli" temada ilerleme, ders.json'daki adım yoludur (Bak, Tahmin et, …): her adım bir onay kutusu.
+const yolAdimlari = dd.adimEtiketleri.length === d.adimSayisi ? dd.adimEtiketleri : [];
+const yolVar = sevimli && yolAdimlari.length > 0;
+
+// Önkoşullar: `onkosul` okunabilir metinlerdir ("Föy 5 (millis)"); içlerinde "Föy N" / "Proje N" geçenler
 // o föye bağlanır ve durum rozeti alır. `onkosulFoyler`de olup metinlerde geçmeyen numaralar eklenir.
 const foyBul = (n: number) => foyler.find((f) => f.data.numara === n);
+const birimRe = new RegExp(`${s.tek}\\s+(\\d+)`, 'i');
 const onkosulOgeleri = d.onkosul.map((metin) => {
-  const n = Number(/Föy\s+(\d+)/i.exec(metin)?.[1]);
+  const n = Number(birimRe.exec(metin)?.[1]);
   return { metin, foy: Number.isNaN(n) ? undefined : foyBul(n) };
 });
 for (const n of d.onkosulFoyler) {
-  if (!d.onkosul.some((m) => new RegExp(`Föy\\s+${n}(?!\\d)`, 'i').test(m))) {
-    onkosulOgeleri.push({ metin: `Föy ${n}`, foy: foyBul(n) });
+  if (!d.onkosul.some((m) => new RegExp(`${s.tek}\\s+${n}(?!\\d)`, 'i').test(m))) {
+    onkosulOgeleri.push({ metin: `${s.tek} ${n}`, foy: foyBul(n) });
   }
 }
 const onkosulVar = onkosulOgeleri.length > 0;
@@ -46,13 +57,13 @@ const kontrolEdilecek = onkosulOgeleri
 const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
 ---
 
-<Taban baslik={baslik} aciklama={d.altbaslik || dd.aciklama} dar>
+<Taban baslik={baslik} aciklama={d.ozet || d.altbaslik || dd.aciklama} dar tema={dd.tema}>
   <div class="kap dar" style={`--renk:${dd.renk}`}>
     <nav class="ekmek" aria-label="Sayfa yolu">
       <ol>
         <li><a href={yol('/')}>Derslerim</a></li>
         <li><a href={yol(`/${ders.id}/`)}>{dd.ad}</a></li>
-        <li aria-current="page">Föy {d.numara}</li>
+        <li aria-current="page">{s.tek} {d.numara}</li>
       </ol>
     </nav>
 
@@ -66,22 +77,68 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
     >
       <header class="foy-ust">
         <div class="foy-etiket" aria-hidden="true">
-          <Direnc numara={d.numara} boyut="buyuk" />
-          <span>Föy {String(d.numara).padStart(2, '0')}</span>
+          {sevimli ? <LedSayi numara={d.numara} boyut="buyuk" /> : <Direnc numara={d.numara} boyut="buyuk" />}
+          <span>{s.tek} {nn}</span>
         </div>
-        <h1 data-pagefind-meta="title"><span class="gorunmez">Föy {d.numara} — </span>{d.baslik}</h1>
+        <h1 data-pagefind-meta="title"><span class="gorunmez">{s.tek} {d.numara} — </span>{d.baslik}</h1>
         {d.altbaslik && <p class="foy-altbaslik">{d.altbaslik}</p>}
-        <ul class="foy-bilgi">
-          <li>Süre <strong>{d.sureDk} dk</strong>{d.dersSaati && ` (${d.dersSaati})`}</li>
-          {d.seviye && <li>Seviye <strong>{d.seviye}</strong></li>}
-        </ul>
+        {sevimli && d.ozet && <p class="foy-ozet">{d.ozet}</p>}
         {
-          d.kavramlar.length > 0 && (
-            <ul class="etiketler" aria-label="Kavramlar">
-              {d.kavramlar.map((k) => (
-                <li>{k}</li>
-              ))}
-            </ul>
+          sevimli ? (
+            <dl class="kunye">
+              <div class="kunye-oge">
+                <dt>Süre</dt>
+                <dd>{d.sureDk} dk</dd>
+              </div>
+              {d.seviye && (
+                <div class="kunye-oge">
+                  <dt>Seviye</dt>
+                  <dd>{d.seviye}</dd>
+                </div>
+              )}
+              {d.kavramlar.length > 0 && (
+                <div class="kunye-oge kunye-genis">
+                  <dt>Yeni fikir</dt>
+                  <dd>
+                    <ul class="cipler">
+                      {d.kavramlar.map((k) => (
+                        <li>{k}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              )}
+              {d.malzemeler.length > 0 && (
+                <div class="kunye-oge kunye-genis">
+                  <dt>Gerekenler</dt>
+                  <dd>
+                    <ul class="cipler">
+                      {d.malzemeler.map((m) => (
+                        <li>
+                          {m.adet ? `${m.adet} × ` : ''}
+                          {m.ad}
+                          {m.not ? ` (${m.not})` : ''}
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              )}
+            </dl>
+          ) : (
+            <>
+              <ul class="foy-bilgi">
+                <li>Süre <strong>{d.sureDk} dk</strong>{d.dersSaati && ` (${d.dersSaati})`}</li>
+                {d.seviye && <li>Seviye <strong>{d.seviye}</strong></li>}
+              </ul>
+              {d.kavramlar.length > 0 && (
+                <ul class="etiketler" aria-label="Kavramlar">
+                  {d.kavramlar.map((k) => (
+                    <li>{k}</li>
+                  ))}
+                </ul>
+              )}
+            </>
           )
         }
         {
@@ -108,99 +165,126 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
         {
           kontrolEdilecek.length > 0 && (
             <p class="onkosul-uyari" data-onkosul-uyari={JSON.stringify(kontrolEdilecek)} data-pagefind-ignore hidden>
-              Önkoşul föy henüz bitmemiş görünüyor. Önce onu bitirmen önerilir. Başka bir cihazda bitirdiysen
+              Önkoşul {s.kucuk} henüz bitmemiş görünüyor. Önce onu bitirmen önerilir. Başka bir cihazda bitirdiysen
               <a href={yol('/verilerim/')}>Verilerim</a> sayfasından yedeğini içe aktarabilirsin.
             </p>
           )
         }
       </header>
 
-      <section class="foy-durum" aria-label="Bu föydeki ilerlemem" data-pagefind-ignore>
+      <section class="foy-durum" id="ilerleme-yolu" aria-label={`Bu ${s.iceri} ilerlemem`} data-pagefind-ignore>
         <div class="foy-durum-ust">
           <strong data-foy-adim-metin>0 / {d.adimSayisi} adım</strong>
           <span class="rozet rozet-baslamadi" data-foy-durum>Başlamadı</span>
         </div>
-        <Ilerleme etiket="Föy ilerlemesi" />
+        {yolVar ? <Yol adimlar={yolAdimlari} /> : <Ilerleme etiket={`${s.tek} ilerlemesi`} />}
       </section>
+
+      {
+        yolVar && (
+          <aside class="odul" data-odul hidden data-pagefind-ignore>
+            <div class="odul-led">
+              <LedSayi numara={d.numara} boyut="buyuk" />
+            </div>
+            <div class="odul-yazi">
+              <p class="odul-baslik">{s.tek} {nn} tamam!</p>
+              <p>{d.adimSayisi} adımın hepsi tamam. LED’in yandı.</p>
+              {sonraki && (
+                <a class="dugme dugme-sari" href={foyYolu(sonraki)}>
+                  {s.sonraki} →
+                </a>
+              )}
+            </div>
+            <Bit yuz="kutla" sinif="odul-bit" />
+          </aside>
+        )
+      }
 
       <p class="depo-uyari" role="status" data-depo-uyari data-pagefind-ignore hidden>
         Bu tarayıcı kayıt tutmaya izin vermiyor (gizli sekme olabilir). Yazdıkların ve işaretlerin yalnız bu sayfa açıkken kalır.
       </p>
 
-      <div class="ozet-kap">
-      <div class="ozet">
-        {
-          d.hedefler.length > 0 && (
-            <section class="ozet-kart" aria-labelledby="ozet-hedef">
-              <h2 id="ozet-hedef">Hedeflerim</h2>
-              <p>Bu föyün sonunda:</p>
-              <ul>
-                {d.hedefler.map((h) => (
-                  <li>{h}</li>
-                ))}
-              </ul>
-            </section>
-          )
-        }
-        {
-          d.malzemeler.length > 0 && (
-            <section class="ozet-kart" aria-labelledby="ozet-malzeme">
-              <h2 id="ozet-malzeme">Malzemeler</h2>
-              <div class="tablo-kap" tabindex="0" role="region" aria-label="Malzemeler tablosu (yatay kaydırılabilir)">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Malzeme</th>
-                      <th>Adet</th>
-                      {malzemeNotu && <th>Not</th>}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {d.malzemeler.map((m) => (
-                      <tr>
-                        <td>{m.ad}</td>
-                        <td>{m.adet}</td>
-                        {malzemeNotu && <td>{m.not}</td>}
-                      </tr>
+      {
+        !sevimli && (
+          <div class="ozet-kap">
+            <div class="ozet">
+              {d.hedefler.length > 0 && (
+                <section class="ozet-kart" aria-labelledby="ozet-hedef">
+                  <h2 id="ozet-hedef">Hedeflerim</h2>
+                  <p>Bu {s.ait} sonunda:</p>
+                  <ul>
+                    {d.hedefler.map((h) => (
+                      <li>{h}</li>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )
-        }
-      </div>
-      </div>
+                  </ul>
+                </section>
+              )}
+              {d.malzemeler.length > 0 && (
+                <section class="ozet-kart" aria-labelledby="ozet-malzeme">
+                  <h2 id="ozet-malzeme">Malzemeler</h2>
+                  <div class="tablo-kap" tabindex="0" role="region" aria-label="Malzemeler tablosu (yatay kaydırılabilir)">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Malzeme</th>
+                          <th>Adet</th>
+                          {malzemeNotu && <th>Not</th>}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {d.malzemeler.map((m) => (
+                          <tr>
+                            <td>{m.ad}</td>
+                            <td>{m.adet}</td>
+                            {malzemeNotu && <td>{m.not}</td>}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
+            </div>
+          </div>
+        )
+      }
 
       <div class="foy-araclar" data-pagefind-ignore>
-        <button type="button" class="dugme dugme-duz" data-hepsini-ac hidden>Tümünü aç</button>
+        {!sevimli && <button type="button" class="dugme dugme-duz" data-hepsini-ac hidden>Tümünü aç</button>}
         <button type="button" class="dugme dugme-duz" data-yazdir hidden>Yazdır (A4)</button>
       </div>
 
       <div class="foy-icerik">
         <Content />
       </div>
+      {
+        yolVar && (
+          <p class="yol-alt" data-pagefind-ignore>
+            <a href="#ilerleme-yolu">↑ Adımları işaretle</a>
+          </p>
+        )
+      }
     </article>
 
-    <nav class="foy-gezinme" aria-label="Föyler arası gezinme">
+    <nav class="foy-gezinme" aria-label={`${s.liste} arası gezinme`}>
       {
         onceki && (
           <a class="onceki" href={foyYolu(onceki)} rel="prev">
-            <small>← Önceki föy</small>
-            Föy {onceki.data.numara} — {onceki.data.baslik}
+            <small>← {s.onceki}</small>
+            {s.tek} {onceki.data.numara} — {onceki.data.baslik}
           </a>
         )
       }
       {
         sonraki && (
           <a class="sonraki" href={foyYolu(sonraki)} rel="next">
-            <small>Sonraki föy →</small>
-            Föy {sonraki.data.numara} — {sonraki.data.baslik}
+            <small>{s.sonraki} →</small>
+            {s.tek} {sonraki.data.numara} — {sonraki.data.baslik}
           </a>
         )
       }
     </nav>
-    <p><a href={yol(`/${ders.id}/`)}>← {dd.ad} föy listesine dön</a></p>
+    <p><a href={yol(`/${ders.id}/`)}>← {dd.ad} {s.kucuk} listesine dön</a></p>
   </div>
 </Taban>
 

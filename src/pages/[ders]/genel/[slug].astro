@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Taban from '../../../layouts/Taban.astro';
-import { tumDersler, dersGenel, yol, type Ders, type Genel } from '../../../lib/veri';
+import { tumDersler, dersGenel, yol, sevimliMi, type Ders, type Genel } from '../../../lib/veri';
 
 export async function getStaticPaths() {
   const dersler = (await tumDersler()).filter((d) => d.data.durum === 'hazir');
@@ -19,7 +19,7 @@ const { ders, sayfa } = Astro.props;
 const { Content } = await render(sayfa);
 ---
 
-<Taban baslik={sayfa.data.baslik} aciklama={`${ders.data.ad}: ${sayfa.data.baslik}`} dar>
+<Taban baslik={sayfa.data.baslik} aciklama={`${ders.data.ad}: ${sayfa.data.baslik}`} dar tema={ders.data.tema}>
   <div class="kap dar" style={`--renk:${ders.data.renk}`}>
     <nav class="ekmek" aria-label="Sayfa yolu">
       <ol>
@@ -28,7 +28,8 @@ const { Content } = await render(sayfa);
         <li aria-current="page">{sayfa.data.baslik}</li>
       </ol>
     </nav>
-    <article data-pagefind-body>
+    <article data-pagefind-body class:list={['genel-icerik', { 'genel-sevimli': sevimliMi(ders) }]}>
+      {sayfa.data.ustbilgi && <p class="genel-ustbilgi">{sayfa.data.ustbilgi}</p>}
       <h1 data-pagefind-meta="title">{sayfa.data.baslik}</h1>
       <Content />
     </article>

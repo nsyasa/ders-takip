@@ -23,12 +23,25 @@ const dersler = defineCollection({
     foySayisi: z.number().default(0),
     toplamSureDk: z.number().default(0),
     genelSayfalar: z.array(z.string()).default([]),
+    // — Görünüm ve sözcük dağarcığı (isteğe bağlı; ESP32 gibi eski dersler hiçbirini yazmaz) —
+    /** Sayfalarda "Föy 3" mü, "Proje 3" mü denir */
+    birim: z.enum(['foy', 'proje']).default('foy'),
+    /** "sevimli": renkli, çocuk dostu görünüm (LED rakamlar, Bit maskotu, 6 adımlı yol); "okunur": sade çalışma föyü */
+    tema: z.enum(['okunur', 'sevimli']).default('okunur'),
+    /** gorseller/<kapak>.webp: ders kartı ve ders sayfası başlığındaki çizim */
+    kapak: z.string().default(''),
+    kapakAlt: z.string().default(''),
+    etiketler: z.array(z.string()).default([]),
+    /** Föy/proje sayfasının üstündeki adım yolu (ör. Bak, Tahmin et, Kodla…): her adım bir onay kutusudur */
+    adimEtiketleri: z.array(z.object({ ad: z.string(), aciklama: z.string().default('') })).default([]),
+    /** Ders sayfasında föyler/projeler bu gruplara ayrılır (numara aralığı) */
+    uniteler: z.array(z.object({ ad: z.string(), ilk: z.number(), son: z.number(), renk: z.string().default('') })).default([]),
   }),
 });
 
 const foyler = defineCollection({
   loader: glob({
-    pattern: '*/foy-*.md',
+    pattern: '*/{foy,proje}-*.md',
     base: './icerik',
     generateId: ({ entry }) => entry.replace(/\.md$/, ''),
   }),
@@ -38,6 +51,8 @@ const foyler = defineCollection({
     slug: z.string(),
     baslik: z.string(),
     altbaslik: z.string().default(''),
+    /** Başlığın altındaki kısa açıklama (tek sayfalık proje girişi) */
+    ozet: z.string().default(''),
     dersSaati: z.string().default(''),
     sureDk: z.number().default(0),
     seviye: z.string().default(''),
@@ -66,6 +81,8 @@ const genel = defineCollection({
     baslik: z.string(),
     slug: z.string(),
     sira: z.number().default(99),
+    /** Başlığın üstündeki küçük etiket */
+    ustbilgi: z.string().default(''),
   }),
 });
 

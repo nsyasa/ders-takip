@@ -35,7 +35,7 @@ Başlangıçta 0 görürsen A’ya üç kez basınca hangi sayı görünür?
 3. **Giriş** bölümünden **“A tuşuna basıldığında”** bloğunu al. İçine **“sayac değişkenini 1 değiştir”**, ardından **“sayıyı göster sayac”** koy.
 4. Simülatörde A’ya üç kez bas ve sayıları sırayla izle.
 
-![Başlangıçta sayacı sıfır yapan ve A tuşuyla bir artırıp gösteren gerçek MakeCode blokları](./gorseller/basis-sayaci-makecode.svg "Gösterilen sayı, **sayac** değişkeninden gelir.")
+![Başlangıçta sayacı sıfır yapan ve A tuşuyla bir artırıp gösteren gerçek MakeCode blokları](./gorseller/basis-sayaci-makecode.svg "Gösterilen sayı, sayac değişkeninden gelir.")
 
 ## Kartında dene
 

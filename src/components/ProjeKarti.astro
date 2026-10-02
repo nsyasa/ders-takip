@@ -1,0 +1,26 @@
+---
+// "Sevimli" ders sayfasındaki proje kartı: LED numara + başlık + durum. Kart bir bağlantıdır (tamamı tıklanır).
+// Durum rozeti ve data-durum, ilerleme-goster.ts tarafından localStorage'a göre güncellenir.
+import type { Foy, Sozluk } from '../lib/veri';
+import { foyKimligi, foyYolu } from '../lib/veri';
+import LedSayi from './LedSayi.astro';
+
+interface Props {
+  foy: Foy;
+  s: Sozluk;
+}
+const { foy, s } = Astro.props;
+const d = foy.data;
+---
+
+<li class="proje-karti" data-foy-satiri={foyKimligi(foy)} data-adim={d.adimSayisi} data-durum="baslamadi">
+  <a class="proje-link" href={foyYolu(foy)}>
+    <LedSayi numara={d.numara} boyut="orta" />
+    <span class="proje-baslik"><span class="gorunmez">{s.tek} {d.numara}: </span>{d.baslik}</span>
+    <span class="proje-alt">
+      <span class="rozet rozet-baslamadi" data-durum-rozet>Başlamadı</span>
+      <span class="proje-sure">{d.sureDk} dk</span>
+      {d.seviye === 'İleri' && <span class="proje-seviye">İleri</span>}
+    </span>
+  </a>
+</li>

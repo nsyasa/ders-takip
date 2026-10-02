@@ -2,14 +2,19 @@
 import '../styles/yazi-tipleri.css';
 import '../styles/tema.css';
 import '../styles/bilesenler.css';
+import '../styles/sevimli.css';
 import '../styles/yazdir.css';
 import Direnc from '../components/Direnc.astro';
+import SevimliSemboller from '../components/SevimliSemboller.astro';
 import { yol } from '../lib/veri';
 // Sayfada görünen yazı tipleri (gövde + mono etiketler) çizimden önce yüklensin: yazı tipi gelince sayfa kaymasın.
 import atkinson from '../assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2?url';
 import atkinsonExt from '../assets/fonts/atkinson-hyperlegible-next-latin-ext-wght-normal.woff2?url';
 import mono from '../assets/fonts/jetbrains-mono-latin-wght-normal.woff2?url';
 import monoExt from '../assets/fonts/jetbrains-mono-latin-ext-wght-normal.woff2?url';
+// Fredoka (başlıklar) yalnız "sevimli" temalı derslerde yüklenir
+import fredoka from '../assets/fonts/fredoka-latin-wght-normal.woff2?url';
+import fredokaExt from '../assets/fonts/fredoka-latin-ext-wght-normal.woff2?url';
 
 interface Props {
   baslik?: string;
@@ -17,9 +22,18 @@ interface Props {
   aktif?: 'ana' | 'verilerim' | 'ara';
   /** Dar (okuma sütunu) sayfalarda üst çubuk ve alt bilgi de aynı genişliğe hizalanır */
   dar?: boolean;
+  /** Dersin teması (ders.json): "sevimli" sayfalar renkli, çocuk dostu görünür */
+  tema?: 'okunur' | 'sevimli';
 }
 
-const { baslik, aciklama = 'Öğrenciler için reklamsız ders takip sitesi. İlerlemen yalnız bu cihazda saklanır.', aktif, dar = false } = Astro.props;
+const {
+  baslik,
+  aciklama = 'Öğrenciler için reklamsız ders takip sitesi. İlerlemen yalnız bu cihazda saklanır.',
+  aktif,
+  dar = false,
+  tema = 'okunur',
+} = Astro.props;
+const sevimli = tema === 'sevimli';
 const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
 ---
 
@@ -36,6 +50,8 @@ const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
     <link rel="preload" as="font" type="font/woff2" href={atkinsonExt} crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href={mono} crossorigin="anonymous" />
     <link rel="preload" as="font" type="font/woff2" href={monoExt} crossorigin="anonymous" />
+    {sevimli && <link rel="preload" as="font" type="font/woff2" href={fredoka} crossorigin="anonymous" />}
+    {sevimli && <link rel="preload" as="font" type="font/woff2" href={fredokaExt} crossorigin="anonymous" />}
     <!-- Tema, sayfa çizilmeden önce uygulanır (yanıp sönmeyi önler). -->
     <script is:inline>
       try {
@@ -44,7 +60,8 @@ const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
       } catch (e) {}
     </script>
   </head>
-  <body>
+  <body class:list={{ sevimli }}>
+    {sevimli && <SevimliSemboller />}
     <a class="atla" href="#icerik">İçeriğe geç</a>
     <header class="ust">
       <div class:list={['kap', 'ust-ic', { dar }]}>

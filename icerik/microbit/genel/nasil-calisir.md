@@ -8,7 +8,7 @@ ustbilgi: "Bir bilgi gelir, bir cevap çıkar"
 
 A düğmesine basarsın. micro:bit yazdığın komutu çalıştırır. Örnekte ekranda A harfi görünür.
 
-![Üç adım: A düğmesine basmak giriştir, kart komutu izler, 5 × 5 LED ekranda A harfi çıkar.](./gorseller/giris-kod-cikis.svg "1 Giriş: A düğmesine basarsın. 2 Kod: micro:bit komutu izler. 3 Çıkış: ekranda A harfi görünür.")
+![Üç adım: A düğmesine basmak giriştir, kart komutu izler, 5 × 5 LED ekranda A harfi çıkar.](../gorseller/giris-kod-cikis.svg "1 Giriş: A düğmesine basarsın. 2 Kod: micro:bit komutu izler. 3 Çıkış: ekranda A harfi görünür.")
 
 **Başka neler giriş olabilir?** A/B düğmeleri • eğilme • sallama • ışık • ses
 

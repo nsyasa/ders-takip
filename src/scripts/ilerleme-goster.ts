@@ -1,6 +1,6 @@
-// Ana sayfa, ders sayfası ve föy sayfasındaki ilerleme göstergelerini localStorage'dan doldurur.
+// Ana sayfa, ders sayfası ve föy/proje sayfasındaki ilerleme göstergelerini localStorage'dan doldurur.
 // Sayfalar statik üretildiği için ilk HTML "hiç başlamadı" durumundadır; bu betik üstüne yazar.
-import { oku, foyDurumu, DEGISTI, FOY_KIMLIGI, BOLUM_KIMLIGI } from '../lib/depo';
+import { oku, foyDurumu, DEGISTI, FOY_KIMLIGI, BOLUM_KIMLIGI, type Durum } from '../lib/depo';
 import { cubukYaz, rozetYaz } from '../lib/arayuz';
 
 function dersleriGuncelle(): void {
@@ -12,12 +12,15 @@ function dersleriGuncelle(): void {
     } catch {
       /* bozuk veri: boş say */
     }
+    const birim = kap.dataset.birim || 'föy';
     const foyler = Object.entries(adimlar);
+    const durumlar = new Map<string, Durum>();
     let bitti = 0;
     let yapilan = 0;
     let toplam = 0;
     for (const [foy, n] of foyler) {
       const s = foyDurumu(d, foy, n);
+      durumlar.set(foy, s.durum);
       toplam += n;
       yapilan += s.yapilan;
       if (s.durum === 'bitti') bitti += 1;
@@ -27,17 +30,24 @@ function dersleriGuncelle(): void {
     const metin = kap.querySelector<HTMLElement>('[data-ilerleme-metin]');
     if (metin) {
       metin.textContent =
-        `${bitti} / ${foyler.length} föy bitti` + (yapilan > 0 ? ` · adımların %${Math.round(yuzde)}'i tamam` : '');
+        `${bitti} / ${foyler.length} ${birim} bitti` + (yapilan > 0 ? ` · adımların %${Math.round(yuzde)}'i tamam` : '');
     }
+    // LED paneli: biten proje yanar, başlanan yarı yanar
+    kap.querySelectorAll<SVGElement>('[data-led]').forEach((led) => {
+      const durum = durumlar.get(led.dataset.led ?? '');
+      led.classList.toggle('yanik', durum === 'bitti');
+      led.classList.toggle('yari', durum === 'devam');
+    });
   });
 }
 
 function foySatirlariniGuncelle(): void {
   const d = oku();
   document.querySelectorAll<HTMLElement>('[data-foy-satiri]').forEach((satir) => {
+    const durum = foyDurumu(d, satir.dataset.foySatiri!, Number(satir.dataset.adim) || 0).durum;
+    satir.dataset.durum = durum;
     const rozet = satir.querySelector<HTMLElement>('[data-durum-rozet]');
-    if (!rozet) return;
-    rozetYaz(rozet, foyDurumu(d, satir.dataset.foySatiri!, Number(satir.dataset.adim) || 0).durum);
+    if (rozet) rozetYaz(rozet, durum);
   });
 }
 

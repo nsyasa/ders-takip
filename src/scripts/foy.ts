@@ -1,4 +1,4 @@
-// Föy sayfası: onay kutuları, yazma alanları, ilerleme, "kaldığın yer", akordeon ve yazdırma.
+// Föy/proje sayfası: onay kutuları, yazma alanları, ilerleme, "kaldığın yer", akordeon ve yazdırma.
 import './icerik';
 import {
   oku,
@@ -9,6 +9,7 @@ import {
   foyDurumu,
   BOLUM_KIMLIGI,
   DEGISTI,
+  type Durum,
 } from '../lib/depo';
 import { cubukYaz, rozetYaz } from '../lib/arayuz';
 
@@ -21,6 +22,11 @@ if (kok) {
   const kutular = [...kok.querySelectorAll<HTMLInputElement>('input.adim-kutu')];
   const alanlar = [...kok.querySelectorAll<HTMLTextAreaElement>('textarea[data-yaz]')];
   const bolumler = [...kok.querySelectorAll<HTMLDetailsElement>('details.bolum')];
+
+  // "Sevimli" tema: adım yolu (altı adım), ödül kartı
+  const yol = kok.querySelector<HTMLElement>('[data-yol]');
+  const ipucu = kok.querySelector<HTMLElement>('[data-yol-ipucu]');
+  const odul = kok.querySelector<HTMLElement>('[data-odul]');
 
   const uyari = kok.querySelector<HTMLElement>('[data-depo-uyari]');
   if (uyari && !depoKullanilabilir()) uyari.hidden = false;
@@ -36,6 +42,29 @@ if (kok) {
     gostergeleriGuncelle();
   }
 
+  /** Adım yolu: ilk işaretsiz adım "sıradaki" olur ve kısa bir ipucu yazılır; 6/6 olunca ödül kartı açılır. */
+  function yolGuncelle(durum: Durum): void {
+    kok!.toggleAttribute('data-bitti', durum === 'bitti');
+    if (odul) odul.hidden = durum !== 'bitti';
+    if (!yol) return;
+    let siradaki: HTMLElement | undefined;
+    yol.querySelectorAll<HTMLElement>('.yol-adim').forEach((li) => {
+      const isaretli = li.querySelector<HTMLInputElement>('input')?.checked ?? false;
+      const bu = !isaretli && !siradaki;
+      if (bu) siradaki = li;
+      li.classList.toggle('siradaki', bu);
+    });
+    if (ipucu) {
+      if (siradaki) {
+        const ad = document.createElement('strong');
+        ad.textContent = siradaki.dataset.ad ?? '';
+        ipucu.replaceChildren('Sıradaki: ', ad, siradaki.dataset.aciklama ? ` — ${siradaki.dataset.aciklama}` : '');
+      } else {
+        ipucu.replaceChildren();
+      }
+    }
+  }
+
   function gostergeleriGuncelle(): void {
     const s = foyDurumu(oku(), foy, toplam);
     const metin = kok!.querySelector<HTMLElement>('[data-foy-adim-metin]');
@@ -44,11 +73,14 @@ if (kok) {
     if (rozet) rozetYaz(rozet, s.durum);
     const durumKutusu = kok!.querySelector<HTMLElement>('.foy-durum');
     if (durumKutusu) cubukYaz(durumKutusu, toplam ? (s.yapilan / toplam) * 100 : 0);
+    yolGuncelle(s.durum);
   }
 
   // — "Kaldığın yer": son çalışılan bölüm —————————————————————————————————
   function bolumKimligi(oge: Element | null): string | undefined {
-    const id = oge?.closest('details.bolum')?.querySelector('summary h2')?.id;
+    // Akordeonda başlık <summary> içindedir; "sevimli" temada bölümler sabit <section>'dır
+    const bolum = oge?.closest('.bolum');
+    const id = (bolum?.querySelector('summary h2') ?? bolum?.querySelector('h2'))?.id;
     return id && BOLUM_KIMLIGI.test(id) ? id : undefined;
   }
   function sonuIsle(oge: Element | null): void {

@@ -1,8 +1,13 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import Taban from '../../layouts/Taban.astro';
 import FoySatiri from '../../components/FoySatiri.astro';
+import ProjeKarti from '../../components/ProjeKarti.astro';
 import Ilerleme from '../../components/Ilerleme.astro';
-import { tumDersler, dersFoyleri, dersGenel, foyKimligi, sureMetni, yol } from '../../lib/veri';
+import LedPanel from '../../components/LedPanel.astro';
+import { tumDersler, dersFoyleri, dersGenel, foyKimligi, sureMetni, yol, sozluk, sevimliMi, uniteGrupla } from '../../lib/veri';
+import { rasterBoyutu } from '../../lib/gorsel-boyut.mjs';
 
 export async function getStaticPaths() {
   const dersler = (await tumDersler()).filter((d) => d.data.durum === 'hazir');
@@ -16,11 +21,27 @@ export async function getStaticPaths() {
 
 const { ders, foyler, genel } = Astro.props;
 const d = ders.data;
+const s = sozluk(ders);
+const sevimli = sevimliMi(ders);
 const toplamDk = foyler.reduce((t, f) => t + f.data.sureDk, 0);
-const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(f), f.data.adimSayisi])));
+const adimHaritasi = (liste: typeof foyler) => JSON.stringify(Object.fromEntries(liste.map((f) => [foyKimligi(f), f.data.adimSayisi])));
+const adimlar = adimHaritasi(foyler);
+const gruplar = uniteGrupla(ders, foyler);
+const iki = (n: number) => String(n).padStart(2, '0');
+
+// Kapak çizimi (sevimli): kaymasın diye en-boy oranı dosyadan okunur
+const kapakDosya = d.kapak ? `${d.kapak}.webp` : '';
+let kapakBoyut: { w: number; h: number } | null = null;
+if (kapakDosya) {
+  try {
+    kapakBoyut = rasterBoyutu(fs.readFileSync(path.join(process.cwd(), 'icerik', ders.id, 'gorseller', kapakDosya)));
+  } catch {
+    kapakBoyut = null;
+  }
+}
 ---
 
-<Taban baslik={d.ad} aciklama={d.aciklama}>
+<Taban baslik={d.ad} aciklama={d.aciklama} tema={d.tema}>
   <div class="kap" style={`--renk:${d.renk}`}>
     <nav class="ekmek" aria-label="Sayfa yolu">
       <ol>
@@ -29,20 +50,96 @@ const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(
       </ol>
     </nav>
 
-    <header class="ders-baslik" data-ders-ilerleme={ders.id} data-adimlar={adimlar}>
-      <h1>{d.ad}</h1>
-      <p class="ders-alt">{d.altbaslik}</p>
-      <p>{d.aciklama}</p>
-      <p class="ders-meta">{foyler.length} föy · yaklaşık {sureMetni(toplamDk)}</p>
-      <Ilerleme etiket={`${d.ad} ilerlemesi`} metin={`0 / ${foyler.length} föy bitti`} />
-    </header>
+    {
+      sevimli ? (
+        <header class="ders-baslik ders-kahraman" data-ders-ilerleme={ders.id} data-adimlar={adimlar} data-birim={s.kucuk}>
+          <div class="kahraman-yazi">
+            <h1>{d.ad}</h1>
+            <p class="ders-alt">{d.altbaslik}</p>
+            <p class="kahraman-aciklama">{d.aciklama}</p>
+            {d.adimEtiketleri.length > 0 && (
+              <ol class="adim-yolu" aria-label="Her projede bu altı adımı izlersin">
+                {d.adimEtiketleri.map((a) => (
+                  <li>{a.ad}</li>
+                ))}
+              </ol>
+            )}
+          </div>
+          {kapakDosya && (
+            <img
+              class="kahraman-resim"
+              src={yol(`/${ders.id}/gorseller/${kapakDosya}`)}
+              alt={d.kapakAlt}
+              width={kapakBoyut?.w}
+              height={kapakBoyut?.h}
+              decoding="async"
+              fetchpriority="high"
+            />
+          )}
+          <div class="kahraman-ilerleme">
+            <LedPanel kimlikler={foyler.map(foyKimligi)} sinif="led-panel-buyuk" />
+            <div class="kahraman-metin">
+              <p class="ilerleme-metni" data-ilerleme-metin>
+                0 / {foyler.length} {s.kucuk} bitti
+              </p>
+              <p class="ders-meta">
+                {foyler.length} {s.kucuk} · yaklaşık {sureMetni(toplamDk)}
+              </p>
+              <p class="kahraman-ipucu">Her proje bitince bir LED yanar.</p>
+            </div>
+          </div>
+        </header>
+      ) : (
+        <header class="ders-baslik" data-ders-ilerleme={ders.id} data-adimlar={adimlar} data-birim={s.kucuk}>
+          <h1>{d.ad}</h1>
+          <p class="ders-alt">{d.altbaslik}</p>
+          <p>{d.aciklama}</p>
+          <p class="ders-meta">
+            {foyler.length} {s.kucuk} · yaklaşık {sureMetni(toplamDk)}
+          </p>
+          <Ilerleme etiket={`${d.ad} ilerlemesi`} metin={`0 / ${foyler.length} ${s.kucuk} bitti`} />
+        </header>
+      )
+    }
 
-    <section aria-labelledby="foyler-baslik">
-      <h2 id="foyler-baslik">Föyler</h2>
-      <ol class="foy-listesi">
-        {foyler.map((f) => <FoySatiri foy={f} />)}
-      </ol>
-    </section>
+    {
+      sevimli && gruplar.length > 0 ? (
+        gruplar.map((g, i) => (
+          <section
+            class="unite"
+            aria-labelledby={`unite-${i}`}
+            style={g.renk ? `--unite:${g.renk}` : undefined}
+            data-ders-ilerleme={`${ders.id}-unite-${i}`}
+            data-adimlar={adimHaritasi(g.foyler)}
+            data-birim={s.kucuk}
+          >
+            <h2 id={`unite-${i}`} class="unite-baslik">
+              <span class="unite-aralik">
+                {iki(g.ilk)}–{iki(g.son)}
+              </span>
+              {g.ad}
+            </h2>
+            <p class="ilerleme-metni unite-metin" data-ilerleme-metin>
+              0 / {g.foyler.length} {s.kucuk} bitti
+            </p>
+            <ol class="proje-izgara">
+              {g.foyler.map((f) => (
+                <ProjeKarti foy={f} s={s} />
+              ))}
+            </ol>
+          </section>
+        ))
+      ) : (
+        <section aria-labelledby="foyler-baslik">
+          <h2 id="foyler-baslik">{s.liste}</h2>
+          <ol class="foy-listesi">
+            {foyler.map((f) => (
+              <FoySatiri foy={f} s={s} />
+            ))}
+          </ol>
+        </section>
+      )
+    }
 
     {
       genel.length > 0 && (

@@ -33,9 +33,47 @@ export async function dersGenel(ders: Ders): Promise<Genel[]> {
   });
 }
 
-export const foyAdi = (f: Foy) => `Föy ${f.data.numara}`;
+/** Dersin "birim" sözcükleri: ESP32'de föy, micro:bit'te proje. */
+export interface Sozluk {
+  tek: string; // "Föy"
+  kucuk: string; // "föy"
+  liste: string; // "Föyler"
+  onceki: string;
+  sonraki: string;
+  ait: string; // "föyün" (Bu föyün sonunda)
+  iceri: string; // "föydeki" (Bu föydeki ilerlemem)
+}
+const SOZLUKLER: Record<'foy' | 'proje', Sozluk> = {
+  foy: { tek: 'Föy', kucuk: 'föy', liste: 'Föyler', onceki: 'Önceki föy', sonraki: 'Sonraki föy', ait: 'föyün', iceri: 'föydeki' },
+  proje: { tek: 'Proje', kucuk: 'proje', liste: 'Projeler', onceki: 'Önceki proje', sonraki: 'Sonraki proje', ait: 'projenin', iceri: 'projedeki' },
+};
+export const FOY_SOZLUGU: Sozluk = SOZLUKLER.foy;
+export const sozluk = (ders: Ders): Sozluk => SOZLUKLER[ders.data.birim];
+export const sevimliMi = (ders: Ders): boolean => ders.data.tema === 'sevimli';
+
+export const foyAdi = (f: Foy, s: Sozluk) => `${s.tek} ${f.data.numara}`;
 export const foyKimligi = (f: Foy) => `${f.data.ders}/${f.data.slug}`;
 export const foyYolu = (f: Foy) => yol(`/${f.data.ders}/${f.data.slug}/`);
+
+export interface UniteGrubu {
+  ad: string;
+  renk: string;
+  ilk: number;
+  son: number;
+  foyler: Foy[];
+}
+/** Ders sayfasındaki üniteler: numara aralığına göre; hiçbir üniteye girmeyen föyler "Diğer" altında toplanır. */
+export function uniteGrupla(ders: Ders, foyler: Foy[]): UniteGrubu[] {
+  const uniteler = ders.data.uniteler;
+  if (uniteler.length === 0) return [];
+  const icinde = (f: Foy, u: { ilk: number; son: number }) => f.data.numara >= u.ilk && f.data.numara <= u.son;
+  const gruplar: UniteGrubu[] = uniteler.map((u) => ({ ...u, foyler: foyler.filter((f) => icinde(f, u)) }));
+  const disarda = foyler.filter((f) => !uniteler.some((u) => icinde(f, u)));
+  if (disarda.length) {
+    gruplar.push({ ad: 'Diğer', renk: '', ilk: disarda[0].data.numara, son: disarda[disarda.length - 1].data.numara, foyler: disarda });
+  }
+  return gruplar.filter((g) => g.foyler.length > 0);
+}
 
 export function sureMetni(dk: number): string {
   if (dk < 60) return `${dk} dk`;

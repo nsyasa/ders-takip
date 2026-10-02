@@ -8,9 +8,9 @@ ustbilgi: "Kartını bul, özelliklerini keşfet"
 
 Kartı eline al. Ön ve arka yüzü ayrı ayrı incele; numaralar her yüzde yeniden başlar.
 
-![V2 ön yüzünde düğmeler, 5 çarpı 5 LED ekranı, dokunmatik logo ve mikrofon ışığı numaralarla gösteriliyor](./gorseller/karti-on-yuz.webp "ÖN YÜZ")
+![V2 ön yüzünde düğmeler, 5 çarpı 5 LED ekranı, dokunmatik logo ve mikrofon ışığı numaralarla gösteriliyor](../gorseller/karti-on-yuz.webp "ÖN YÜZ")
 
-![V2 arka yüzünde USB girişi, hoparlör ve mikrofon numaralarla gösteriliyor](./gorseller/karti-arka-yuz.webp "ARKA YÜZ")
+![V2 arka yüzünde USB girişi, hoparlör ve mikrofon numaralarla gösteriliyor](../gorseller/karti-arka-yuz.webp "ARKA YÜZ")
 
 ## Ön yüzde bul
 
