@@ -802,14 +802,11 @@ body.sevimli {
   text-wrap: balance;
 }
 .yol-ipucu {
-  min-height: 1.4em;
+  min-height: 2.9em; /* iki satır: ipucu metni değişince altındaki içerik kaymaz */
   margin: 0.4rem 0 0;
   color: var(--soluk);
   font-size: 0.9rem;
   text-align: center;
-}
-.yol-ipucu:empty {
-  display: none;
 }
 .yol-ipucu strong {
   color: var(--yazi);

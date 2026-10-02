@@ -60,7 +60,7 @@ if (kok) {
         ad.textContent = siradaki.dataset.ad ?? '';
         ipucu.replaceChildren('Sıradaki: ', ad, siradaki.dataset.aciklama ? ` — ${siradaki.dataset.aciklama}` : '');
       } else {
-        ipucu.replaceChildren();
+        ipucu.replaceChildren(`Harika! ${toplam} adımın hepsi tamam.`);
       }
     }
   }

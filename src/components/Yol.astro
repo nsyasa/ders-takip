@@ -28,4 +28,7 @@ const { adimlar } = Astro.props;
     ))
   }
 </ol>
-<p class="yol-ipucu" data-yol-ipucu aria-live="polite" data-pagefind-ignore></p>
+<!-- Başlangıç ipucu sunucuda yazılır: betik çalışınca metin değişse bile yer ayrılı olduğu için sayfa kaymaz -->
+<p class="yol-ipucu" data-yol-ipucu aria-live="polite" data-pagefind-ignore>
+  Sıradaki: <strong>{adimlar[0]?.ad}</strong>{adimlar[0]?.aciklama ? ` — ${adimlar[0].aciklama}` : ''}
+</p>
