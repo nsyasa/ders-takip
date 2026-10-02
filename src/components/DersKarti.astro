@@ -8,8 +8,10 @@ import LedPanel from './LedPanel.astro';
 interface Props {
   ders: Ders;
   foyler: Foy[];
+  /** Ana sayfadaki bütün kartlar kapak çizimli mi? Öyleyse resimsiz bir ders de aynı yapıda (resim yeri boş) çizilir. */
+  galeri?: boolean;
 }
-const { ders, foyler } = Astro.props;
+const { ders, foyler, galeri = false } = Astro.props;
 const d = ders.data;
 const hazir = d.durum === 'hazir';
 const s = sozluk(ders);
@@ -18,33 +20,37 @@ const toplamDk = foyler.reduce((t, f) => t + f.data.sureDk, 0);
 // Her föyün onay kutusu sayısı: ilerleme çizgisi bunlarla hesaplanır.
 const adimlar = JSON.stringify(Object.fromEntries(foyler.map((f) => [foyKimligi(f), f.data.adimSayisi])));
 
-// Kapak çizimi (yalnız "sevimli" ders kartı): en-boy oranı korunur, sayfa yüklenirken kaymaz.
-const kapak = sevimli ? kapakBilgisi(ders.id, d.kapak) : null;
+// Kapak çizimi (ders.json > kapak): en-boy oranı korunur, sayfa yüklenirken kaymaz.
+const kapak = kapakBilgisi(ders.id, d.kapak);
+const resimli = Boolean(kapak) || galeri;
 ---
 
 <li
-  class:list={['ders-karti', { yakinda: !hazir, 'ders-karti-sevimli': sevimli }]}
+  class:list={['ders-karti', { yakinda: !hazir, 'ders-karti-resimli': resimli, 'ders-karti-sevimli': sevimli }]}
   style={`--renk:${d.renk}`}
   data-ders-ilerleme={hazir ? ders.id : undefined}
   data-adimlar={hazir ? adimlar : undefined}
   data-birim={hazir ? s.kucuk : undefined}
 >
   {
-    sevimli ? (
+    resimli ? (
       <>
-        {kapak && (
-          <img
-            class="kart-resim"
-            src={kapak.src}
-            srcset={kapak.srcset}
-            sizes="(min-width: 70rem) 984px, calc(100vw - 2.5rem)"
-            alt={d.kapakAlt}
-            width={kapak.width}
-            height={kapak.height}
-            loading="lazy"
-            decoding="async"
-          />
-        )}
+        <div class="kart-resim-kap">
+          {kapak && (
+            <img
+              class="kart-resim"
+              src={kapak.src}
+              srcset={kapak.srcset}
+              sizes="(min-width: 64rem) 330px, (min-width: 40rem) 45vw, calc(100vw - 2.5rem)"
+              alt={d.kapakAlt}
+              width={kapak.width}
+              height={kapak.height}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+          {!hazir && <span class="rozet rozet-yakinda kart-yakinda">Yakında</span>}
+        </div>
         <div class="ders-govde kart-govde">
           {d.etiketler.length > 0 && (
             <ul class="etiketler kart-etiketler" aria-label="Sınıf ve yaş">
@@ -53,20 +59,31 @@ const kapak = sevimli ? kapakBilgisi(ders.id, d.kapak) : null;
               ))}
             </ul>
           )}
-          <h2>
-            <a href={yol(`/${ders.id}/`)}>{d.ad}</a>
-          </h2>
-          <p class="ders-alt">{d.altbaslik}</p>
+          <h2>{hazir ? <a href={yol(`/${ders.id}/`)}>{d.ad}</a> : d.ad}</h2>
+          {hazir && <p class="ders-alt">{d.altbaslik}</p>}
           <p class="ders-aciklama">{d.aciklama}</p>
-          <div class="kart-ilerleme">
-            <LedPanel kimlikler={foyler.map(foyKimligi)} sinif="led-panel-kart" />
-            <p class="ders-meta kart-meta">
-              <strong data-ilerleme-metin>0 / {foyler.length} {s.kucuk} bitti</strong>
-              <span>
-                {foyler.length} {s.kucuk} · yaklaşık {sureMetni(toplamDk)}
-              </span>
-            </p>
-          </div>
+          {hazir && (
+            <div class="kart-ilerleme">
+              {sevimli ? (
+                <>
+                  <LedPanel kimlikler={foyler.map(foyKimligi)} sinif="led-panel-kart" />
+                  <p class="ders-meta kart-meta">
+                    <strong data-ilerleme-metin>0 / {foyler.length} {s.kucuk} bitti</strong>
+                    <span>
+                      {foyler.length} {s.kucuk} · yaklaşık {sureMetni(toplamDk)}
+                    </span>
+                  </p>
+                </>
+              ) : (
+                <div class="kart-cubuk">
+                  <p class="ders-meta">
+                    {foyler.length} {s.kucuk} · yaklaşık {sureMetni(toplamDk)}
+                  </p>
+                  <Ilerleme etiket={`${d.ad} ilerlemesi`} metin={`0 / ${foyler.length} ${s.kucuk} bitti`} />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </>
     ) : (

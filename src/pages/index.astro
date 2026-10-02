@@ -6,6 +6,8 @@ import { tumDersler, dersFoyleri, yol, foyKimligi } from '../lib/veri';
 const dersler = await tumDersler();
 const satirlar = await Promise.all(dersler.map(async (ders) => ({ ders, foyler: await dersFoyleri(ders.id) })));
 const gecerliFoyler = satirlar.flatMap((s) => s.foyler.map(foyKimligi));
+// Kapak çizimi olan en az bir ders varsa ana sayfa kapak kartı galerisi olur (kapaksız ders de aynı yapıda çizilir)
+const galeri = satirlar.some((s) => Boolean(s.ders.data.kapak));
 ---
 
 <Taban baslik="Derslerim" aktif="ana">
@@ -30,8 +32,8 @@ const gecerliFoyler = satirlar.flatMap((s) => s.foyler.map(foyKimligi));
       <a class="dugme dugme-vurgu" href={yol('/')} data-devam-link>Devam et</a>
     </section>
 
-    <ul class="dersler">
-      {satirlar.map(({ ders, foyler }) => <DersKarti ders={ders} foyler={foyler} />)}
+    <ul class:list={['dersler', { 'dersler-galeri': galeri }]}>
+      {satirlar.map(({ ders, foyler }) => <DersKarti ders={ders} foyler={foyler} galeri={galeri} />)}
     </ul>
 
     <p class="bilgi-notu">

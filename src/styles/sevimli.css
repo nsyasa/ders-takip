@@ -247,10 +247,7 @@ body.sevimli {
   --yazi: #14213d;
   --soluk: #45506b;
   --vurgu: #08706f;
-  display: block;
-  margin: 1.25rem 0;
-  padding: 0;
-  overflow: hidden;
+  --renk-uygun: #08706f;
   border: 3px solid #14213d;
   border-radius: 22px;
   background: #fff8ea;
@@ -269,22 +266,17 @@ body.sevimli {
     box-shadow: 5px 5px 0 light-dark(#14213d, #05080f);
   }
 }
-.ders-karti-sevimli .kart-resim {
-  display: block;
-  width: 100%;
-  height: auto;
+.ders-karti-sevimli .kart-resim-kap {
   border-bottom: 3px solid currentColor;
-}
-.ders-karti-sevimli .kart-govde {
-  padding: 1rem 1.15rem 1.2rem;
-}
-.ders-karti-sevimli .kart-govde::before {
-  display: none;
 }
 .ders-karti-sevimli h2 {
   font-family: 'Fredoka', 'Fredoka Yedek', system-ui, sans-serif;
   font-size: 1.7rem;
   font-weight: 600;
+}
+.ders-karti-sevimli .ders-alt {
+  color: var(--soluk);
+  font-weight: 500;
 }
 .ders-karti-sevimli h2 a {
   color: inherit;

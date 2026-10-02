@@ -1016,3 +1016,89 @@ input[type='file']::file-selector-button:hover {
   padding-left: 1rem;
   font-size: 0.92rem;
 }
+
+/* ── Ana sayfa: kapak kartları (ders.json > kapak) ───────────────────────── */
+/* Kapak çizimi olan en az bir ders varsa ana sayfa kart galerisidir: geniş ekranda yan yana, dar ekranda alt alta. */
+.dersler-galeri {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18.5rem), 1fr));
+  gap: 1.6rem;
+  margin: 1.75rem 0;
+  border-top: 0;
+}
+.ders-karti-resimli {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 2.5px solid var(--yazi);
+  border-radius: 18px;
+  background: var(--zemin);
+  box-shadow: 4px 4px 0 var(--yazi);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+@supports (color: light-dark(#000, #fff)) {
+  .ders-karti-resimli {
+    box-shadow: 4px 4px 0 light-dark(var(--yazi), #05080f);
+  }
+}
+.ders-karti-resimli:has(h2 a:hover) {
+  transform: translate(-1px, -1px);
+}
+.kart-resim-kap {
+  position: relative;
+  aspect-ratio: 3 / 2; /* kapak 3:2 çizilir; resmi olmayan ders de aynı yüksekliği alır */
+  overflow: hidden;
+  border-bottom: 2.5px solid var(--yazi);
+  background: var(--yuzey);
+}
+.kart-resim {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.kart-yakinda {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.1rem 0.75rem;
+  border: 2px solid var(--yazi);
+  border-radius: 999px;
+  background: var(--zemin);
+  color: var(--yazi);
+  font-weight: 600;
+}
+.ders-karti-resimli.yakinda .kart-resim {
+  filter: saturate(0.55);
+}
+.ders-karti-resimli .kart-govde {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem 1.15rem 1.2rem;
+}
+.ders-karti-resimli .kart-govde::before {
+  display: none;
+}
+.ders-karti-resimli h2 {
+  font-size: 1.5rem;
+}
+.ders-karti-resimli .ders-alt {
+  color: var(--renk-uygun);
+  font-weight: 600;
+}
+.ders-karti-resimli .ders-aciklama {
+  font-size: 0.95rem;
+}
+.ders-karti-resimli .kart-ilerleme {
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+.kart-cubuk {
+  flex: 1;
+}
+.kart-cubuk .ders-meta {
+  margin: 0 0 0.5rem;
+}

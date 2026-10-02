@@ -21,7 +21,8 @@ const TURLER: Record<string, string> = {
 };
 
 export async function getStaticPaths() {
-  const dersler = (await tumDersler()).filter((d) => d.data.durum === 'hazir');
+  // "Yakında" derslerin görselleri (ana sayfadaki kapak çizimi) de yayınlanır
+  const dersler = await tumDersler();
   return dersler.flatMap((ders) => dosyaAdlari(ders.id, 'gorseller', Object.keys(TURLER)).map((dosya) => ({ params: { ders: ders.id, dosya } })));
 }
 

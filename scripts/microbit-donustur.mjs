@@ -1,6 +1,6 @@
 // micro:bit kitabını (production-1-5: HTML sınıflı Markdown sayfaları + manifest + görseller) siteye dönüştürür.
 //
-//   node scripts/microbit-donustur.mjs [kaynak-klasoru] [--kuru]
+//   node scripts/microbit-donustur.mjs [kaynak-klasoru] [--kuru] [--kapak-kitaptan]
 //   (kaynak: argüman, MICROBIT_KAYNAK ortam değişkeni ya da aşağıdaki varsayılan)
 //
 // Çıktı: icerik/microbit/ (ders.json, proje-NN.md ×45, genel/*.md, gorseller/*). Bu klasör BU BETİKLE ÜRETİLİR:
@@ -22,6 +22,7 @@ const HEDEF = path.join(DEPO, 'icerik', 'microbit');
 const EK_VARLIK = path.join(BU, 'microbit-ek');
 const argumanlar = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const KURU = process.argv.includes('--kuru');
+const KAPAK_KITAPTAN = process.argv.includes('--kapak-kitaptan');
 const KAYNAK = path.resolve(argumanlar[0] ?? process.env.MICROBIT_KAYNAK ?? 'C:/Users/Enes/Documents/vibe coding/kitaplar/microbit_baslangic_gorevler/production-1-5');
 const SAYFALAR = path.join(KAYNAK, 'content', 'pages');
 const VARLIKLAR = path.join(KAYNAK, 'src', 'assets');
@@ -703,6 +704,11 @@ async function gorselleriUret() {
     } else uyar('gorseller', `işlenmeyen görsel türü: ${ham}`);
   }
   for (const k of KAPAKLAR) {
+    // Ders kartının kapağı (kapak.webp) scripts/kapak-ekle.mjs ile elle değiştirilmiş olabilir: --kapak-kitaptan demedikçe ezilmez
+    if (k.ad === 'kapak.webp' && !KAPAK_KITAPTAN && fs.existsSync(path.join(HEDEF, 'gorseller', k.ad))) {
+      rapor.bilgi.push('kapak.webp korundu (kitaptan yeniden üretmek için --kapak-kitaptan)');
+      continue;
+    }
     const arabellek = await sharp(path.join(VARLIKLAR, k.kaynak)).extract(k.kes).resize({ width: k.genislik }).webp({ quality: k.kalite, effort: 5 }).toBuffer();
     yaz(k.ad, arabellek);
     rapor.bilgi.push(`${k.ad}: ${(arabellek.length / 1024).toFixed(0)} KB`);
