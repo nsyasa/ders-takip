@@ -260,6 +260,24 @@ hr {
 .logo .direnc {
   width: 2.8rem;
 }
+/* Marka: "Robot Kulübü" (kalın) üstte, "Ders Takip" (küçük, mono) altta */
+.logo-yazi {
+  display: grid;
+  gap: 0.05rem;
+  line-height: 1.1;
+}
+.logo-yazi strong {
+  font-weight: var(--bas-agirlik);
+  font-size: 1.2rem;
+}
+.logo-yazi small {
+  color: var(--soluk);
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
 .tema-dugme {
   order: 2;
 }

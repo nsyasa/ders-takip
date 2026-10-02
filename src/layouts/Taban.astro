@@ -28,13 +28,13 @@ interface Props {
 
 const {
   baslik,
-  aciklama = 'Öğrenciler için reklamsız ders takip sitesi. İlerlemen yalnız bu cihazda saklanır.',
+  aciklama = 'Robot Kulübü öğrencileri için reklamsız ders takip sitesi. İlerlemen yalnız bu cihazda saklanır.',
   aktif,
   dar = false,
   tema = 'okunur',
 } = Astro.props;
 const sevimli = tema === 'sevimli';
-const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
+const tamBaslik = baslik ? `${baslik} · Robot Kulübü Ders Takip` : 'Robot Kulübü Ders Takip';
 ---
 
 <!doctype html>
@@ -67,7 +67,10 @@ const tamBaslik = baslik ? `${baslik} · Ders Takip` : 'Ders Takip';
       <div class:list={['kap', 'ust-ic', { dar }]}>
         <a class="logo" href={yol('/')}>
           <Direnc numara={12} boyut="kucuk" />
-          <span>Ders Takip</span>
+          <span class="logo-yazi">
+            <strong>Robot Kulübü</strong>
+            <small>Ders Takip</small>
+          </span>
         </a>
         <button class="dugme dugme-duz tema-dugme" type="button" data-tema-dugme aria-pressed="false" hidden>Koyu mod</button>
         <nav class="ust-nav" aria-label="Ana menü">

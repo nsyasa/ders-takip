@@ -1,4 +1,4 @@
-# Ders Takip
+# Robot Kulübü Ders Takip
 
 Öğrenciler için reklamsız, mobil öncelikli, tamamen statik ders takip sitesi. Dersler: **ESP32 Robot Kulübü** (13 föy) ve **micro:bit Başlangıç** (45 proje, çocuklara yönelik "sevimli" görünüm); Arduino "Yakında" kartı olarak bekliyor.
 
