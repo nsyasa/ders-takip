@@ -2,3 +2,9 @@ node_modules/
 dist/
 .astro/
 .DS_Store
+
+# Kapak görselleri: kaynak resimler yerelde kalır (rehber PROMPTLAR.md takip edilir)
+kapak-gorselleri/*.png
+kapak-gorselleri/*.jpg
+kapak-gorselleri/*.jpeg
+kapak-gorselleri/*.webp
