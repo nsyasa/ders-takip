@@ -1,6 +1,6 @@
 # Ders Takip
 
-Öğrenciler için reklamsız, mobil öncelikli, tamamen statik ders takip sitesi. İlk ders **ESP32 Robot Kulübü**; micro:bit ve Arduino "Yakında" kartı olarak bekliyor.
+Öğrenciler için reklamsız, mobil öncelikli, tamamen statik ders takip sitesi. Dersler: **ESP32 Robot Kulübü** (13 föy) ve **micro:bit Başlangıç** (45 proje, çocuklara yönelik "sevimli" görünüm); Arduino "Yakında" kartı olarak bekliyor.
 
 - Sunucu, veritabanı, hesap, çerez, reklam, analiz **yok**. Dış font ya da CDN yok.
 - İlerleme (onay kutuları) ve öğrencinin yazdıkları **yalnız o cihazın tarayıcısında** (`localStorage`) durur. Başka cihaza taşımak için *Verilerim* sayfasından JSON yedeği alınır.
@@ -29,12 +29,15 @@ npm run check      # TypeScript / Astro tür denetimi
 | İçerikte | Sitede |
 |---|---|
 | `icerik/<ders>/ders.json` | Ana sayfadaki ders kartı. `durum: "yakinda"` ise tıklanamaz, "Yakında" etiketi alır. |
+| `icerik/<ders>/proje-NN.md` | `ders.json > birim: "proje"` olan derste proje sayfası (`/<ders>/proje-NN/`); sayfalarda "Föy" yerine "Proje" denir. Üniteler (`uniteler`) ders sayfasında projeleri gruplar. |
 | `icerik/<ders>/foy-NN.md` | `/<ders>/foy-NN/` föy sayfası. Her `##` bölümü katlanır. "Hedeflerim" ve "Malzemeler" frontmatter'dan sayfa üstünde özet olarak gösterilir (gövdedeki kopyaları akordeondan çıkarılır). |
 | `:::bilgi`, `:::dikkat`, `:::fen`, `:::rutin`, `:::yz` | Renkli ve **etiketli** kutular (renge bağımlı değil, siyah-beyaz baskıda da ayırt edilir). |
 | `::yaz[Etiket]{satir=3}` | Yazma alanı (`textarea`); yazdıkça cihaza kaydedilir. |
 | `- [ ] …` | İlerleme adımı. Hepsi işaretlenince föy "bitti" olur. |
 | ` ```cpp title=… start=… dosya=… ` | Renkli, satır numaralı kod; **Kopyala** ve **İndir** (`kodlar/<dosya>/` klasörünün `.zip`'i; Arduino IDE için klasör adı = `.ino` adı korunur). |
 | `icerik/<ders>/genel/*.md` | `/<ders>/genel/<slug>/` sayfaları; ders sayfasında "Genel bilgiler" altında `ders.json > genelSayfalar` sırasıyla listelenir. |
+| `:::tahmin`, `:::olmadiysa`, `:::kontrol`, `:::galeri`, `::jest`, `::sira`, `::kunye` | "Sevimli" ders temasının küçük bileşenleri (Bit'li tahmin kutusu, yardım notu, kontrol listesi, yan yana görseller, düğme ipucu, değer dizisi, kısım künyesi). Ayrıntı: `CONTENT-SPEC.md`. |
+| `[metin](proje:31)`, `foy:6`, `genel:sozluk` | Aynı dersteki sayfalara bağlantı (adres taban yoluyla üretilir; `npm run dogrula` hedefin var olduğunu denetler). |
 | `icerik/<ders>/gorseller/*.svg` | Föyde **satır içi**, temaya göre yeniden boyanmış (aşağıda *Şemalar*); dokununca büyür, alt yazı alt metinden gelir. Ayrı dosya olarak da yayınlanır. |
 
 Kod yapısı:
@@ -42,14 +45,18 @@ Kod yapısı:
 ```
 src/
   content.config.ts        koleksiyonlar (kimlik = ders/slug)
-  plugins/                 remark-icerik (kutular, ::yaz, onay kutusu, tablo, görsel),
-                           remark-kod (kod bloğu), remark-bolumler (## → akordeon)
-  lib/                     depo.ts (localStorage), veri.ts, dosyalar.ts (zip), ayar.mjs (BASE_PATH),
-                           sema-boya.mjs (SVG şemaları temaya göre yeniden boyar)
+  plugins/                 remark-icerik (kutular, ::yaz, onay kutusu, tablo, görsel, bağlantılar),
+                           remark-kod (kod bloğu), remark-bolumler (## → akordeon; sevimli temada sabit bölüm)
+  lib/                     depo.ts (localStorage), veri.ts (sözcük dağarcığı, üniteler), dosyalar.ts (zip, görseller),
+                           ayar.mjs (BASE_PATH), sema-boya.mjs (SVG şemaları temaya göre yeniden boyar),
+                           makecode.mjs (MakeCode blok görselleri), led.mjs (LED rakamlar + Bit), gorsel-boyut.mjs
   scripts/                 küçük istemci betikleri (ilerleme, föy, kod kopyalama)
   pages/                   index, [ders]/index, [ders]/[foy], [ders]/genel/[slug], verilerim, ara, 404
-  styles/                  tema.css, bilesenler.css, yazdir.css (A4)
+  styles/                  tema.css, bilesenler.css, sevimli.css (micro:bit teması), yazdir.css (A4)
 scripts/dogrula.mjs        içerik denetimi
+scripts/microbit-donustur.mjs   micro:bit kitabını siteye çevirir (aşağıda)
+scripts/lib/               html-md.mjs (kitap HTML'i → Markdown), makecode-kucult.mjs (MakeCode SVG küçültücü)
+scripts/microbit-ek/       betiğin kullandığı, elle çizilmiş küçük şemalar
 ```
 
 ## Yeni ders ya da föy eklemek
@@ -59,6 +66,22 @@ Site kodunu değiştirmeden:
 1. `icerik/<ders>/ders.json` oluşturun (örnek: `icerik/esp32/ders.json`); hazırsa `"durum": "hazir"`.
 2. Föyleri `foy-00.md …` olarak, genel sayfaları `genel/*.md` olarak ekleyin; kodları `kodlar/<Klasör>/<Klasör>.ino`, görselleri `gorseller/*.svg` altına koyun. Biçim: `CONTENT-SPEC.md`.
 3. `npm run dogrula` ile denetleyin, sonra `npm run build`.
+
+## micro:bit dersi: kitaptan dönüştürme
+
+`icerik/microbit/` **elle yazılmaz**, kitaptan (`production-1-5`: `content/pages/*.md`, `project-manifest.json`, `src/assets/`) betikle üretilir. Kitap değişince:
+
+```bash
+node scripts/microbit-donustur.mjs [kitap-klasoru]   # yoksa MICROBIT_KAYNAK ortam değişkeni, o da yoksa betikteki varsayılan
+node scripts/microbit-donustur.mjs --kuru            # dosya yazmaz; yalnız raporu basar
+npm run build
+```
+
+- Kitap klasörüne **dokunulmaz**; yalnız okunur. `icerik/microbit/` içindeki proje, genel sayfa ve görseller her çalıştırmada yeniden yazılır (elle yaptığınız değişiklik kaybolur).
+- Betik her sayfanın HTML'ini (`parse5`) Markdown'a çevirir, 45 projeyi manifestten kurar (çok sayfalı projeler "N. kısım" olur), **MakeCode blok görsellerini küçültür** (kitaptaki her SVG ~1,4 MB'tır; içinde MakeCode editörünün bütün stil dosyası vardır. Çizim aynı kalarak 3–90 KB'a iner: `scripts/lib/makecode-kucult.mjs`), kart ve kapak resimlerini WebP yapar.
+- **Basılı kitaba özgü ifadeler** ("sonraki sayfa", "43. sayfa", "P24'te") sitede anlamsız olduğu için `scripts/lib/html-md.mjs` içindeki `METIN_KURALLARI` ile yeniden yazılır; rapor hangi kuralın kaç kez uygulandığını ve kalan "sayfa" geçişlerini gösterir. Kitabın kendi derleme betiği gibi `source-credit` (üretim notu) paragrafları ve "baskı taslağı" cümleleri sitede yer almaz; CC BY-SA kart görseli notu "Kartı tanı" sayfasında kalır.
+- Kitaptaki **üniteler** (içindekiler grupları), **6 adımlı yol** (Bak, Tahmin et, Kodla, Dene, Anlat, Değiştir) ve seviye kümeleri (İleri: 21–30, 34, 38, 40) betiğin başındaki tablolarda tutulur.
+- Gerekenler: `parse5` ve `sharp` (geliştirme bağımlılığı).
 
 ## GitHub Pages ile yayınlama
 
@@ -111,6 +134,17 @@ Ortak bilgisayarda profil/hesap yoktur: işi bitince **Yedeği indir**, sonra **
 - **Renkler ve ölçüler** `src/styles/tema.css` içindeki belirteçlerdir; açık/koyu tema `light-dark()` ile tek yerde tanımlıdır (desteklemeyen eski tarayıcıda açık değerler kullanılır).
 - **Yazı tipleri** kendi sunucumuzdan verilir (`src/assets/fonts/`, SIL Open Font License; lisans metinleri aynı klasörde). Üçüncü tarafa istek atılmaz. Yazı tipi değişince sayfa kaymasın diye ana yazı tipleri `<link rel="preload">` ile önceden yüklenir ve yedek yazı tipleri ölçülerine göre ayarlanır (`yazi-tipleri.css` sonu; değerler `@capsizecss/unpack` ile yazı tipi dosyalarından hesaplandı). Yazı tipini değiştirirseniz bu değerleri yeniden hesaplayın. Fontsource paketlerinden alınan dosyalar yalnız Latin ve Latin-ext alt kümeleridir; italik yoktur (içerikte italik kullanılmıyor).
 - **Baskı (A4):** `src/styles/yazdir.css`. Bölümler açık basılır, tema ne olursa olsun kâğıda açık renkler basılır.
+
+### "Sevimli" tema (micro:bit)
+
+`ders.json` içinde `"tema": "sevimli"` olan dersler çocuklara yönelik görünür; `src/styles/sevimli.css` yalnız `body.sevimli` altında etkindir, ESP32 gibi "okunur" temalı dersler etkilenmez.
+
+- **Kimlik:** krem zemin, lacivert kalın çizgiler ve kaydırmalı gölgeler, turkuaz/sarı vurgular; başlıklar **Fredoka**, gövde Atkinson Hyperlegible Next. Fredoka yalnız bu derslerde yüklenir; yedek yazı tipi ölçüleri `@capsizecss` ile hesaplandı.
+- **LED rakamlar** (`src/lib/led.mjs`): proje numarası micro:bit'in 5×5 LED'leri gibi 3×5 rakamlarla çizilir; proje bitince LED'ler parlar. Ders sayfasındaki ve ders kartındaki **45 LED'lik panel** her projeyi bir LED'e bağlar. Rakamlar `<symbol>`/`<use>` ile çizildiği için durum rengi `--led-a` özel özelliğiyle verilir (`use` içindeki öğelere kullanım yerinin üst öğeleri seçiciyle ulaşamaz, yalnız kalıtım geçer).
+- **Bit:** micro:bit'in yüzlü maskotu (mutlu, düşünen, kutlayan); `:::tahmin` kutusunda ve ödül kartında görünür.
+- **6 adımlı yol** (`Yol.astro`): `ders.json > adimEtiketleri`; her adım gerçek bir onay kutusudur (`input.adim-kutu`, `data-adim` 1–6) ve ilerleme depoya diğer onay kutuları gibi kaydedilir. `adimSayisi` bu sayıdır (`dogrula.mjs` adım yolunu da sayar). 6/6 olunca ödül kartı açılır.
+- **Bölümler sabittir** (akordeon yok): sayfalar kısadır, hepsi açıktır; yazdırmada da aynı. Çok kısımlı projelerde `##` = kısım, `###` = adım bölümleri.
+- **MakeCode blokları:** küçültülmüş SVG'ler boyanmaz (blok renkleri anlam taşır), satır içi verilir; yazı JetBrains Mono ile blok genişliklerine oturur. Dar ekranda doğal boyutun %78'inin altına küçülmez, kutu yatay kayar; dokununca büyür.
 
 ### Şemalar (SVG)
 

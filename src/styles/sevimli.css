@@ -164,17 +164,19 @@ body.sevimli {
 .led-s {
   fill: var(--led-sonuk, #2b3142);
 }
+/* Rakamlar <symbol>/<use> ile çizilir: use içindeki öğelere kullanım yerinin üst öğeleri seçiciyle ULAŞMAZ,
+   yalnız kalıtım geçer. Bu yüzden durum, --led-a özel özelliğiyle verilir. */
 .led-a {
-  fill: var(--led-yari, #b9605f);
+  fill: var(--led-a, var(--led-yari, #b9605f));
 }
 /* bitmiş proje: LED'ler parlar */
-.proje-karti[data-durum='bitti'] .led-a,
-[data-bitti] .foy-etiket .led-a,
-.odul .led-a {
-  fill: var(--led-yanik, #ff4d4d);
+.proje-karti[data-durum='bitti'],
+[data-bitti] .foy-etiket,
+.odul {
+  --led-a: var(--led-yanik, #ff4d4d);
 }
-.proje-karti[data-durum='devam'] .led-a {
-  fill: color-mix(in srgb, var(--led-yanik) 65%, var(--led-yari));
+.proje-karti[data-durum='devam'] {
+  --led-a: color-mix(in srgb, var(--led-yanik, #ff4d4d) 65%, var(--led-yari, #b9605f));
 }
 [data-bitti] .foy-etiket .led-sayi,
 .odul .led-sayi {
@@ -830,8 +832,12 @@ body.sevimli {
   display: none;
   width: 5.5rem;
 }
+/* kart her iki temada sarıdır: düğme açık zeminli, lacivert yazılı kalır */
 .odul .dugme-sari {
-  background: var(--yuzey-2);
+  background: #fff8ea;
+  color: #14213d;
+  border-color: #14213d;
+  box-shadow: 3px 3px 0 #14213d;
 }
 @media (min-width: 34rem) {
   .odul {
