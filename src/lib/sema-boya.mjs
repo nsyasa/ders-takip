@@ -309,12 +309,15 @@ export function semayiBoya(ham, { bagimsiz = false, onek = 'sb' } = {}) {
       const L = parlaklik(strokeRgb);
       const kalinlik = sayi(nitelikAl(p, 'stroke-width'), 1);
       const notr = kroma(strokeRgb) < 30;
+      // data-kablo: ince çizilmiş kablo (ör. kitaptan kesilen breadboard çizimleri, 2 birim) da kablo sayılır
+      const kablo = nitelikAl(p, 'data-kablo') !== undefined;
+      if (kablo) nitelikYaz(p, 'data-kablo', null);
       if (notr && L <= 0.1) {
-        if (kalinlik >= 4 && ad !== 'polygon') {
+        if ((kalinlik >= 4 || kablo) && ad !== 'polygon') {
           // koyu kablo (siyah = GND): koyu temada altına açık kenar
           const halo = { ...p, nitelikler: p.nitelikler.map((n) => [...n]) };
           nitelikYaz(halo, 'stroke', '#ffffff');
-          nitelikYaz(halo, 'stroke-width', String(kalinlik + 4));
+          nitelikYaz(halo, 'stroke-width', String(kalinlik >= 4 ? kalinlik + 4 : kalinlik + 2));
           nitelikYaz(halo, 'fill', 'none');
           nitelikYaz(halo, 'class', 'sb-halo');
           duzKurallar.set('sb-halo', 'stroke:var(--sb-halo)');

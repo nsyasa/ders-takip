@@ -135,7 +135,7 @@ def satir_turu(s):
         return 'serit'
     if s['boy'] >= 20:
         return 'proje-baslik'
-    if s['kalin'] and s['boy'] >= 12 and s['renk'] in (BASLIK_RENK, 0x1F2D3D):
+    if s['kalin'] and s['boy'] >= 12 and s['renk'] == BASLIK_RENK:
         return 'baslik'
     if s['boy'] == 11.0 and s['renk'] == GRI:
         return 'alt-baslik'
@@ -397,16 +397,121 @@ def kod_blogu(kutu, satirlar, tercih):
 
 
 # ── Şekil kesme (vektör SVG) ve resimler ────────────────────────────────────
-def svg_kes(kaynak_pdf, sayfa_no, bbox, ad):
-    belge = fitz.open(kaynak_pdf)
-    s = belge[sayfa_no - 1]
-    r = fitz.Rect(bbox) + (-4, -4, 4, 4)
-    r = r & s.mediabox
-    s.set_cropbox(r)
-    svg = s.get_svg_image(text_as_path=True)
-    belge.close()
+def _s(v):
+    """Koordinat: 0,1 pt duyarlık, gereksiz sıfırlar yok."""
+    t = f'{v:.1f}'.rstrip('0').rstrip('.')
+    return '0' if t in ('-0', '') else t
+
+
+def _renk(c):
+    return renk_hex(c) if c else 'none'
+
+
+def _xml(t):
+    return t.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+
+def svg_kes(sayfa, bbox, ad):
+    """Çizimi PDF'in çizim komutlarından ve metin konumlarından yeniden kurar (küçük, temaya boyanabilir SVG).
+
+    PyMuPDF'in hazır SVG'si her harfi yol olarak gömer ve kırpılan alanın dışındakileri de taşır (~360 KB);
+    bu çıktı daire/dikdörtgen/yol + gerçek <text> öğeleridir (~15–40 KB). Yazı genişliği textLength ile
+    PDF'teki ölçüye sabitlenir: site yazı tipi farklı olsa da etiketler taşmaz. Boyama sitenin sema-boya.mjs'ine kalır.
+    """
+    r = (fitz.Rect(bbox) + (-4, -4, 4, 4)) & sayfa.rect
+    ox, oy = r.x0, r.y0
+    X = lambda x: _s(x - ox)
+    Y = lambda y: _s(y - oy)
+    parcalar = []
+    for d in sayfa.get_drawings():
+        dr = d['rect']
+        # Yatay/dikey çizginin kutusu sıfır alanlıdır; fitz bunu "boş" sayıp kesişmez der → koordinatla denetle
+        if not kesisir(tuple(dr), tuple(r)) or dr.y0 > ALT_SINIR - 8:
+            continue
+        ogeler = d['items']
+        fill, stroke = d.get('fill'), d.get('color')
+        if fill is None and stroke is None:
+            continue
+        nit = [f'fill="{_renk(fill)}"']
+        if d.get('fill_opacity') not in (None, 1, 1.0) and fill is not None:
+            nit.append(f'fill-opacity="{_s(d["fill_opacity"])}"')
+        if stroke is not None and d.get('width'):
+            nit.append(f'stroke="{_renk(stroke)}" stroke-width="{_s(d["width"])}"')
+            kap = (d.get('lineCap') or (0,))[0]
+            if kap:
+                nit.append(f'stroke-linecap="{["butt", "round", "square"][int(kap)]}"')
+            if d.get('lineJoin'):
+                nit.append(f'stroke-linejoin="{["miter", "round", "bevel"][int(d["lineJoin"])]}"')
+            dash = re.match(r'\[\s*([\d.\s]+)\]', str(d.get('dashes') or ''))
+            if dash and dash.group(1).strip():
+                nit.append(f'stroke-dasharray="{" ".join(_s(float(x)) for x in dash.group(1).split())}"')
+        nit = ' '.join(nit)
+        # Kesişen kabloları ayıran beyaz "boşluk" çizgisi zemin rengini alır (koyu temada beyaz çizgi görünmesin)
+        if fill is None and stroke is not None and renk_hex(stroke) == '#ffffff':
+            nit = nit.replace('stroke="#ffffff"', 'stroke="var(--zemin, #ffffff)"')
+        # Siyah kablo ve GND rayı (kitapta #222222, 2–2,2 pt): sema-boya koyu temada da siyah bırakıp açık kenar çizer
+        if fill is None and stroke is not None and renk_hex(stroke) == '#222222' and (d.get('width') or 0) >= 1.9:
+            nit += ' data-kablo=""'
+        turler = ''.join(i[0] for i in ogeler)
+        # Yuvarlak köşeli dikdörtgen (breadboard zemini, kutular, pin hapı): <rect rx>; sema-boya zemin/kutu olarak boyar
+        if re.fullmatch(r'(lc){4}|(cl){4}', turler) and all(
+                abs(i[1].x - i[2].x) < 0.05 or abs(i[1].y - i[2].y) < 0.05 for i in ogeler if i[0] == 'l'):
+            c = next(i for i in ogeler if i[0] == 'c')
+            rx = min(abs(c[4].x - c[1].x), abs(c[4].y - c[1].y))
+            parcalar.append(f'<rect x="{X(dr.x0)}" y="{Y(dr.y0)}" width="{_s(dr.width)}" height="{_s(dr.height)}" rx="{_s(rx)}" {nit}/>')
+            continue
+        # Daire (breadboard deliği, LED): dört eğri, kare kutu
+        if turler == 'cccc' and abs(dr.width - dr.height) < 0.3:
+            parcalar.append(f'<circle cx="{X((dr.x0 + dr.x1) / 2)}" cy="{Y((dr.y0 + dr.y1) / 2)}" r="{_s(dr.width / 2)}" {nit}/>')
+            continue
+        if turler == 're':
+            q = ogeler[0][1]
+            parcalar.append(f'<rect x="{X(q.x0)}" y="{Y(q.y0)}" width="{_s(q.width)}" height="{_s(q.height)}" {nit}/>')
+            continue
+        yol, son = [], None
+        for it in ogeler:
+            if it[0] == 'l':
+                a, b = it[1], it[2]
+                if son is None or abs(son.x - a.x) > 0.05 or abs(son.y - a.y) > 0.05:
+                    yol.append(f'M{X(a.x)} {Y(a.y)}')
+                yol.append(f'L{X(b.x)} {Y(b.y)}')
+                son = b
+            elif it[0] == 'c':
+                a, c1, c2, b = it[1:5]
+                if son is None or abs(son.x - a.x) > 0.05 or abs(son.y - a.y) > 0.05:
+                    yol.append(f'M{X(a.x)} {Y(a.y)}')
+                yol.append(f'C{X(c1.x)} {Y(c1.y)} {X(c2.x)} {Y(c2.y)} {X(b.x)} {Y(b.y)}')
+                son = b
+            elif it[0] == 're':
+                q = it[1]
+                yol.append(f'M{X(q.x0)} {Y(q.y0)}H{X(q.x1)}V{Y(q.y1)}H{X(q.x0)}Z')
+                son = None
+            elif it[0] == 'qu':
+                q = it[1]
+                yol.append(f'M{X(q.ul.x)} {Y(q.ul.y)}L{X(q.ur.x)} {Y(q.ur.y)}L{X(q.lr.x)} {Y(q.lr.y)}L{X(q.ll.x)} {Y(q.ll.y)}Z')
+                son = None
+        if d.get('closePath'):
+            yol.append('Z')
+        kural = ' fill-rule="evenodd"' if d.get('even_odd') and fill is not None else ''
+        parcalar.append(f'<path d="{"".join(yol)}" {nit}{kural}/>')
+    for b in sayfa.get_text('dict', clip=r)['blocks']:
+        for l in b.get('lines', []):
+            for sp in l['spans']:
+                t = sp['text']
+                if not t.strip() or not ic_mi(sp['bbox'], tuple(r), 0):
+                    continue
+                x, y = sp['origin']
+                genislik = sp['bbox'][2] - sp['bbox'][0]
+                agirlik = ' font-weight="bold"' if kalin(sp) else ''
+                parcalar.append(
+                    f'<text x="{X(x)}" y="{Y(y)}" font-size="{_s(sp["size"])}" fill="{renk_hex([((sp["color"] >> s_) & 255) / 255 for s_ in (16, 8, 0)])}"'
+                    f'{agirlik} textLength="{_s(genislik)}" lengthAdjust="spacingAndGlyphs">{_xml(t.strip())}</text>')
+    # Gösterim boyutu PDF ölçüsünün 1,6 katı (breadboard ~450 px; delik ve yazı okunur). Dar ekranda sütuna sığar.
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {_s(r.width)} {_s(r.height)}" '
+           f'width="{round(r.width * 1.6)}" height="{round(r.height * 1.6)}" font-family="Arial, Helvetica, sans-serif">\n'
+           + '\n'.join(parcalar) + '\n</svg>\n')
     (CIKIS / 'sekiller' / ad).write_text(svg, encoding='utf-8')
-    return {'genislik': round(r.width), 'yukseklik': round(r.height)}
+    return {'genislik': round(r.width), 'yukseklik': round(r.height), 'kirpma': [round(v, 2) for v in r]}
 
 
 def resimleri_al(belge, sayfa):
@@ -456,6 +561,13 @@ def sayfa_oku(belge, kaynak_pdf, sayfa_no, onek, tercih_kod):
                 etiket = s['kalin'] or s['boy'] <= 8.8 or len(s['duz']) <= 12
                 if id(s) not in kullanilan and kesisir(s['bbox'], genis) and s['bbox'][0] < sk['bbox'][2] - 2 and len(s['duz']) <= 60                         and etiket and satir_turu(s) not in ('baslik', 'serit'):
                     sk['bbox'] = birlesim(sk['bbox'], s['bbox'])
+        else:
+            # Küçük çizim (ör. servo şeması): hemen üstündeki kısa kalın sütun başlıkları ("UNO", "Yüksüz SG90")
+            for s in satirlar:
+                if id(s) not in kullanilan and s['kalin'] and len(s['duz']) <= 30 and satir_turu(s) == 'metin' \
+                        and sk['bbox'][1] - 25 <= s['bbox'][3] <= sk['bbox'][1] + 2 \
+                        and s['bbox'][0] >= sk['bbox'][0] - 5 and s['bbox'][2] <= sk['bbox'][2] + 5:
+                    sk['bbox'] = birlesim(sk['bbox'], s['bbox'])
         pin = pin_rehberi(sk, satirlar)
         ic = al(sk['bbox'], 1)
         if pin:
@@ -464,7 +576,7 @@ def sayfa_oku(belge, kaynak_pdf, sayfa_no, onek, tercih_kod):
             bloklar.append({'t': 'pin', 'satirlar': [p[:2] for p in pin], 'y': sk['bbox'][1], '_k': sk['bbox']})
             continue
         ad = f'{onek}-s{sayfa_no:03d}-{i + 1}.svg'
-        olcu = svg_kes(kaynak_pdf, sayfa_no, sk['bbox'], ad)
+        olcu = svg_kes(sayfa, sk['bbox'], ad)
         bloklar.append({'t': 'sekil', 'dosya': ad, **olcu, 'metinler': [s['duz'] for s in ic], 'kutu': sk.get('kutu'), 'y': sk['bbox'][1], '_k': sk['bbox']})
     for t in tablolar:
         al(t['bbox'])

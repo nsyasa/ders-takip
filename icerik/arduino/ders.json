@@ -1,14 +1,103 @@
 {
   "kod": "arduino",
-  "ad": "Arduino",
-  "altbaslik": "Yakında",
-  "aciklama": "Bu ders yakında eklenecek.",
+  "ad": "Arduino Başlangıç",
+  "altbaslik": "24 proje ile adım adım çalışma kitabı",
+  "aciklama": "Bu kitapta UNO R3 uyumlu kart (CH340 USB-seri dönüştürücülü), Arduino IDE ve C++ ile çalışırsın. Önce parçayı tanır, sonra bağlantıyı kurar ve kendi gözlemini kaydedersin.",
   "renk": "#C2410C",
   "ikon": "♾️",
   "sira": 3,
-  "durum": "yakinda",
-  "foySayisi": 0,
-  "toplamSureDk": 0,
+  "durum": "hazir",
+  "foySayisi": 26,
+  "toplamSureDk": 1395,
+  "birim": "proje",
   "kapak": "kapak",
-  "kapakAlt": "Gözlüklü, kıvırcık saçlı bir öğrenci breadboard üzerinde ilk devresini kuruyor; kırmızı, sarı ve yeşil LED'ler yanıyor, yanında Arduino kartı, dizüstü bilgisayar ve devre çizimli bir defter var."
+  "kapakAlt": "Gözlüklü, kıvırcık saçlı bir öğrenci breadboard üzerinde ilk devresini kuruyor; kırmızı, sarı ve yeşil LED'ler yanıyor, yanında Arduino kartı, dizüstü bilgisayar ve devre çizimli bir defter var.",
+  "etiketler": [
+    "UNO R3",
+    "Arduino IDE"
+  ],
+  "adimEtiketleri": [
+    {
+      "ad": "Tanı",
+      "aciklama": "Günlük hayat fikrini ve kullanacağın parçayı incele. Öğreneceğin kavramı ve önceki projeleri bul."
+    },
+    {
+      "ad": "Tahmin et",
+      "aciklama": "Kodu çalıştırmadan önce kendi düşünceni yaz. Tahminin sonradan gözleminle karşılaştırılacak."
+    },
+    {
+      "ad": "Bağla",
+      "aciklama": "USB kablosunu çıkar. Pin haritasını ve breadboard çizimini birlikte izleyerek her ucu ayrı deliğe yerleştir."
+    },
+    {
+      "ad": "Kontrol et",
+      "aciklama": "Pinleri, güç yollarını, dirençleri ve gerçek modeli öğretmeninle doğrula. Kontrol bitince USB kablosunu tak."
+    },
+    {
+      "ad": "Kodla",
+      "aciklama": "Arşivdeki tam programı aç. Doğrula ile derle; kart ve port doğruysa Yükle ile karta gönder."
+    },
+    {
+      "ad": "Test et",
+      "aciklama": "Bir koşulu dene. Tahminini ve gördüğün tepkiyi ayrı hücrelere yaz; olmayan ölçümü sonuç gibi kaydetme."
+    },
+    {
+      "ad": "Değiştir",
+      "aciklama": "Her seferinde yalnız bir ayarı değiştir. Diğer koşulları koru; sonra başlangıç ayarına dön."
+    },
+    {
+      "ad": "Geliştir",
+      "aciklama": "Kendini kontrol et sorularını yanıtla. Birleştirme fikrini önce kâğıtta girdi, karar ve çıktı olarak planla."
+    }
+  ],
+  "uniteler": [
+    {
+      "ad": "Işık ve ses",
+      "ilk": 1,
+      "son": 3,
+      "renk": "#C2410C"
+    },
+    {
+      "ad": "Düğme ve ayar",
+      "ilk": 4,
+      "son": 6,
+      "renk": "#B45309"
+    },
+    {
+      "ad": "Ölç ve karar ver",
+      "ilk": 7,
+      "son": 9,
+      "renk": "#0F766E"
+    },
+    {
+      "ad": "Hareket",
+      "ilk": 10,
+      "son": 11,
+      "renk": "#1D4ED8"
+    },
+    {
+      "ad": "Say, zamanla, uyar",
+      "ilk": 12,
+      "son": 15,
+      "renk": "#7C3AED"
+    },
+    {
+      "ad": "Çevreyi izle",
+      "ilk": 16,
+      "son": 20,
+      "renk": "#15803D"
+    },
+    {
+      "ad": "Sistemler",
+      "ilk": 21,
+      "son": 24,
+      "renk": "#BE123C"
+    },
+    {
+      "ad": "Ek Kitap: set dışı iki proje",
+      "ilk": 25,
+      "son": 26,
+      "renk": "#475569"
+    }
+  ]
 }

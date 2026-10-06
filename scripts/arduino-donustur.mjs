@@ -38,6 +38,40 @@ const KUTU = {
   '#e6f5ec': ['bilgi', 'yesil'],
 };
 
+// Giriş resimlerinin alt metinleri (resimlere bakılarak yazıldı; anahtar: kitaptaki dosya adı). Ek Kitap P09/P22'ninkileri kullanır.
+const GIRIS_ALT = {
+  p01_hero: 'Rafta üç küçük yeşil durum ışığı yanan beyaz bir modem; duvar prizinde ışığı yanan bir şarj aleti.',
+  p02_hero: 'Ahşap masada iki siyah yuvarlak buzzer; yanlarında sarı ve mavi yapışkan etiketler.',
+  p03_hero: 'Mutfak tezgâhında bir mini fırın ve yanında bir masa saati.',
+  p04_hero: 'Duvarda beyaz yuvarlak bir kapı zili düğmesi ve metal bir kapı düğmesi.',
+  p05_hero: 'Yuvarlak ayar düğmeli bir masa lambası ve bir araba kapısındaki döner düğme.',
+  p06_hero: 'Akşam ışığında bir yatak odası; komodinde turkuaz yanan küçük bir gece lambası, rafta turuncu şerit ışık.',
+  p07_hero: 'Hava karardıktan sonra yanan bir sokak lambası; arkada mahalle ve deniz.',
+  p08_hero: 'Mutfak tezgâhında dijital bir yemek termometresi ve fırının ayar düğmesi.',
+  p09_hero: 'Arka tamponunda park sensörleri olan gri bir otomobil, bir duvara yaklaşmış.',
+  p10_hero: 'Masada küçük bir robot kol; arkada bir site girişinde kırmızı-beyaz bariyer kolu.',
+  p11_hero: 'Masada döner ses düğmeli ahşap bir radyo ve oyuncak bir uçak.',
+  p12_hero: 'Bir oyun makinesinde büyük kırmızı bir basma düğmesi ve ekran.',
+  p13_hero: 'Fabrikada konveyör bandında ilerleyen karton kutular ve bandın yanındaki sensörler.',
+  p14_hero: 'Boş bir odada ahşap zeminde duran dik bir elektrikli ısıtıcı.',
+  p15_hero: 'Tavanında lamba ve küçük bir hareket sensörü olan aydınlık bir koridor.',
+  p16_hero: 'Pencere önünde saksıda bir bitki; toprağına bir nem ölçer takılmış.',
+  p17_hero: 'Masanın başında alkışlayan iki el; yanında turuncu bir masa lambası yanıyor.',
+  p18_hero: 'Masada su dolu bir cam bardak ve kırmızı, sarı, yeşil ışıklı küçük bir gösterge.',
+  p19_hero: 'Masada saksı bitkisinin yanında ekranlı bir sıcaklık ve nem göstergesi.',
+  p20_hero: 'Masada iki dijital termometre ve sıcak içecek dolu bir kupa.',
+  p21_hero: 'Deniz kıyısında bir yaya geçidi; direkte kırmızı yanan bir trafik ışığı.',
+  p22_hero: 'Oda köşesinde kapağı açık beyaz bir çöp kutusu.',
+  p23_hero: 'Mutfak tezgâhında dijital bir mutfak tartısı ve yuvarlak ekranlı küçük bir saat.',
+  p24_hero: 'Masada ucunda iki gözlü mesafe sensörü olan ahşap bir çubuk; yanında kâğıt ve kalem.',
+};
+// Breadboard dışındaki çizimlerin alt metinleri (anahtar: site dosya adı)
+const CIZIM_ALT = {
+  'proje-06-cizim-1': 'Uç denemesi çizimi: aday ortak uç A GND’ye bağlı; B ucu 220 Ω direnç üzerinden 3,3 V’a bağlı; C ve D boşta.',
+  'proje-06-cizim-2': 'Uç denemesi çizimi: aday ortak uç A 3,3 V’a bağlı; B ucu 220 Ω direnç üzerinden GND’ye bağlı; C ve D boşta.',
+  'proje-10-cizim-1': 'Servo bağlantı şeması: UNO 5V → SG90 VCC (besleme), D9 → SIG (konum sinyali), GND → GND (ortak referans).',
+};
+
 const rapor = { uyari: [], bilgi: [] };
 const uyar = (yer, ileti) => rapor.uyari.push(`${yer}: ${ileti}`);
 const kuralSayisi = new Map();
@@ -121,13 +155,14 @@ function kodBlogu(b, ctx) {
 }
 
 function sekilBlogu(b, ctx) {
-  const breadboard = b.metinler.includes('UNO') && b.metinler.some((m) => /^a[–-]e$/.test(m));
+  // Breadboard: UNO etiketi + sütun harfleri (grup etiketi "a–e" ya da tek tek a … j)
+  const breadboard = b.metinler.includes('UNO') && (b.metinler.some((m) => /^a[–-]e$/.test(m)) || (b.metinler.includes('a') && b.metinler.includes('j')));
   ctx.sekilSayisi += 1;
   const ad = `${ctx.slug}-${breadboard ? 'breadboard' : 'cizim'}-${ctx.sekilSayisi}`;
   sekilDosyalari.set(`${ad}.svg`, path.join(ARA, 'sekiller', b.dosya));
   ctx.gorseller.push(ad);
-  const konu = b.kutu && b.metinler[0] && !breadboard ? b.metinler[0] : ctx.bolum;
-  const alt = breadboard ? `Breadboard yerleşim çizimi: ${ctx.bolum}` : `Çizim: ${konu}`;
+  const alt = breadboard ? `Breadboard yerleşim çizimi: ${ctx.bolum}` : CIZIM_ALT[ad] ?? `Çizim: ${ctx.bolum}`;
+  if (!breadboard && !CIZIM_ALT[ad]) uyar(ctx.dosya, `${ad}.svg için alt metin yazılmadı (CIZIM_ALT)`);
   return `![${alt.replace(/[[\]]/g, '')}](./gorseller/${ad}.svg)`;
 }
 
@@ -273,17 +308,24 @@ function blokMd(b, ctx, cikti, kutuIcinde = false) {
       if (ctx.ilkSayfa && b.piksel[0] >= 1000 && b.bbox[2] - b.bbox[0] > 150) {
         const j = projeJson.get(ctx.id);
         const ad = `${ctx.slug}-giris.webp`;
-        resimDosyalari.set(ad, { kaynak: path.join(KAYNAK, j.hero), genislik: 960 });
+        resimDosyalari.set(ad, { kaynak: path.join(KAYNAK, j.hero), genislik: 960, kalite: 72 });
+        const alt = GIRIS_ALT[path.basename(j.hero).replace(/\.\w+$/, '')];
+        if (!alt) uyar(ctx.dosya, `giriş resmi için alt metin yok (GIRIS_ALT: ${path.basename(j.hero)})`);
         // İki sütunlu sayfada resmin gri alt yazısı resimden önce okunmuş olabilir
         const onceki = cikti.at(-1) ?? '';
         if (/^_.*_$/s.test(onceki) && /kanıt|Günlük hayat|Fotoğraf/.test(onceki)) {
           cikti.pop();
-          cikti.push(`![](./gorseller/${ad} "${tirnak(onceki.slice(1, -1).replace(/\*\*/g, '').replace(/\\([\\*_`[\]<>])/g, '$1'))}")`);
+          cikti.push(`![${alt ?? ''}](./gorseller/${ad} "${tirnak(onceki.slice(1, -1).replace(/\*\*/g, '').replace(/\\([\\*_`[\]<>])/g, '$1'))}")`);
           return;
         }
         ctx.resimYeri = cikti.length;
-        cikti.push(`![](./gorseller/${ad})`);
-      } else say('küçük süs resmi (spot) atlandı — Aşama 2');
+        cikti.push(`![${alt ?? ''}](./gorseller/${ad})`);
+      } else {
+        // "Biliyor muydun?" yanındaki proje simgesi: dosyası üretilir, yerleşimi site şablonundadır (simge.webp)
+        const j = projeJson.get(ctx.id);
+        resimDosyalari.set(`${ctx.slug}-simge.webp`, { kaynak: path.join(KAYNAK, j.spot), genislik: 192, kalite: 82 });
+        say('proje simgesi (spot) → proje-NN-simge.webp');
+      }
       return;
     case 'kod-etiket':
       cikti.push(paragraf(metin(b.md, ctx)));
@@ -447,6 +489,8 @@ function projeDosyasi(p) {
 const ciktilar = new Map(projeler.map((p) => [`${p.slug}.md`, projeDosyasi(p)]));
 
 if (!KURU) {
+  // Astro içerik önbelleği: yalnız görsel (SVG) değişip Markdown aynı kalınca eski çıktı kullanılır → temizle
+  for (const k of ['.astro', path.join('node_modules', '.astro')]) fs.rmSync(path.join(DEPO, k), { recursive: true, force: true });
   fs.mkdirSync(path.join(HEDEF, 'gorseller'), { recursive: true });
   for (const f of fs.readdirSync(HEDEF)) if (/^proje-\d+\.md$/.test(f)) fs.rmSync(path.join(HEDEF, f));
   // Betiğin yönettiği görseller (proje-NN-*) ve kodlar yeniden yazılır; kapak görselleri korunur
@@ -464,13 +508,13 @@ if (!KURU) {
     svgToplam += fs.statSync(kaynak).size;
   }
   let resimToplam = 0;
-  for (const [ad, { kaynak, genislik }] of resimDosyalari) {
-    const arabellek = await sharp(kaynak).resize({ width: genislik, withoutEnlargement: true }).webp({ quality: 72, effort: 5 }).toBuffer();
+  for (const [ad, { kaynak, genislik, kalite }] of resimDosyalari) {
+    const arabellek = await sharp(kaynak).resize({ width: genislik, withoutEnlargement: true }).webp({ quality: kalite, effort: 5 }).toBuffer();
     fs.writeFileSync(path.join(HEDEF, 'gorseller', ad), arabellek);
     resimToplam += arabellek.length;
   }
-  rapor.bilgi.push(`çizim (SVG): ${sekilDosyalari.size} dosya, ${(svgToplam / 1024 / 1024).toFixed(1)} MB (küçültme Aşama 2)`);
-  rapor.bilgi.push(`giriş resmi (WebP): ${resimDosyalari.size} dosya, ${(resimToplam / 1024).toFixed(0)} KB`);
+  rapor.bilgi.push(`çizim (SVG): ${sekilDosyalari.size} dosya, ${(svgToplam / 1024).toFixed(0)} KB`);
+  rapor.bilgi.push(`resim (WebP; giriş + simge): ${resimDosyalari.size} dosya, ${(resimToplam / 1024).toFixed(0)} KB`);
   fs.writeFileSync(
     path.join(HEDEF, 'OKUBENI.md'),
     `# Bu klasör betikle üretilir\n\nKaynak: Arduino Başlangıç — 24 Proje (arduino-24-proje-v2), sürüm \`${surum.etiket}\` (${surum.sha.slice(0, 12)}).\n` +
