@@ -8,3 +8,6 @@ kapak-gorselleri/*.png
 kapak-gorselleri/*.jpg
 kapak-gorselleri/*.jpeg
 kapak-gorselleri/*.webp
+
+# Arduino dönüştürme ara çıktısı (scripts/arduino/pdf-oku.py üretir)
+.arduino-ara/

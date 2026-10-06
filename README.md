@@ -83,6 +83,22 @@ npm run build
 - Kitaptaki **üniteler** (içindekiler grupları), **6 adımlı yol** (Bak, Tahmin et, Kodla, Dene, Anlat, Değiştir) ve seviye kümeleri (İleri: 21–30, 34, 38, 40) betiğin başındaki tablolarda tutulur.
 - Gerekenler: `parse5` ve `sharp` (geliştirme bağımlılığı).
 
+## Arduino dersi: kitaptan dönüştürme
+
+`icerik/arduino/` **elle yazılmaz**, kitabın (`arduino-24-proje-v2`) basılı ekran PDF'lerinden betikle üretilir. Kitap değişince:
+
+```bash
+node scripts/arduino-donustur.mjs [kitap-klasoru]   # yoksa ARDUINO_KAYNAK, o da yoksa betikteki varsayılan
+node scripts/arduino-donustur.mjs --kuru            # dosya yazmaz; yalnız raporu basar
+python scripts/arduino/sadakat.py <kitap-klasoru>   # PDF'teki her satır sitede var mı?
+npm run build
+```
+
+- **Kaynak basılı PDF'tir** (`cikti/Arduino_Baslangic_24_Proje_ekran.pdf`, `cikti/Ek_Kitap.pdf`). Kitabın `kitap/projeler/*.yaml` dosyaları basılı metnin bir kısmını tutmaz; sayfa başlıkları, kutular ve tablo başlıkları kitabın dizgi betiklerindedir.
+- `scripts/arduino/pdf-oku.py` (Python + PyMuPDF; yol `ARDUINO_PYTHON` ile verilebilir) sayfaları yapılı bloklara çevirir: başlık, paragraf, liste, renkli kutu, tablo, pin rehberi, kod kutusu, çizim. Çıktı `.arduino-ara/` (git dışı). Breadboard ve devre çizimleri PDF'ten **vektör SVG** olarak kesilir; kod kutuları `.ino` dosyalarıyla satır satır eşleştirilir ve sitedeki kod dosyadan gelir.
+- `scripts/arduino-donustur.mjs` blokları Markdown'a çevirir: 24 proje + Ek Kitap'ın 2 projesi (25–26), 8 adımlı yol (kitabın döngüsü), 7 bölüm + Ek Kitap ünitesi, giriş resimleri (WebP), proje ve deney kodları (`kodlar/`). Basılı kitaba özgü ifadeler ("ön sayfalardaki", "sonraki sayfada") uyarlanır, "Proje N" bağlantı olur; boşluklu form satırları ve soru kutuları yazma alanına dönüşür. Kitabın sürümü (git etiketi) `icerik/arduino/OKUBENI.md`'ye yazılır.
+- Kitap klasörüne **dokunulmaz**. `ogretmen/` (beklenen sonuçlar) ve kitabın rapor klasörleri siteye alınmaz.
+
 ## GitHub Pages ile yayınlama
 
 Siteyi GitHub'a yükleyip Actions ile otomatik yayınlarsınız (`.github/workflows/yayinla.yml` hazır).

@@ -8,7 +8,7 @@ import { load as yamlYukle } from 'js-yaml';
 import { svgSorunlari } from '../src/lib/sema-boya.mjs';
 
 const KOK = path.resolve(process.cwd(), 'icerik');
-const SEVIYELER = ['Başlangıç', 'Başlangıç+', 'Orta', 'Orta+', 'İleri', 'Temel', 'Çevre'];
+const SEVIYELER = ['Başlangıç', 'Başlangıç+', 'Orta', 'Orta+', 'İleri', 'Çok ileri', 'Temel', 'Çevre'];
 const KUTU_TURLERI = new Set(['bilgi', 'dikkat', 'fen', 'rutin', 'yz', 'tahmin', 'olmadiysa', 'kontrol', 'galeri']);
 const YAPRAK_DIREKTIFLER = new Set(['yaz', 'jest', 'sira', 'kunye']);
 const RESIM_UZANTILARI = new Set(['.svg', '.webp', '.png', '.jpg', '.jpeg', '.gif']);
