@@ -11,3 +11,6 @@ kapak-gorselleri/*.webp
 
 # Arduino dönüştürme ara çıktısı (scripts/arduino/pdf-oku.py üretir)
 .arduino-ara/
+
+# micro:bit planlama taslakları (yerelde kalır)
+plan-microbit/

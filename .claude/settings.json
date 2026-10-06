@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "ask": ["Edit(icerik/**)"]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/kontrol.mjs\" dogrula",
+            "timeout": 60,
+            "statusMessage": "İçerik denetleniyor..."
+          },
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/kontrol.mjs\" check",
+            "timeout": 240,
+            "asyncRewake": true
+          }
+        ]
+      }
+    ]
+  }
+}

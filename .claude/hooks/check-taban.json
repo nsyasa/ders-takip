@@ -1,0 +1,5 @@
+{
+  "yoksay": [
+    "src/pages/[ders]/gorseller/[...dosya].ts|ts(2345)|Argument of type 'Buffer<ArrayBufferLike>' is not assignable to parameter of type 'BodyInit | null | undefined'."
+  ]
+}
