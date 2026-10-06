@@ -72,7 +72,7 @@ Yalnız yüksüz SG90 ve serbest kol kullan; UNO 5 V hattının gerçek servoya 
 :::
 
 :::bilgi[Parçanı doğrula · modül ve servo]{renk=gri}
-HC-SR04’ün başlık yazısını soldan sağa oku: VCC, Trig, Echo, GND (*Parçanı doğrula* sayfası). Servonun dişi yuvalarındaki kablo renklerini model belgesiyle eşleştir.
+HC-SR04’ün başlık yazısını soldan sağa oku: VCC, Trig, Echo, GND ([Parçanı doğrula](genel:parcani-dogrula) sayfası). Servonun dişi yuvalarındaki kablo renklerini model belgesiyle eşleştir.
 
 ::yaz[HC sırası … / … / … / … · servo VCC / SIG / GND renkleri …]{satir=1}
 :::

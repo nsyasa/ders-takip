@@ -73,7 +73,7 @@ Bilinmeyen uca enerji verme; LED’in 220 Ω seri direnci korunur. OUT bir giri�
 _Kart ve portu seç; programı önce derle, sonra yükle. Seri Monitör’ü 9600 baud aç._
 
 :::bilgi[Parçanı doğrula · modül etiketi]{renk=gri}
-IR modülünün pin yazısını soldan sağa oku: VCC, OUT, GND (OUT bazen S ya da DO yazar). Sırayı çizimle karşılaştır; farklıysa yerleşimi modülün yazısına göre değiştir (*Parçanı doğrula* sayfası).
+IR modülünün pin yazısını soldan sağa oku: VCC, OUT, GND (OUT bazen S ya da DO yazar). Sırayı çizimle karşılaştır; farklıysa yerleşimi modülün yazısına göre değiştir ([Parçanı doğrula](genel:parcani-dogrula) sayfası).
 
 ::yaz[soldan sağa … / … / …]{satir=1}
 :::

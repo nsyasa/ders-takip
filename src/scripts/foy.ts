@@ -1,4 +1,5 @@
 // Föy/proje sayfası: onay kutuları, yazma alanları, ilerleme, "kaldığın yer", akordeon ve yazdırma.
+// Genel sayfalarda (data-genel) yalnız onay kutusu ve yazma alanı kaydı çalışır; "kaldığın yer" föyler içindir.
 import './icerik';
 import {
   oku,
@@ -19,6 +20,7 @@ if (kok) {
   const foy = kok.dataset.foy!;
   const toplam = Number(kok.dataset.adimToplam) || 0;
   const baslik = kok.dataset.baslik ?? foy;
+  const genel = kok.hasAttribute('data-genel');
   const kutular = [...kok.querySelectorAll<HTMLInputElement>('input.adim-kutu')];
   const alanlar = [...kok.querySelectorAll<HTMLTextAreaElement>('textarea[data-yaz]')];
   const bolumler = [...kok.querySelectorAll<HTMLDetailsElement>('details.bolum')];
@@ -29,7 +31,7 @@ if (kok) {
   const odul = kok.querySelector<HTMLElement>('[data-odul]');
 
   const uyari = kok.querySelector<HTMLElement>('[data-depo-uyari]');
-  if (uyari && !depoKullanilabilir()) uyari.hidden = false;
+  if (uyari && !depoKullanilabilir() && (kutular.length > 0 || alanlar.length > 0)) uyari.hidden = false;
 
   // — Kayıtlı durumu sayfaya yükle ———————————————————————————————————————
   function yukle(): void {
@@ -84,11 +86,12 @@ if (kok) {
     return id && BOLUM_KIMLIGI.test(id) ? id : undefined;
   }
   function sonuIsle(oge: Element | null): void {
+    if (genel) return;
     sonKaydet({ foy, baslik, bolum: bolumKimligi(oge), zaman: new Date().toISOString() });
   }
   // Föyü açmak da "kaldığın yer" sayılır; aynı föydeyse bölüm bilgisi korunur.
   const onceki = oku().son;
-  sonKaydet({
+  if (!genel) sonKaydet({
     foy,
     baslik,
     bolum: onceki?.foy === foy ? onceki.bolum : undefined,

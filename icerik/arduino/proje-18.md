@@ -81,7 +81,7 @@ Sensör VCC ucu UNO 5 V hattına bağlanır; GPIO güç kaynağı değildir. Pro
 :::
 
 :::bilgi[Parçanı doğrula · modül etiketi]{renk=gri}
-Su seviyesi modülünün yazısını soldan sağa oku (S, + ve − ya da VCC, S, GND olabilir). Çizimdeki sıra VCC, S, GND’dir; farklıysa yerleşimi modülün yazısına göre değiştir (*Parçanı doğrula* sayfası). Buzzer’ın + bacağını gövde yazısından doğrula.
+Su seviyesi modülünün yazısını soldan sağa oku (S, + ve − ya da VCC, S, GND olabilir). Çizimdeki sıra VCC, S, GND’dir; farklıysa yerleşimi modülün yazısına göre değiştir ([Parçanı doğrula](genel:parcani-dogrula) sayfası). Buzzer’ın + bacağını gövde yazısından doğrula.
 
 ::yaz[soldan sağa … / … / … · buzzer + …]{satir=1}
 :::

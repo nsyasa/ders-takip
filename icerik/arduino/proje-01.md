@@ -47,7 +47,7 @@ Aynı LED ile iki farklı cihaz durumunu nasıl ayırt edebilirsin? İki ışık
 - Breadboard, parçaları lehimsiz bağlar. Aynı satırdaki a–e delikleri kendi içinde bağlıdır; f–j de ayrı bir gruptur.
 
 :::bilgi[Parçanı doğrula · direnç ve LED]{renk=gri}
-220 Ω direnci renk bandı tablosuyla oku: kırmızı-kırmızı-kahverengi. LED’in uzun bacağını ve gövdedeki düz kenarı bul; düz kenar katot tarafıdır (*Parçanı doğrula* sayfası).
+220 Ω direnci [renk bandı tablosuyla](genel:setini-tani) oku: kırmızı-kırmızı-kahverengi. LED’in uzun bacağını ve gövdedeki düz kenarı bul; düz kenar katot tarafıdır ([Parçanı doğrula](genel:parcani-dogrula) sayfası).
 
 ::yaz[bantlar … · anot … · katot …]{satir=1}
 :::

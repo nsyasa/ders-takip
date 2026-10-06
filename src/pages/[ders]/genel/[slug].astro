@@ -28,15 +28,27 @@ const { Content } = await render(sayfa);
         <li aria-current="page">{sayfa.data.baslik}</li>
       </ol>
     </nav>
-    <article data-pagefind-body class:list={['genel-icerik', { 'genel-sevimli': sevimliMi(ders) }]}>
+    {/* Onay kutuları ve yazma alanları föylerdeki gibi bu cihazda saklanır (kimlik: <ders>/genel-<slug>) */}
+    <article
+      data-foy-kok
+      data-genel
+      data-foy={`${ders.id}/genel-${sayfa.data.slug}`}
+      data-adim-toplam="0"
+      data-baslik={sayfa.data.baslik}
+      data-pagefind-body
+      class:list={['genel-icerik', { 'genel-sevimli': sevimliMi(ders) }]}
+    >
       {sayfa.data.ustbilgi && <p class="genel-ustbilgi">{sayfa.data.ustbilgi}</p>}
       <h1 data-pagefind-meta="title">{sayfa.data.baslik}</h1>
       <Content />
+      <p class="depo-uyari" role="status" data-depo-uyari data-pagefind-ignore hidden>
+        Bu tarayıcı kayıt tutmaya izin vermiyor (gizli sekme olabilir). Yazdıkların ve işaretlerin yalnız bu sayfa açıkken kalır.
+      </p>
     </article>
     <p><a href={yol(`/${ders.id}/`)}>← {ders.data.ad} sayfasına dön</a></p>
   </div>
 </Taban>
 
 <script>
-  import '../../../scripts/icerik';
+  import '../../../scripts/foy';
 </script>

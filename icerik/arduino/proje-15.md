@@ -74,7 +74,7 @@ Yalnız 5 V’ta UNO pinine uygun, en çok 20 mA çeken aktif buzzer kullan; tü
 _Kart ve portu seç; programı önce derle, sonra yükle. Seri Monitör’ü 9600 baud aç._
 
 :::bilgi[Parçanı doğrula · PIR etiketi]{renk=gri}
-PIR modülünün pin yazısını oku: VCC, OUT, GND. Sırayı çizimle karşılaştır; yazı okunmuyorsa modülü bağlama, öğretmenine sor (*Parçanı doğrula* sayfası). Buzzer’ın + bacağını gövde yazısından doğrula.
+PIR modülünün pin yazısını oku: VCC, OUT, GND. Sırayı çizimle karşılaştır; yazı okunmuyorsa modülü bağlama, öğretmenine sor ([Parçanı doğrula](genel:parcani-dogrula) sayfası). Buzzer’ın + bacağını gövde yazısından doğrula.
 
 ::yaz[soldan sağa … / … / … · buzzer + bacağı …]{satir=1}
 :::

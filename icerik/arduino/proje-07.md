@@ -47,7 +47,7 @@ LDR’ye gölge yaptığında A0 okuması artar mı, azalır mı? Bağlantıyı 
 - Eşik, iki durum arasında seçtiğin karşılaştırma değeridir. 500 bir başlangıç örneğidir; kendi ortamında ölçerek seç.
 
 :::bilgi[Parçanı doğrula · dirençler ve LED]{renk=gri}
-İki direnci renk bandı tablosuyla ayır (*Parçanı doğrula* sayfası): 10 kΩ kahverengi-siyah-turuncu, 220 Ω kırmızı-kırmızı-kahverengidir. LED’in uzun bacağı anottur.
+İki direnci [renk bandı tablosuyla](genel:setini-tani) ayır ([Parçanı doğrula](genel:parcani-dogrula) sayfası): 10 kΩ kahverengi-siyah-turuncu, 220 Ω kırmızı-kırmızı-kahverengidir. LED’in uzun bacağı anottur.
 
 ::yaz[bölücü direnci … · LED direnci … · anot …]{satir=1}
 :::

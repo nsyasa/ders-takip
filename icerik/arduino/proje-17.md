@@ -70,7 +70,7 @@ Mikrofona ya da kulağa çok yakın alkış yapma; normal sesle dene. Şebeke la
 :::
 
 :::bilgi[Parçanı doğrula · modül etiketi]{renk=gri}
-Ses modülünün başlık yazısını soldan sağa oku. Örnekte AO, GND, VCC, DO sırası var; DO kullanılmaz. Sıra farklıysa yerleşimi modülün yazısına göre değiştir (*Parçanı doğrula* sayfası).
+Ses modülünün başlık yazısını soldan sağa oku. Örnekte AO, GND, VCC, DO sırası var; DO kullanılmaz. Sıra farklıysa yerleşimi modülün yazısına göre değiştir ([Parçanı doğrula](genel:parcani-dogrula) sayfası).
 
 ::yaz[soldan sağa … / … / … / …]{satir=1}
 :::

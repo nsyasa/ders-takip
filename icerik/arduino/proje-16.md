@@ -72,7 +72,7 @@ Sensör VCC ucu UNO 5 V hattına bağlanır; GPIO güç kaynağı değildir. Pro
 :::
 
 :::bilgi[Parçanı doğrula · modül etiketi]{renk=gri}
-Toprak nemi modülünün başlık yazısını soldan sağa oku: VCC, AO, GND (AO bazen A0 ya da S yazar). Sırayı çizimle karşılaştır (*Parçanı doğrula* sayfası). Besleme gerilimini modelin yazısından veya veri sayfasından doğrula.
+Toprak nemi modülünün başlık yazısını soldan sağa oku: VCC, AO, GND (AO bazen A0 ya da S yazar). Sırayı çizimle karşılaştır ([Parçanı doğrula](genel:parcani-dogrula) sayfası). Besleme gerilimini modelin yazısından veya veri sayfasından doğrula.
 
 ::yaz[soldan sağa … / … / …]{satir=1}
 :::

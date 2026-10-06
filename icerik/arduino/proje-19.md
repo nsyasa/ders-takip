@@ -70,7 +70,7 @@ Sensöre su, nefes ya da buhar verme; kuru oda havasında dene. Çıplak DHT11 i
 :::
 
 :::bilgi[Parçanı doğrula · modül etiketi]{renk=gri}
-DHT11 modülünün başlık yazısını oku: VCC (+), DATA (S ya da OUT), GND (−). Üç uçlu modülde DATA direncinin kart üstünde olduğunu doğrula. Sırayı çizimle karşılaştır (*Parçanı doğrula* sayfası).
+DHT11 modülünün başlık yazısını oku: VCC (+), DATA (S ya da OUT), GND (−). Üç uçlu modülde DATA direncinin kart üstünde olduğunu doğrula. Sırayı çizimle karşılaştır ([Parçanı doğrula](genel:parcani-dogrula) sayfası).
 
 ::yaz[soldan sağa … / … / …]{satir=1}
 :::

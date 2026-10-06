@@ -77,3 +77,32 @@ for pdf_ad, onek in (('Arduino_Baslangic_24_Proje_ekran.pdf', 'Proje'), ('Ek_Kit
             for n, t in eksik[:6]:
                 print(f'   s.{n}: {t[:110]}')
 print(f'Toplam {toplam} satır; bulunamayan {eksik_toplam}.')
+
+# ── Genel sayfalar: kitabın ön/arka sayfalarındaki satırlar genel/*.md içinde var mı? ──
+# Alınmayanlar: içindekiler listeleri (s.3–4; yalnız "Bu yarıda öğreneceklerin" tablosu girer), arka kapak,
+# Ek Kitap içindekiler tablosu ve "Yeni fikrim" çizim çerçevesi. Kitap paketine özgü kod arşivi tablosu siteye uyarlanır.
+GENEL_SAYFALAR = {'Arduino_Baslangic_24_Proje_ekran.pdf': [2, 3, 4, *range(5, 14), *range(159, 166)], 'Ek_Kitap.pdf': [2, 15]}
+genel_md = '\n'.join(p.read_text(encoding='utf-8') for p in sorted((ICERIK / 'genel').glob('*.md')))
+genel_mdn = norm(genel_md)
+genel_sekil = {norm(m) for g in ARA['genel'] for s in g['sayfalar'] for b in s['bloklar'] if b['t'] == 'sekil' for m in b['metinler']}
+g_toplam = g_eksik = 0
+for pdf_ad, sayfalar in GENEL_SAYFALAR.items():
+    belge = fitz.open(KITAP / 'cikti' / pdf_ad)
+    for n in sayfalar:
+        eksik = []
+        for b in belge[n - 1].get_text('dict')['blocks']:
+            for l in b.get('lines', []):
+                t = ''.join(s['text'] for s in l['spans']).strip()
+                if not t or l['bbox'][1] > 790 or re.fullmatch(r'[\d\s·]+', t) or re.fullmatch(r'[A-ZÇĞİÖŞÜ /•]+', t):
+                    continue  # sayfa numarası, şerit
+                g_toplam += 1
+                # Aralıklı yazılmış IDE mesajları boşluksuz karşılaştırılır
+                if norm(t) in genel_mdn or norm(t) in genel_sekil or norm(t.replace(' ', '')) in genel_mdn:
+                    continue
+                eksik.append(t)
+        g_eksik += len(eksik)
+        if eksik:
+            print(f'genel {pdf_ad[:12]} s.{n}: {len(eksik)} satır bulunamadı')
+            for t in eksik[:40]:
+                print(f'   {t[:110]}')
+print(f'Genel sayfalar: toplam {g_toplam} satır; bulunamayan {g_eksik}.')

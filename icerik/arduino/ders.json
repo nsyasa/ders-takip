@@ -16,6 +16,18 @@
     "UNO R3",
     "Arduino IDE"
   ],
+  "genelSayfalar": [
+    "kitabi-kullan",
+    "guvenlik",
+    "setini-tani",
+    "parcani-dogrula",
+    "ilk-yukleme",
+    "hata-avcisi",
+    "kendi-projen",
+    "kendini-degerlendir",
+    "sozluk",
+    "kitap-hakkinda"
+  ],
   "adimEtiketleri": [
     {
       "ad": "Tanı",

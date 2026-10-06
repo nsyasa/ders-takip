@@ -47,7 +47,7 @@ Ekranda daha çok ondalık basamak göstermek ölçümü daha doğru yapar mı? 
 - 30 °C programın örnek eşiğidir. Bu eğitim deneyi cihaz yönetmez; sayıyı gözlemine göre seçebilirsin.
 
 :::bilgi[Parçanı doğrula · LM35 yönü]{renk=gri}
-LM35’in düz yüzü sana bakarken ve bacaklar aşağıdayken veri sayfasındaki sıra soldan sağa +VS, VOUT, GND’dir; çizimde bunlar VCC, OUT, GND diye geçer. Gövde yazısını oku ve çizimle karşılaştır (*Parçanı doğrula* sayfası).
+LM35’in düz yüzü sana bakarken ve bacaklar aşağıdayken veri sayfasındaki sıra soldan sağa +VS, VOUT, GND’dir; çizimde bunlar VCC, OUT, GND diye geçer. Gövde yazısını oku ve çizimle karşılaştır ([Parçanı doğrula](genel:parcani-dogrula) sayfası).
 
 ::yaz[gövde yazısı … · soldan sağa … / … / …]{satir=1}
 :::

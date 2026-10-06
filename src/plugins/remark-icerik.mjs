@@ -367,6 +367,10 @@ export default function remarkIcerik() {
       if (node.type === 'table' && parent) {
         tabloNo += 1;
         tabloAlanlari(node, tabloNo);
+        // Tablonun içi aşağıda SKIP ile atlanır: hücrelerdeki proje:/genel: bağlantılarını şimdi çöz
+        visit(node, 'link', (l) => {
+          l.url = baglantiCoz(l.url);
+        });
         parent.children[index] = {
           type: 'blockquote',
           data: {

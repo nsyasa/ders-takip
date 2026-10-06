@@ -73,7 +73,7 @@ Yalnız 5 V’ta UNO pinine uygun, en çok 20 mA çeken aktif buzzer kullan; tü
 _Kart ve portu seç; programı önce derle, sonra yükle. Seri Monitör’ü 9600 baud aç._
 
 :::bilgi[Parçanı doğrula · eğim anahtarı]{renk=gri}
-Eğim anahtarını uç bulucuyla sına (yöntem B, *Parçanı doğrula* sayfası): bir bacak D2’ye, öbürü GND’ye. Bir konumda 1, öbür konumda 0 görmelisin. Buzzer’ın + bacağını gövde yazısından doğrula.
+Eğim anahtarını uç bulucuyla sına (yöntem B, [Parçanı doğrula](genel:parcani-dogrula) sayfası): bir bacak D2’ye, öbürü GND’ye. Bir konumda 1, öbür konumda 0 görmelisin. Buzzer’ın + bacağını gövde yazısından doğrula.
 
 ::yaz[düzken … · yatıkken … · buzzer + bacağı …]{satir=1}
 :::

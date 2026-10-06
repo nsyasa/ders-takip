@@ -71,7 +71,7 @@ Gerçek bir yardımcı cihaz değildir; masada sabit prototip olarak dene, onunl
 :::
 
 :::bilgi[Parçanı doğrula · modül ve buzzer]{renk=gri}
-HC-SR04’ün başlık yazısını soldan sağa oku (*Parçanı doğrula* sayfası). Bu projede tone ile çalınan pasif buzzer gerekir; türünü ve + bacağını öğretmeninle doğrula.
+HC-SR04’ün başlık yazısını soldan sağa oku ([Parçanı doğrula](genel:parcani-dogrula) sayfası). Bu projede tone ile çalınan pasif buzzer gerekir; türünü ve + bacağını öğretmeninle doğrula.
 
 ::yaz[HC sırası … / … / … / … · buzzer türü …]{satir=1}
 :::

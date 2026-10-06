@@ -70,6 +70,10 @@ const CIZIM_ALT = {
   'proje-06-cizim-1': 'Uç denemesi çizimi: aday ortak uç A GND’ye bağlı; B ucu 220 Ω direnç üzerinden 3,3 V’a bağlı; C ve D boşta.',
   'proje-06-cizim-2': 'Uç denemesi çizimi: aday ortak uç A 3,3 V’a bağlı; B ucu 220 Ω direnç üzerinden GND’ye bağlı; C ve D boşta.',
   'proje-10-cizim-1': 'Servo bağlantı şeması: UNO 5V → SG90 VCC (besleme), D9 → SIG (konum sinyali), GND → GND (ortak referans).',
+  'genel-setini-tani-cizim-1':
+    'UNO R3 uyumlu kartın pin rehberi: üst kenarda AREF, GND ve 13’ten 0’a dijital pinler (~ işaretliler PWM); solda USB girişi, ON ve L göstergeleri; alt kenarda IOREF, RESET, 3V3, 5 V, iki GND, VIN ve A0–A5 analog girişleri.',
+  'genel-setini-tani-cizim-2':
+    'Breadboard’un 8 satırlık ayrıntısı: D8 jumper’ı 2. satıra, 220 Ω direnç c2–c6 arasına, LED anotla e6’ya, katotla e7’ye takılı; 7. satırdan GND rayına jumper; solda 5 V ve GND rayları, ortada a–e ile f–j gruplarını ayıran kanal.',
 };
 
 const rapor = { uyari: [], bilgi: [] };
@@ -118,7 +122,15 @@ function metin(md, ctx) {
   };
   kural('"ön sayfalardaki" → (site sayfası)', /ön sayfalardaki /g, '');
   kural('"sonraki sayfada" → "aşağıda"', /sonraki sayfada/g, 'aşağıda');
+  kural('"Proje N–M" → iki bağlantı', /(?<![[\w])Proje (\d{1,2})–(\d{1,2})(?![\d\]])/g, (m, a, b) =>
+    [a, b].some((n) => Number(n) === ctx.no || Number(n) > 24) ? m : `Proje [${a}](proje:${Number(a)})–[${b}](proje:${Number(b)})`);
   kural('"Proje N" → bağlantı', /(?<![[\w])Proje (\d{1,2})(?![\d\]])/g, (m, n) => (Number(n) === ctx.no || Number(n) > 24 ? m : `[Proje ${n}](proje:${Number(n)})`));
+  // Kitabın ön sayfalarına atıflar → genel sayfa bağlantısı
+  kural('"*Parçanı doğrula* sayfası" → bağlantı', /\*Parçanı doğrula\* sayfası/g, '[Parçanı doğrula](genel:parcani-dogrula) sayfası');
+  if (ctx.slug !== 'genel-setini-tani') {
+    kural('"Set rehberindeki renk bandı tablosu" → bağlantı', /Set rehberindeki renk bandı tablosunu/g, '[Setini tanı](genel:setini-tani) sayfasındaki renk bandı tablosunu');
+    kural('"renk bandı tablosuyla" → bağlantı', /(?<!\[)renk bandı tablosuyla/g, '[renk bandı tablosuyla](genel:setini-tani)');
+  }
   return t;
 }
 
@@ -128,8 +140,17 @@ function paragraf(md) {
 }
 
 function tabloMd(satirlar, ctx) {
-  const hucre = (c) => metin(satirBirlestir(c), ctx).replace(/\|/g, '\\|').trim() || ' ';
   const [bas, ...govde] = satirlar;
+  // Genel sayfalarda "Projeler" sütunundaki numara listeleri ("4, 12, 21") proje bağlantısı olur
+  const projeSutunu = bas.map((h) => Boolean(ctx.genel) && /projeler/i.test(h));
+  const hucre = (c, j) => {
+    let t = metin(satirBirlestir(c), ctx).replace(/\|/g, '\\|').trim();
+    if (projeSutunu[j] && /^\d{1,2}(, \d{1,2})*$/.test(t)) {
+      t = t.split(', ').map((n) => `[${n}](proje:${Number(n)})`).join(', ');
+      say('genel: "Projeler" sütunu → proje bağlantıları');
+    }
+    return t || ' ';
+  };
   return [`| ${bas.map(hucre).join(' | ')} |`, `|${bas.map(() => '---').join('|')}|`, ...govde.map((r) => `| ${r.map(hucre).join(' | ')} |`)].join('\n');
 }
 
@@ -163,7 +184,9 @@ function sekilBlogu(b, ctx) {
   ctx.gorseller.push(ad);
   const alt = breadboard ? `Breadboard yerleşim çizimi: ${ctx.bolum}` : CIZIM_ALT[ad] ?? `Çizim: ${ctx.bolum}`;
   if (!breadboard && !CIZIM_ALT[ad]) uyar(ctx.dosya, `${ad}.svg için alt metin yazılmadı (CIZIM_ALT)`);
-  return `![${alt.replace(/[[\]]/g, '')}](./gorseller/${ad}.svg)`;
+  const yazi = b.yazi ? ` "${tirnak(b.yazi)}"` : '';
+  // Genel sayfa icerik/<ders>/genel/ altındadır; görseller bir üst klasörde
+  return `![${alt.replace(/[[\]]/g, '')}](${ctx.genel ? '..' : '.'}/gorseller/${ad}.svg${yazi})`;
 }
 
 // ── Sayfa blokları → Markdown ────────────────────────────────────────────────
@@ -330,6 +353,9 @@ function blokMd(b, ctx, cikti, kutuIcinde = false) {
     case 'kod-etiket':
       cikti.push(paragraf(metin(b.md, ctx)));
       return;
+    case 'ham': // genel sayfa üreticisinin hazırladığı Markdown (yazma alanı, onay kutusu …)
+      cikti.push(b.md);
+      return;
     default:
       uyar(ctx.dosya, `tanınmayan blok: ${b.t}`);
   }
@@ -449,6 +475,293 @@ for (const p of kitap.projeler) {
   projeler.push({ no, slug, id: p.id, fm, govde });
 }
 
+// ── Genel sayfalar (kitabın ön ve arka sayfaları) ────────────────────────────
+// İçindekiler (ders sayfası bu işi görür), bölüm ara sayfaları ve arka kapak alınmaz.
+const genelSayfalar = [];
+
+/** Ara katmandaki genel sayfanın blokları (kopya). */
+function genelBloklar(kaynak, sayfa) {
+  const g = kitap.genel.find((x) => x.kaynak === kaynak && x.sayfa === sayfa);
+  if (!g) {
+    uyar('genel', `${kaynak} s.${sayfa} ara katmanda yok`);
+    return [];
+  }
+  return structuredClone(g.sayfalar[0].bloklar);
+}
+const govdeBloklari = (kaynak, sayfa) => genelBloklar(kaynak, sayfa).filter((b) => b.t !== 'proje-baslik');
+
+/** "□ madde" paragrafları (bir paragrafta birkaç tane olabilir) madde listesi olur; kutuların içinde de. */
+function kutucuklar(bloklar) {
+  const sonuc = [];
+  for (const b of bloklar) {
+    if (b.t === 'kutu') {
+      sonuc.push({ ...b, bloklar: kutucuklar(b.bloklar) });
+      continue;
+    }
+    if (b.t === 'p' && b.md.trim().startsWith('□')) {
+      const ogeler = b.md.split('□').map((x) => x.trim()).filter(Boolean);
+      const onceki = sonuc.at(-1);
+      if (onceki?.kutucuk) onceki.ogeler.push(...ogeler);
+      else sonuc.push({ t: 'liste', sirali: false, ilk: 1, ogeler, kutucuk: true });
+      continue;
+    }
+    sonuc.push(b);
+  }
+  return sonuc;
+}
+
+/** Çizimin gri açıklama satırı çizimin alt yazısı olur. */
+function sekilYazisi(bloklar, desen) {
+  const i = bloklar.findIndex((b) => b.t === 'p' && desen.test(b.md));
+  const s = bloklar.findIndex((b) => b.t === 'sekil');
+  if (i < 0 || s < 0) return uyar('genel', `çizim alt yazısı bulunamadı: ${desen}`);
+  bloklar[s].yazi = kalinsiz(bloklar[i].md);
+  bloklar.splice(i, 1);
+}
+
+const ham = (md) => ({ t: 'ham', md });
+function yazAlani(ctx, etiket, satir) {
+  ctx.yaz += 1;
+  return ham(`::yaz[${etiket}]{satir=${satir}}`);
+}
+
+/**
+ * Genel sayfa yazar. `bolumler`: [{ baslik?, bloklar }]. Birden çok başlıklı bölüm varsa bölüm "##",
+ * kitabın ara başlıkları "###" olur; tek bölümlü sayfada ara başlıklar "##" olur (başlık sırası atlanmasın).
+ */
+function genelSayfa(slug, baslik, ustbilgi, ctx, bolumler) {
+  const govde = [];
+  const bolumlu = bolumler.filter((b) => b.baslik).length > 1;
+  for (const b of bolumler) {
+    if (b.baslik) govde.push(`## ${b.baslik}`);
+    const parca = [];
+    sayfaMd(b.bloklar, ctx, parca);
+    govde.push(...(bolumlu ? parca : parca.map((x) => x.replace(/^### /, '## '))));
+  }
+  genelSayfalar.push({ slug, fm: { tur: 'genel', baslik, slug, sira: genelSayfalar.length + 1, ustbilgi }, govde, ctx });
+}
+const genelCtx = (slug) => ({ id: 'genel', no: 0, slug: `genel-${slug}`, dosya: `genel/${slug}.md`, genel: true, kodlar: new Set(), gorseller: [], yaz: 0, sekilSayisi: 0, bolum: '', ilkSayfa: false, resimYeri: -1 });
+
+// 1) Kitabı nasıl kullanırsın? (+ bölümlerde öğreneceklerin, Ek Kitap ile çalışma)
+{
+  const ctx = genelCtx('kitabi-kullan');
+  const b = govdeBloklari('ana', 5);
+  for (const x of b) {
+    if (x.t === 'p') x.md = x.md.replace('**Sen çiz:** Boş çerçeveye', '**Sen çiz:** Defterine');
+    // Sitede sayfa şeridi yok; projede aynı sıra bölüm başlıklarıyla ilerler
+    if (x.t === 'tablo' && x.satirlar[0][0] === 'Sayfa şeridi') {
+      x.satirlar[0] = ['Proje bölümü', 'Bu bölümde ne yaparsın?'];
+      for (const r of x.satirlar.slice(1)) r[0] = r[0].split('•').map((y) => basHarf(y.trim())).join(' • ');
+      say('genel: sayfa şeridi tablosu → proje bölümleri');
+    }
+  }
+  // İçindekiler sayfalarının "Bu yarıda öğreneceklerin" tabloları tek tabloda
+  const ogren = [3, 4].map((s) => genelBloklar('ana', s).find((x) => x.t === 'tablo'));
+  b.push({ t: 'baslik', md: '**Bölümlerde öğreneceklerin**' }, { t: 'tablo', satirlar: [ogren[0].satirlar[0], ...ogren.flatMap((t) => t.satirlar.slice(1))] });
+  // Ek Kitap'ın kullanım notları (içindekiler tablosu ve "Nasıl çalışırsın?" ara başlığı alınmaz)
+  const ek = genelBloklar('ek', 2);
+  const ekKullanim = ek.slice(ek.findIndex((x) => x.t === 'kutu')).filter((x) => x.t !== 'tablo' && !(x.t === 'baslik' && /İçindekiler|Nasıl çalışırsın/.test(x.md)));
+  b.push({ t: 'baslik', md: '**Ek Kitap ile çalışırken**' }, ...ekKullanim);
+  genelSayfa('kitabi-kullan', 'Kitabı nasıl kullanırsın?', 'Başlarken', ctx, [{ bloklar: kutucuklar(b) }]);
+}
+
+// 2) Güvenlik
+genelSayfa('guvenlik', 'Güvenli çalış, pin adını oku', 'Başlarken', genelCtx('guvenlik'), [{ bloklar: kutucuklar(govdeBloklari('ana', 6)) }]);
+
+// 3) Setini tanı: malzeme eşleştirme (2 sayfa) + UNO kartı + breadboard
+{
+  const ctx = genelCtx('setini-tani');
+  const [m1, m2] = [govdeBloklari('ana', 7), govdeBloklari('ana', 8)];
+  const t1 = m1.find((x) => x.t === 'tablo');
+  const t2 = m2.find((x) => x.t === 'tablo');
+  t1.satirlar.push(...t2.satirlar.slice(1));
+  m2.splice(m2.indexOf(t2), 1);
+  const liste = m2.find((x) => x.t === 'liste');
+  m2.splice(m2.indexOf(liste), 1);
+  m1.splice(m1.indexOf(t1) + 1, 0, liste);
+  const uno = govdeBloklari('ana', 10);
+  sekilYazisi(uno, /^Vektör rehber/);
+  // 6 sütunlu pin tablosu (Pin | Projeler × 3) dar ekranda 2 sütun olur; sütun sütun okunur
+  const pin = uno.find((x) => x.t === 'tablo' && x.satirlar[0].length === 6);
+  if (pin) {
+    const satirlar = [];
+    for (const k of [0, 2, 4]) for (const r of pin.satirlar.slice(1)) if (r[k]) satirlar.push([r[k], r[k + 1]]);
+    pin.satirlar = [['Pin', 'Projeler'], ...satirlar];
+  }
+  const bb = govdeBloklari('ana', 11);
+  sekilYazisi(bb, /^8 satır ayrıntısı/);
+  genelSayfa('setini-tani', 'Setini tanı', 'Başlarken', ctx, [
+    { baslik: 'Malzemeyi projeyle eşleştir', bloklar: [...m1, ...m2] },
+    { baslik: 'UNO kartını tanı', bloklar: uno },
+    { baslik: 'Breadboard gruplarını tanı', bloklar: bb },
+  ]);
+}
+
+// 4) Parçanı doğrula + uç bulucu programları
+{
+  const ctx = genelCtx('parcani-dogrula');
+  const b = govdeBloklari('ana', 9);
+  const not = b.findIndex((x) => x.t === 'p' && /^Araç programları:/.test(x.md));
+  if (not < 0) uyar(ctx.dosya, '"Araç programları" notu bulunamadı');
+  else b.splice(not, 1);
+  b.push(
+    { t: 'baslik', md: '**Araç programları**' },
+    { t: 'p', md: '*uc\\_bulucu\\_a* ve *uc\\_bulucu\\_b* proje programı değildir; yalnız parçayı sınar.' },
+    { t: 'kod', dosya: 'parca_dogrula/uc_bulucu_a', etiket: 'Yöntem A · uc_bulucu_a' },
+    { t: 'kod', dosya: 'parca_dogrula/uc_bulucu_b', etiket: 'Yöntem B · uc_bulucu_b' },
+  );
+  say('genel: uç bulucu programları (kod/parca_dogrula)', 2);
+  genelSayfa('parcani-dogrula', 'Parçanı doğrula', 'Başlarken', ctx, [{ bloklar: b }]);
+}
+
+// 5) İlk yükleme
+genelSayfa('ilk-yukleme', 'İlk programı derle ve yükle', 'Başlarken', genelCtx('ilk-yukleme'), [{ bloklar: govdeBloklari('ana', 12) }]);
+
+// 6) Hata avcısı
+{
+  const ctx = genelCtx('hata-avcisi');
+  const b = govdeBloklari('ana', 13);
+  // IDE mesajları PDF'te harf harf aralıklı dizilir; kitabın kendi metniyle (icerik.json) eşleştirilir
+  const sik = (t) => t.replace(/[\s\\]/g, '');
+  for (const t of b.filter((x) => x.t === 'tablo')) {
+    for (const r of t.satirlar.slice(1)) {
+      if (!/^(\S ){3,}/.test(r[0])) continue;
+      const es = onArka.derleme_mesajlari.find(([m]) => sik(m) === sik(r[0]));
+      if (es) {
+        r[0] = `\`${es[0]}\``;
+        say('genel: aralıklı IDE mesajı → kitabın metni');
+      } else uyar(ctx.dosya, `aralıklı IDE mesajı eşleşmedi: ${r[0].slice(0, 40)}`);
+    }
+  }
+  // Son üç kalın satır kâğıtta yazma çizgisidir
+  for (let i = 0; i < b.length; i++) {
+    if (b[i].t === 'p' && /^\*\*(İlk hata mesajım|Kontrol ettiğim tek şey|Yeniden deneme gözlemim)\*\*$/.test(b[i].md)) b[i] = yazAlani(ctx, kalinsiz(b[i].md), 2);
+  }
+  genelSayfa('hata-avcisi', 'Mesajı oku, sonra nedeni ara', 'Başlarken', ctx, [{ bloklar: b }]);
+}
+
+// 7) Birleştirme fikirleri + kendi proje planın
+{
+  const ctx = genelCtx('kendi-projen');
+  const plan = [];
+  for (const x of kutucuklar(govdeBloklari('ana', 160))) {
+    // İki sütunlu plan tablosu (çizgisiz): kalın etiket + soru satırları; sağ sütun yazma alanı
+    if (x.t === 'p' && tamKalin(x.md)) plan.push({ ad: kalinsiz(x.md), soru: [] });
+    else if (x.t === 'p' && plan.length && !plan.at(-1).bitti) plan.at(-1).soru.push(x.md);
+    else {
+      if (plan.length) plan.at(-1).bitti = true;
+      plan.push(x);
+    }
+  }
+  const planBloklari = plan.flatMap((x) =>
+    x.ad ? [{ t: 'p', md: `**${x.ad}:** ${x.soru.join(' ')}` }, yazAlani(ctx, x.ad, 3)] : [x],
+  );
+  const kitapPlan = onArka.plan.map(([a, s]) => `${a}: ${s}`).join('|');
+  const pdfPlan = plan.filter((x) => x.ad).map((x) => `${x.ad}: ${x.soru.join(' ')}`).join('|');
+  if (kitapPlan !== pdfPlan) uyar(ctx.dosya, 'plan satırları kitabın icerik.json metniyle aynı değil');
+  genelSayfa('kendi-projen', 'Birleştirme fikirleri', 'Geliştir', ctx, [
+    { baslik: 'Sekiz fikirden birini seç', bloklar: govdeBloklari('ana', 159) },
+    { baslik: 'Fikrini küçük bir deneye dönüştür', bloklar: planBloklari },
+  ]);
+}
+
+// 8) Yapabildiğin işleri işaretle: gerçek onay kutuları (tarayıcıda saklanır)
+{
+  const ctx = genelCtx('kendini-degerlendir');
+  const b = [];
+  for (const x of govdeBloklari('ana', 165)) {
+    if (x.t === 'tablo' && x.satirlar[0][0] === 'İşaretle') {
+      b.push(ham(x.satirlar.slice(1).map(([p, y]) => `- [ ] **Proje ${Number(p.replace(/\D/g, ''))}:** ${satirBirlestir(y)}`).join('\n')));
+      say('genel: yetkinlik tablosu → onay kutuları', x.satirlar.length - 1);
+    } else if (x.t === 'p' && /^Yeni proje fikrim:/.test(x.md)) {
+      b.push(x, yazAlani(ctx, 'Yeni proje fikrim', 3));
+    } else b.push(x);
+  }
+  // Ek Kitap'ın "Kendini kontrol et" maddeleri (kitapta kapanış sayfasında)
+  const ekKontrol = genelBloklar('ek', 15).find((x) => x.t === 'kutu' && /^Kendini kontrol et/.test(x.baslik ?? ''));
+  if (ekKontrol) {
+    const ogeler = kutucuklar(ekKontrol.bloklar).flatMap((x) => x.ogeler ?? []);
+    const not = b.findIndex((x) => x.t === 'p' && x.stil === 'not');
+    b.splice(not < 0 ? b.length : not, 0, { t: 'baslik', md: '**Ek Kitap projeleri**' }, ham(ogeler.map((o) => `- [ ] ${o}`).join('\n')));
+  } else uyar('genel/kendini-degerlendir.md', 'Ek Kitap "Kendini kontrol et" kutusu bulunamadı');
+  genelSayfa('kendini-degerlendir', 'Yapabildiğin işleri işaretle', 'Kapanış', ctx, [{ bloklar: b }]);
+}
+
+// 9) Sözlük (iki sayfa, iki sütunlu tablo: "Terim. Açıklama")
+{
+  const ctx = genelCtx('sozluk');
+  const terimler = [];
+  for (const s of [161, 162]) {
+    for (const t of genelBloklar('ana', s).filter((x) => x.t === 'tablo')) {
+      for (const c of t.satirlar.flat().map((h) => satirBirlestir(h)).filter(Boolean)) {
+        const m = c.match(/^(.+?)\.\s+(.+)$/);
+        if (m) terimler.push([m[1], m[2]]);
+        else uyar(ctx.dosya, `sözlük hücresi ayrılamadı: ${c.slice(0, 40)}`);
+      }
+    }
+  }
+  terimler.sort((a, b) => a[0].localeCompare(b[0], 'tr'));
+  const duz = (t) => t.replace(/\\(.)/g, '$1');
+  const kitapTerim = new Set(onArka.sozluk.map(([t]) => t));
+  const eksik = [...kitapTerim].filter((t) => !terimler.some(([x]) => duz(x) === t));
+  if (eksik.length || terimler.length !== kitapTerim.size) uyar(ctx.dosya, `sözlük kitapla aynı değil (${terimler.length}/${kitapTerim.size}; eksik: ${eksik.join(', ')})`);
+  const b = [ham(terimler.map(([t, a]) => `- **${t}:** ${metin(a, ctx)}`).join('\n'))];
+  genelSayfa('sozluk', 'Sözlük', 'Başvuru', ctx, [{ bloklar: b }]);
+}
+
+// 10) Kitap hakkında: künye (ana kitap + Ek Kitap), kaynaklar, görseller, kod ve lisanslar
+{
+  const ctx = genelCtx('kitap-hakkinda');
+  const kunye = (kaynak, s) => {
+    const b = genelBloklar(kaynak, s);
+    const ad = b.filter((x) => x.t === 'proje-baslik').map((x) => kalinsiz(x.md)).join(' ');
+    const alt = [b.find((x) => x.t === 'alt-baslik')?.md, b.find((x) => x.t === 'p' && x.stil === 'not' && /^Sürüm/.test(x.md))?.md].filter(Boolean).join(' • ');
+    const geri = b.filter((x) => !['proje-baslik', 'alt-baslik'].includes(x.t) && !(x.t === 'p' && x.stil === 'not' && /^Sürüm/.test(x.md)));
+    return [ham(`**${ad}**`), { t: 'p', md: alt }, ...geri];
+  };
+  const ana = kunye('ana', 2);
+  // Ek Kitap künyesinin yalnız künye kısmı; kullanım notları "Kitabı nasıl kullanırsın?" sayfasında
+  const ek = kunye('ek', 2);
+  const ekKunye = ek.slice(0, ek.findIndex((x) => x.t === 'kutu'));
+  const kaynaklar = govdeBloklari('ana', 163);
+  const lisans = govdeBloklari('ana', 164);
+  // Bağlantı satırları (her biri tek bağlantı) tek listede
+  const baglantiMi = (x) => x.t === 'p' && /^\[[^\]]+\]\([^)]+\)\.?$/.test(x.md.trim());
+  const ilkBag = lisans.findIndex(baglantiMi);
+  const baglar = lisans.filter(baglantiMi);
+  lisans.splice(ilkBag, baglar.length, { t: 'liste', sirali: false, ilk: 1, ogeler: baglar.map((x) => x.md) });
+  // Kod arşivi tablosu kitap paketindeki klasörleri anlatır; sitede kodlar proje sayfalarındadır
+  const arsiv = lisans.find((x) => x.t === 'tablo' && x.satirlar[0][0] === 'Nerede?');
+  if (arsiv) {
+    arsiv.satirlar = [
+      ['Nerede?', 'Ne yaparsın?'],
+      ['Proje sayfası', 'Her projenin tam programı kendi sayfasındadır; kopyala ya da klasörüyle (.zip) indir.'],
+      ['.ino dosyası', 'İndirdiğin klasördeki .ino dosyasını Arduino IDE ile aç. Klasör adı ile dosya adı aynı kalmalı.'],
+      ['Değişiklik sürümleri', '“Bir değişiklik yap” sürümleri projenin “Değişiklik sürümleri” kısmındadır; ana programla yan yana açıp farkı bul.'],
+      ['[Parçanı doğrula](genel:parcani-dogrula)', 'uc\\_bulucu\\_a ve uc\\_bulucu\\_b araçları; yalnız parçayı sınar.'],
+      ...arsiv.satirlar.filter((r) => r[0] === 'Kütüphaneler'),
+    ];
+    say('genel: kod arşivi tablosu → sitedeki yerler');
+  } else uyar(ctx.dosya, 'kod arşivi tablosu bulunamadı');
+  const baslikBul = lisans.find((x) => x.t === 'baslik' && /Kod arşivini aç/.test(x.md));
+  if (baslikBul) baslikBul.md = '**Kodları bul**';
+  // Ek Kitap kaynakları: kalın kaynak satırı + altındaki adres tek paragraf; "Kendini kontrol et" ve "Yeni fikrim" alınmaz
+  const ekKaynak = [];
+  for (const x of govdeBloklari('ek', 15)) {
+    if (x.t === 'kutu' && /^Kendini kontrol et/.test(x.baslik ?? '')) continue;
+    if (x.t === 'senciz') continue;
+    if (baglantiMi(x) && ekKaynak.at(-1)?.t === 'p') ekKaynak.at(-1).md += ` ${x.md.trim()}`;
+    else ekKaynak.push(x);
+  }
+  genelSayfa('kitap-hakkinda', 'Kitap hakkında', 'Başvuru', ctx, [
+    { baslik: 'Künye', bloklar: ana },
+    { baslik: 'Ek Kitap künyesi', bloklar: ekKunye },
+    { baslik: 'Kaynaklar · Projeler 1–24', bloklar: kaynaklar },
+    { baslik: 'Görseller, kod ve kütüphaneler', bloklar: lisans },
+    { baslik: 'Ek Kitap kaynakları', bloklar: ekKaynak },
+  ]);
+}
+
 // ── ders.json ────────────────────────────────────────────────────────────────
 const adimEtiketleri = onArka.dongu.map(([ad, aciklama]) => ({ ad, aciklama }));
 const uniteler = onArka.ogrenme_yolu.map(([ad, , aralik], i) => {
@@ -475,6 +788,7 @@ const ders = {
   birim: 'proje',
   ...(eskiDers.kapak ? { kapak: eskiDers.kapak, kapakAlt: eskiDers.kapakAlt } : {}),
   etiketler: ['UNO R3', 'Arduino IDE'],
+  genelSayfalar: genelSayfalar.map((g) => g.slug),
   adimEtiketleri,
   uniteler,
 };
@@ -487,15 +801,20 @@ function projeDosyasi(p) {
   return `---\n${fm}\n---\n\n${govde}\n`;
 }
 
-const ciktilar = new Map(projeler.map((p) => [`${p.slug}.md`, projeDosyasi(p)]));
+const ciktilar = new Map([
+  ...projeler.map((p) => [`${p.slug}.md`, projeDosyasi(p)]),
+  ...genelSayfalar.map((g) => [`genel/${g.slug}.md`, projeDosyasi(g)]),
+]);
 
 if (!KURU) {
   // Astro içerik önbelleği: yalnız görsel (SVG) değişip Markdown aynı kalınca eski çıktı kullanılır → temizle
   for (const k of ['.astro', path.join('node_modules', '.astro')]) fs.rmSync(path.join(DEPO, k), { recursive: true, force: true });
   fs.mkdirSync(path.join(HEDEF, 'gorseller'), { recursive: true });
   for (const f of fs.readdirSync(HEDEF)) if (/^proje-\d+\.md$/.test(f)) fs.rmSync(path.join(HEDEF, f));
-  // Betiğin yönettiği görseller (proje-NN-*) ve kodlar yeniden yazılır; kapak görselleri korunur
-  for (const f of fs.readdirSync(path.join(HEDEF, 'gorseller'))) if (/^proje-\d+-/.test(f)) fs.rmSync(path.join(HEDEF, 'gorseller', f));
+  fs.rmSync(path.join(HEDEF, 'genel'), { recursive: true, force: true });
+  fs.mkdirSync(path.join(HEDEF, 'genel'));
+  // Betiğin yönettiği görseller (proje-NN-*, genel-*) ve kodlar yeniden yazılır; kapak görselleri korunur
+  for (const f of fs.readdirSync(path.join(HEDEF, 'gorseller'))) if (/^(proje-\d+|genel)-/.test(f)) fs.rmSync(path.join(HEDEF, 'gorseller', f));
   fs.rmSync(path.join(HEDEF, 'kodlar'), { recursive: true, force: true });
   for (const [ad, icerik] of ciktilar) fs.writeFileSync(path.join(HEDEF, ad), icerik);
   fs.writeFileSync(dersYolu, `${JSON.stringify(ders, null, 2)}\n`);
@@ -531,9 +850,10 @@ let genelSayfaAtfi = 0;
 for (const [yol, icerik] of ciktilar) {
   const govde = icerik.replace(/^---[\s\S]*?\n---\n/, '').replace(/```[\s\S]*?```/g, '');
   for (const m of govde.matchAll(/[^.\n]*\bsayfa[^.\n]*/gi)) {
-    const t = m[0].replace(/veri sayfa\S*/gi, '');
+    // Doğal kullanımlar: veri/üretici sayfası, sitedeki proje sayfası, kaynak sitesindeki sayfa
+    const t = m[0].replace(/(veri|üretici|üretici sürücü) sayfa\S*/gi, '').replace(/Proje sayfa\S*|kendi sayfasında\S*|sayfadaki akım/g, '');
     if (!/\bsayfa/i.test(t)) continue;
-    if (/\*[^*]+\* sayfası/.test(t)) {
+    if (/\]\(genel:[\w-]+\) sayfa/.test(t)) {
       genelSayfaAtfi += 1;
       continue;
     }
@@ -541,9 +861,9 @@ for (const [yol, icerik] of ciktilar) {
     uyar(yol, `"sayfa" geçiyor → ${m[0].trim().slice(0, 110)}`);
   }
 }
-if (genelSayfaAtfi) rapor.bilgi.push(`${genelSayfaAtfi} genel sayfa atfı ("*Parçanı doğrula* sayfası" gibi): genel sayfalar eklenince bağlantı olacak`);
+if (genelSayfaAtfi) rapor.bilgi.push(`${genelSayfaAtfi} satırda genel sayfa bağlantısı ("[Parçanı doğrula](genel:…) sayfası" gibi)`);
 console.log(`Kaynak: ${KAYNAK} (${surum.etiket})`);
-console.log(`${projeler.length} proje, toplam ${toplamDk} dk, ${kodKlasorleri.size} kod klasörü${KURU ? ' (KURU ÇALIŞMA: dosya yazılmadı)' : ''}`);
+console.log(`${projeler.length} proje + ${genelSayfalar.length} genel sayfa, toplam ${toplamDk} dk, ${kodKlasorleri.size} kod klasörü${KURU ? ' (KURU ÇALIŞMA: dosya yazılmadı)' : ''}`);
 console.log(`yazma alanı: ${projeler.reduce((t, p) => t + p.fm.yazSayisi, 0)} | uygulanan kurallar:`);
 for (const [k, v] of kuralSayisi) console.log(`  ${String(v).padStart(3)}× ${k}`);
 for (const b of rapor.bilgi) console.log(`bilgi: ${b}`);

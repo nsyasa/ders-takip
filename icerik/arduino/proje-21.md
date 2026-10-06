@@ -42,7 +42,7 @@ Yalnız yayaMs 5000’den 3000’e inerse butondan normal duruma dönüş süres
 
 - Dizi, sırayla saklanan değerler listesidir. Küçük örnek: int sureler\[3\] = {500, 1000, 2000}; burada sureler\[0\] 500, sureler\[2\] 2000’dir.
 - ledPinleri içinde araç kırmızı, sarı, yeşil; ardından yaya kırmızı ve yeşil pinleri vardır. isiklar satırı bir durum, sütunu bir LED için 0 veya 1 saklar; sureler aynı sıradaki beklemeyi tutar.
-- [Proje 14](proje:14) INPUT\_PULLUP kullanır: bırakılan buton HIGH, basılan LOW okunur. Harici 10 kΩ eklenmez; butonun iç çiftlerini uç bulucuyla bul (yöntem B, *Parçanı doğrula* sayfası).
+- [Proje 14](proje:14) INPUT\_PULLUP kullanır: bırakılan buton HIGH, basılan LOW okunur. Harici 10 kΩ eklenmez; butonun iç çiftlerini uç bulucuyla bul (yöntem B, [Parçanı doğrula](genel:parcani-dogrula) sayfası).
 - [Proje 12](proje:12) titreşim elemesi ve [Proje 15](proje:15) zamanlayıcı burada birleşir. 30 ms kararlı okuma, bu modelde kullanılan örnek eleme süresidir.
 - Sıra işlerken yeni basışlar biriktirilmez. Sıra bitince buton bırakılmış olmalı; basılı tutmak yeni sıra başlatmaz.
 
@@ -81,7 +81,7 @@ Bu yalnız masa üstünde çalışan eğitim modelidir. Beş LED’in her biri k
 :::
 
 :::bilgi[Parçanı doğrula · buton ve LED’ler]{renk=gri}
-Butonun anahtarlanan çiftini uç bulucuyla bul (yöntem B, *Parçanı doğrula* sayfası). Beş LED’in uzun bacağı anottur; her LED kendi 220 Ω direnciyle bağlanır.
+Butonun anahtarlanan çiftini uç bulucuyla bul (yöntem B, [Parçanı doğrula](genel:parcani-dogrula) sayfası). Beş LED’in uzun bacağı anottur; her LED kendi 220 Ω direnciyle bağlanır.
 
 ::yaz[anahtarlanan çift … / … · anotlar uzun bacakta mı? …]{satir=1}
 :::

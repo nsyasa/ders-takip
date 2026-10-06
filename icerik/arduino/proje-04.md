@@ -47,7 +47,7 @@ Butonu basılı tutunca ışık açık kalır mı, yoksa yalnız bir kez mi yana
 - [Proje 1](proje:1) içindeki LED yönünü hatırla. Buton burada LED’in güç anahtarı değildir; bilgisi Arduino’ya gider.
 
 :::bilgi[Parçanı doğrula · buton uçları]{renk=gri}
-Dört bacaklı butonda iki bacak her zaman bağlıdır; anahtarlanan çifti uç bulucuyla bul (yöntem A, *Parçanı doğrula* sayfası). LED yalnız basınca yanıyorsa doğru çifti seçtin.
+Dört bacaklı butonda iki bacak her zaman bağlıdır; anahtarlanan çifti uç bulucuyla bul (yöntem A, [Parçanı doğrula](genel:parcani-dogrula) sayfası). LED yalnız basınca yanıyorsa doğru çifti seçtin.
 
 ::yaz[her zaman bağlı çift … / … · anahtarlanan çift … / …]{satir=1}
 :::

@@ -86,12 +86,15 @@ def span_md(spanlar):
         else:
             t = md_kacis(t)
         tur = 'kod' if kod_yazisi(s) else ('kalin' if kalin(s) else ('egik' if egik(s) else ''))
-        if parcalar and parcalar[-1][0] == tur:
+        if parcalar and parcalar[-1][0] == tur and parcalar[-1][2] == s.get('uri'):
             parcalar[-1][1] += t
         else:
-            parcalar.append([tur, t])
+            parcalar.append([tur, t, s.get('uri')])
     md = ''
-    for tur, t in parcalar:
+    for tur, t, uri in parcalar:
+        if uri and t.strip():
+            md += f'[{t.strip()}]({uri})' + (' ' if t != t.rstrip() else '')
+            continue
         bas = len(t) - len(t.lstrip())
         son = len(t) - len(t.rstrip())
         ic = t.strip()
@@ -103,7 +106,7 @@ def span_md(spanlar):
     return md
 
 
-def satirlari_al(sayfa):
+def satirlari_al(sayfa, linkler=()):
     satirlar = []
     for b in sayfa.get_text('dict')['blocks']:
         if b['type'] != 0:
@@ -112,6 +115,10 @@ def satirlari_al(sayfa):
             sp = [s for s in l['spans'] if s['text'].strip()]
             if not sp:
                 continue
+            for s in sp:
+                uri = next((u for k, u in linkler if ic_mi(s['bbox'], k, 1)), None)
+                if uri:
+                    s['uri'] = uri
             bbox = tuple(l['bbox'])
             if bbox[1] > ALT_SINIR:
                 continue
@@ -531,17 +538,26 @@ def resimleri_al(belge, sayfa):
     return sonuc
 
 
-def tablo_blogu(t):
+def tablo_blogu(t, linkler=()):
     satirlar = []
-    for r in t['tablo'].extract():
-        satirlar.append([md_kacis(re.sub(r'[ \t]*\n[ \t]*', '\n', c or '').strip()) for c in r])
+    for i, r in enumerate(t['tablo'].extract()):
+        satir = []
+        for j, c in enumerate(r):
+            md = md_kacis(re.sub(r'[ \t]*\n[ \t]*', '\n', c or '').strip())
+            hucre = t['tablo'].rows[i].cells[j]
+            uri = next((u for k, u in linkler if hucre and ic_mi(k, hucre, 0)), None) if md else None
+            satir.append(f'[{md}]({uri})' if uri else md)
+        satirlar.append(satir)
     return {'t': 'tablo', 'satirlar': satirlar, 'y': t['bbox'][1]}
 
 
 # ── Sayfa ───────────────────────────────────────────────────────────────────
 def sayfa_oku(belge, kaynak_pdf, sayfa_no, onek, tercih_kod):
     sayfa = belge[sayfa_no - 1]
-    satirlar = satirlari_al(sayfa)
+    genel = onek.endswith('-genel')
+    # Dış bağlantılar (kaynak sayfaları): span ve tablo hücresi bunlarla [metin](adres) olur
+    linkler = [(tuple(l['from']), l['uri']) for l in sayfa.get_links() if l.get('uri')]
+    satirlar = satirlari_al(sayfa, linkler)
     tablolar, kutular, kesikli, sekiller = bolgeleri_bul(sayfa, satirlar)
     bloklar = []
     kullanilan = set()
@@ -559,7 +575,7 @@ def sayfa_oku(belge, kaynak_pdf, sayfa_no, onek, tercih_kod):
             genis = (sk['bbox'][0] - 25, sk['bbox'][1] - 25, sk['bbox'][2] + 25, sk['bbox'][3] + 25)
             for s in satirlar:
                 etiket = s['kalin'] or s['boy'] <= 8.8 or len(s['duz']) <= 12
-                if id(s) not in kullanilan and kesisir(s['bbox'], genis) and s['bbox'][0] < sk['bbox'][2] - 2 and len(s['duz']) <= 60                         and etiket and satir_turu(s) not in ('baslik', 'serit'):
+                if id(s) not in kullanilan and kesisir(s['bbox'], genis) and s['bbox'][0] < sk['bbox'][2] - 2 and len(s['duz']) <= 60                         and etiket and satir_turu(s) not in ('baslik', 'serit', 'proje-baslik'):
                     sk['bbox'] = birlesim(sk['bbox'], s['bbox'])
         else:
             # Küçük çizim (ör. servo şeması): hemen üstündeki kısa kalın sütun başlıkları ("UNO", "Yüksüz SG90")
@@ -568,6 +584,16 @@ def sayfa_oku(belge, kaynak_pdf, sayfa_no, onek, tercih_kod):
                         and sk['bbox'][1] - 25 <= s['bbox'][3] <= sk['bbox'][1] + 2 \
                         and s['bbox'][0] >= sk['bbox'][0] - 5 and s['bbox'][2] <= sk['bbox'][2] + 5:
                     sk['bbox'] = birlesim(sk['bbox'], s['bbox'])
+            if genel:
+                # Genel sayfa çizimi (UNO kartı): kartın çevresindeki pin adları ve üst etiket çizimin parçasıdır
+                degisti = True
+                while degisti:
+                    degisti = False
+                    for s in satirlar:
+                        orta = (s['bbox'][0] + s['bbox'][2]) / 2
+                        if id(s) not in kullanilan and len(s['duz']) <= 30 and satir_turu(s) in ('metin', 'kod-etiket')                                 and sk['bbox'][0] - 5 <= orta <= sk['bbox'][2] + 5                                 and sk['bbox'][1] - 22 <= s['bbox'][3] and s['bbox'][1] <= sk['bbox'][3] + 22                                 and birlesim(sk['bbox'], s['bbox']) != sk['bbox']:
+                            sk['bbox'] = birlesim(sk['bbox'], s['bbox'])
+                            degisti = True
         pin = pin_rehberi(sk, satirlar)
         ic = al(sk['bbox'], 1)
         if pin:
@@ -580,7 +606,7 @@ def sayfa_oku(belge, kaynak_pdf, sayfa_no, onek, tercih_kod):
         bloklar.append({'t': 'sekil', 'dosya': ad, **olcu, 'metinler': [s['duz'] for s in ic], 'kutu': sk.get('kutu'), 'y': sk['bbox'][1], '_k': sk['bbox']})
     for t in tablolar:
         al(t['bbox'])
-        bloklar.append({**tablo_blogu(t), '_k': t['bbox']})
+        bloklar.append({**tablo_blogu(t, linkler), '_k': t['bbox']})
     for k in kesikli:
         ic = al(k)
         bloklar.append({'t': 'senciz', 'md': ' '.join(span_md(s['spanlar']).strip() for s in ic), 'y': k[1], '_k': k})

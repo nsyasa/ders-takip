@@ -89,6 +89,7 @@ Türler: `bilgi` (mavi), `dikkat` (kırmızı, güvenlik), `fen` (yeşil, fen ba
 
 ## 5. Genel sayfalar (`genel/*.md`)
 `baslik`, `slug`, `sira` alanları (isteğe bağlı `ustbilgi`: başlığın üstündeki küçük etiket) vardır: kitap-hakkinda, kit-ve-surum, malzemelerimizi-taniyalim, rutin-kartlari, ogrenme-zinciri, yz-kullanimi. Ders sayfasında "Genel bilgiler" altında listeleyin. Föylerdeki "R1 Yükleme Rutini", "R2 Güç Kontrol Rutini" gibi atıflar `rutin-kartlari` sayfasına bağlanabilir.
+Genel sayfada da onay kutusu (`- [ ]`), yazma alanı (`::yaz`), yazılabilir tablo hücresi ve kod bloğu (`dosya=`) kullanılabilir; işaretler ve yazılanlar föylerdeki gibi bu cihazda saklanır (kimlik `<ders>/genel-<slug>`), ama ilerlemeye ve "kaldığın yer"e sayılmaz. Görsel yolu bir üst klasördedir: `![alt](../gorseller/x.svg)`.
 
 ## 6. Pakette olmayanlar
 Öğretmen notları, cevap anahtarları, süre planları, çözümlü kodlar ve öğretmen yönergeleri yoktur. Föylerdeki "Kendimi Kontrol" soruları cevapsız yazma alanıdır.

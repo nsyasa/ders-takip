@@ -41,7 +41,7 @@ Aynı PWM değeri üç renk kanalında gözünde aynı parlaklıkta mı görün�
 ### Parçayı tanı
 
 - RGB, kırmızı, yeşil ve mavi ışık kanallarını adlandırır. Dört bacaklı modelde bir ortak uç vardır.
-- Uzun bacak yalnız ipucudur; ortak ucu ve R/G/B sırasını kesin sayma. Bacakları RGB bacak taramasıyla bul (*Parçanı doğrula* sayfası).
+- Uzun bacak yalnız ipucudur; ortak ucu ve R/G/B sırasını kesin sayma. Bacakları RGB bacak taramasıyla bul ([Parçanı doğrula](genel:parcani-dogrula) sayfası).
 - Ortak katot GND’ye, ortak anot 5 V’a bağlanır. Kablolama ve ortakAnot seçimi aynı türü göstermelidir.
 - Her renk kanalının ayrı 220 Ω direnci vardır. Ortak uca tek direnç koyma.
 - [Proje 5](proje:5) içindeki PWM’i üç kanalda kullanacaksın. D9, D10 ve D11 bu çıkışı destekler.

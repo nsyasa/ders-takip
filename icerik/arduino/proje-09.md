@@ -47,7 +47,7 @@ Düz hedefi iki kat uzağa götürürsen yankı süresi nasıl değişir? Tahmin
 - Düz ve sert hedef kullan. Yumuşak veya açılı yüzey güvenilir yankı vermeyebilir.
 
 :::bilgi[Parçanı doğrula · modül etiketi]{renk=gri}
-HC-SR04’ün başlığındaki yazıları soldan sağa oku: VCC, Trig, Echo, GND. Sırayı çizimle karşılaştır; farklıysa yerleşimi modülün yazısına göre değiştir (*Parçanı doğrula* sayfası).
+HC-SR04’ün başlığındaki yazıları soldan sağa oku: VCC, Trig, Echo, GND. Sırayı çizimle karşılaştır; farklıysa yerleşimi modülün yazısına göre değiştir ([Parçanı doğrula](genel:parcani-dogrula) sayfası).
 
 ::yaz[soldan sağa … / … / … / …]{satir=1}
 :::

@@ -66,7 +66,7 @@ _Kırmızı: güç · Siyah: GND · Turkuaz: analog · Sarı: dijital. Pin adı 
 
 ### Adım adım kur
 
-1. USB’yi çıkar. Ortak tipi ve a–g eşlemesini bacak taramasıyla bul (*Parçanı doğrula* sayfası); sonucu yaz. Örnek eşleme farklıysa yerleşimi uyarla.
+1. USB’yi çıkar. Ortak tipi ve a–g eşlemesini bacak taramasıyla bul ([Parçanı doğrula](genel:parcani-dogrula) sayfası); sonucu yaz. Örnek eşleme farklıysa yerleşimi uyarla.
 2. UNO 5 V ve GND’yi ayrı raylara bağla. HC başlığı e1/e2/e3/e4: VCC/TRIG/ECHO/GND; a1 5 V, a2 D9, a3 D10, a4 GND.
 3. Örnek göstergeyi yüzü saat yönünde çeyrek tur dönmüş tak: c6–c10 ve g6–g10. Sol: e,d,ortak,c,dp; sağ: g,f,ortak,a,b. Ortak katot örneğinde a8 ve j8 GND’ye gider; dp c10 boş kalır. Anot tipinde iki ortak jumper 5 V rayına taşınır; kod da true seçilir.
 4. a,b,f,g için sağdaki 220 Ω yolları: h13–h16, h18–h21, h23–h26, h27–h30; D2 f13, D3 f18, D7 f23, D8 f27. Çıkış jumper’ları: f16→j9 (a), f21→j10 (b), f26→j7 (f), f30→j6 (g).
@@ -78,7 +78,7 @@ Bacak testi dirençsiz yapılmaz; ortak uçları UNO’nun sinyal pinine bağlam
 :::
 
 :::bilgi[Parçanı doğrula · 7 segment ve modül]{renk=gri}
-7 segmentin ortak türünü ve bacak harflerini bacak taramasıyla bul (*Parçanı doğrula* sayfası); sonuçları breadboard sayfasındaki Gerçek bacak tablosuna yaz. HC-SR04 yazısını soldan sağa oku.
+7 segmentin ortak türünü ve bacak harflerini bacak taramasıyla bul ([Parçanı doğrula](genel:parcani-dogrula) sayfası); sonuçları breadboard sayfasındaki Gerçek bacak tablosuna yaz. HC-SR04 yazısını soldan sağa oku.
 
 ::yaz[ortak tür … · HC sırası … / … / … / …]{satir=1}
 :::

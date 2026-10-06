@@ -70,7 +70,7 @@ NTC doğrudan 5 V ile GND arasına bağlanmaz; seri 10 kΩ korunur. Sensörleri 
 :::
 
 :::bilgi[Parçanı doğrula · direnç ve LM35]{renk=gri}
-10 kΩ direnci renk bandıyla bul: kahverengi-siyah-turuncu (*Parçanı doğrula* sayfası). NTC modelini varsa gövde kodundan, yoksa set etiketinden doğrula. LM35’in düz yüzü sana bakarken soldan sağa +VS, VOUT, GND; çizimde VCC, OUT, GND.
+10 kΩ direnci renk bandıyla bul: kahverengi-siyah-turuncu ([Parçanı doğrula](genel:parcani-dogrula) sayfası). NTC modelini varsa gövde kodundan, yoksa set etiketinden doğrula. LM35’in düz yüzü sana bakarken soldan sağa +VS, VOUT, GND; çizimde VCC, OUT, GND.
 
 ::yaz[direnç bantları … · NTC yazısı … · LM35 sırası …]{satir=1}
 :::

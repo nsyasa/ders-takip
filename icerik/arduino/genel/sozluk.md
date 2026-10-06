@@ -1,0 +1,68 @@
+---
+tur: "genel"
+baslik: "Sözlük"
+slug: "sozluk"
+sira: 9
+ustbilgi: "Başvuru"
+---
+
+- **ADC:** Analog gerilimi 0–1023 arası sayıya çeviren devre; örnek analogRead.
+- **Akım:** Devreden geçen elektrik akışı; birimi amper (A), küçükleri mA.
+- **Aktif buzzer:** İçinde ses devresi olan buzzer; uygun DC gerilimle öter. Gerilim ve akımı modelden doğrula.
+- **Analog giriş:** Gerilimi sayı olarak okuyan giriş; UNO’da A0–A5.
+- **Anot:** LED doğru yönde bağlıyken pozitif tarafa giden uç; kısaltılmadıysa genellikle uzun bacak.
+- **Bağıl nem:** Havadaki su buharının o sıcaklıktaki en çok miktara oranı; birimi %.
+- **Baud:** Seri haberleşme hızı; bu kitapta 9600 baud.
+- **Beta:** NTC’nin sıcaklıkla direnç değişimini anlatan sayı; örnek 3950.
+- **Bit:** Yalnız 0 ya da 1 olabilen en küçük bilgi birimi.
+- **Breadboard:** Parçaları lehimsiz bağlayan, delikleri beşli gruplara ayrılmış tahta.
+- **Buton:** Basınca iki ucunu birleştiren basmalı anahtar.
+- **Buzzer:** Elektrik sinyalini sese çeviren küçük parça.
+- **CH340:** Bu kitaptaki UNO R3 uyumlu kartta USB ile seri haberleşmeyi sağlayan USB-seri dönüştürücü yonga.
+- **Darbe:** Kısa süreli HIGH sinyal; örnek: TRIG ucuna 10 µs.
+- **Değişken:** Programın bir değeri sakladığı adlı yer; örnek: int skor = 0.
+- **Derleme:** Programı karta yüklenebilir koda çevirme; IDE’de Doğrula düğmesi.
+- **Dijital sinyal:** UNO’nun LOW ya da HIGH diye okuduğu iki seviyeli sinyal; çıkışta yaklaşık 0 V ve 5 V.
+- **Direnç:** Akımı sınırlayan parça; birimi ohm (Ω).
+- **Dizi:** Tek ad altında sıralı değerler; örnek ledPinleri\[0\].
+- **Eşik:** Programın kararını değiştirdiği sınır değer; örnek 500.
+- **Gerilim:** İki nokta arasındaki elektriksel itme farkı; birimi volt (V).
+- **Gerilim bölücü:** İki direncin ortasından, gerilimin bir kesrini okuyan devre.
+- **GND:** Devrenin ortak gerilim referansı ve dönüş noktası; birlikte çalışan parçalar buna bağlanır.
+- **Görev döngüsü:** PWM sinyalinin HIGH kaldığı zamanın oranı; birimi %.
+- **Histerezis:** Yükselirken ve inerken ayrı eşik kullanıp eşik çevresindeki hızlı değişimi azaltma.
+- **INPUT\_PULLUP:** Girişi iç dirençle HIGH tutan pin ayarı; basınca LOW okunur.
+- **Jumper:** İki deliği ya da pini birleştiren uçlu kablo.
+- **Kalibrasyon:** Ölçümü bilinen bir referansla karşılaştırıp ayarlama. Referansı bilinmeyen iki durum arasında 0–100 ölçek kurmak ölçeklemedir.
+- **Kanal:** Breadboard’da a–e ile f–j’yi ayıran orta ayrım; RGB LED’de tek renk yolu.
+- **Katot:** LED’in GND yönüne giden, genellikle kısa bacak.
+- **Kenar algılama:** Girişin LOW’dan HIGH’a ya da tersine geçtiği anı yakalama.
+- **Kütüphane:** Programa eklenen hazır kod; örnek Servo.h.
+- **LDR:** Işık arttıkça direnci azalan parça.
+- **map:** Sayıyı bir aralıktan ötekine taşıyan komut; örnek: 0–1023’ten 0–255’e.
+- **Marj:** Histerezis payı; eşiğin iki yanında bırakılan pay. Örnek: 20.
+- **millis:** Program başladığından beri geçen milisaniyeyi veren komut.
+- **Modül:** Bir sensörü yardımcı parçalarıyla taşıyan küçük kart; uçları çoğunlukla VCC, sinyal (OUT, AO, S) ve GND.
+- **NAN:** Geçerli sayı yok anlamına gelen değer; “sayı değil”.
+- **NTC:** Isındıkça direnci azalan termistör; örnek 10 kΩ.
+- **Ortak anot:** Bütün anotların birleştiği model; ortak uç 5 V’a gider.
+- **Ortak katot:** Bütün katotların birleştiği model; ortak uç GND’ye gider.
+- **Pasif buzzer:** Değişen sinyalle öten buzzer; tone komutu ister.
+- **Pencere farkı:** Kısa pencerede en büyük ile en küçük okuma arasındaki fark (tepe-tepe); desibel değildir.
+- **Pin:** Kartın ya da parçanın bağlantı ucu; örnek D8.
+- **Port:** Bilgisayarın karta bağlandığı bağlantının adı; örnek COM3.
+- **Potansiyometre:** Üç uçlu ayarlı direnç; gerilim bölücü olarak orta ucundaki gerilimi değiştirir. Örnek 10 kΩ.
+- **Pull-down:** Boştaki girişi LOW tutan direnç; örnek: GND’ye giden 10 kΩ.
+- **pulseIn:** Bir darbenin süresini mikrosaniye olarak ölçen komut.
+- **PWM:** Pini hızla açıp kapatarak ortalama gücü ayarlama; örnek analogWrite.
+- **Ray:** Breadboard kenarındaki uzun hat; 5 V ya da GND dağıtır.
+- **Segment:** Rakamı oluşturan ışıklı çubuklardan biri; adları a–g.
+- **Sensör:** Işık ya da sıcaklık gibi bir değişimi elektrik sinyaline çeviren parça.
+- **Seri Monitör:** Kartın gönderdiği yazıları gösteren IDE penceresi.
+- **Servo:** Konum komutuna göre dönmeye çalışan motor; komut ölçülmüş açı değildir. Örnek SG90.
+- **Sürgü:** Potansiyometrenin orta ucu; çevirince okunan gerilim değişir.
+- **Termistör:** Direnci sıcaklıkla değişen parça; örnek NTC.
+- **Titreşim eleme:** Butonun kısa temas sıçramalarını bekleyerek yok sayma.
+- **Uç bulucu:** Butonun anahtarlanan bacak çiftini bulan küçük test programı.
+- **Yankı:** Gönderilen sesin hedefe çarpıp geri dönmesi.
+- **Yükleme:** Derlenen programı USB ile karta gönderme; IDE’de Yükle düğmesi.

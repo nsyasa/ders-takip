@@ -58,7 +58,7 @@ _Kırmızı: 5 V · Siyah: GND · Sarı: dijital · Pin adı belirleyicidir._
 
 ### Adım adım kur
 
-1. USB’yi çıkar. Butonun iç çiftlerini uç bulucuyla bul (yöntem A, *Parçanı doğrula* sayfası).
+1. USB’yi çıkar. Butonun iç çiftlerini uç bulucuyla bul (yöntem A, [Parçanı doğrula](genel:parcani-dogrula) sayfası).
 2. Örnekte butonu kanal üstüne e2/f2 ve e4/f4 uçlarıyla tak. Gerçek aralık farklıysa uyarla.
 3. UNO 5 V’u kırmızı raya, GND’yi siyah raya birer jumper ile bağla.
 4. Kırmızı rayı a2’ye; D2’yi a4’e bağla. Buton ve jumper ayrı deliklerde olsun.
@@ -72,7 +72,7 @@ Basıldığında 5 V ve GND dirençsiz birleşmemeli; harici 10 kΩ pull-down ko
 _Kart ve portu seç; programı önce derle, sonra yükle. Seri Monitör’ü 9600 baud aç._
 
 :::bilgi[Parçanı doğrula · buton uçları]{renk=gri}
-Dört bacaklı butonda iki bacak her zaman bağlıdır. Anahtarlanan çifti uç bulucuyla bul (yöntem A, *Parçanı doğrula* sayfası); uç bulucu programındaki LED yalnız basınca yanıyorsa çift doğrudur.
+Dört bacaklı butonda iki bacak her zaman bağlıdır. Anahtarlanan çifti uç bulucuyla bul (yöntem A, [Parçanı doğrula](genel:parcani-dogrula) sayfası); uç bulucu programındaki LED yalnız basınca yanıyorsa çift doğrudur.
 
 ::yaz[her zaman bağlı çift … / … · anahtarlanan çift … / …]{satir=1}
 :::
