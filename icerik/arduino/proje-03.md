@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"UNO pininden çalıştırılmaya uygun pasif piezo buzzer","adet":"","not":""}]
 kodlar: ["p03_buzzer_ile_ses_ve_ritim","p03_pin_d9"]
 gorseller: ["proje-03-breadboard-1"]
+simge: "proje-03-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

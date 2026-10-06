@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO R3 CH340","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"HC-SR04","adet":"","not":""},{"ad":"SG90","adet":"","not":""},{"ad":"regüle 5 V düşük gerilim kaynağı ve yalıtılmış bağlantı uçları. Kapak düzeneği öğretmen denetimindedir","adet":"","not":"set dışı"}]
 kodlar: ["ekk2_servo_kapak","ekk2_acik_tutma_3000"]
 gorseller: ["proje-26-breadboard-1"]
+simge: "proje-26-simge"
 adimSayisi: 8
 yazSayisi: 7
 ---

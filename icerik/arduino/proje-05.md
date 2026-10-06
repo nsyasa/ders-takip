@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"10 kΩ potansiyometre","adet":"","not":""},{"ad":"kırmızı LED","adet":"","not":""},{"ad":"220 Ω direnç","adet":"","not":""}]
 kodlar: ["p05_potansiyometreyle_parlaklik","p05_pin_d10","p05_ters_parlaklik"]
 gorseller: ["proje-05-breadboard-1"]
+simge: "proje-05-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

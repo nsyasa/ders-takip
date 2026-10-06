@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"yüksüz SG90 ve kendi kolu","adet":"","not":""},{"ad":"Servo gövdesini sabitleyecek bant ya da kalın karton","adet":"","not":"sınıf aracı"}]
 kodlar: ["p10_servo_motoru_kontrol_et","p10_bekleme_500","p10_son_110"]
 gorseller: ["proje-10-cizim-1"]
+simge: "proje-10-simge"
 adimSayisi: 8
 yazSayisi: 7
 ---

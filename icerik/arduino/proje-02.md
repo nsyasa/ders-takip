@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"aktif buzzer","adet":"","not":""},{"ad":"pasif buzzer","adet":"","not":""},{"ad":"İki küçük yapışkan etiket; fiziksel parçalara A ve B yaz","adet":"","not":"sınıf aracı"}]
 kodlar: ["p02_aktif_mi_pasif_mi"]
 gorseller: ["proje-02-breadboard-1"]
+simge: "proje-02-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

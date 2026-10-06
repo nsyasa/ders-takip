@@ -71,6 +71,8 @@ const foyler = defineCollection({
     gorseller: z.array(z.string()).default([]),
     adimSayisi: z.number().default(0),
     yazSayisi: z.number().default(0),
+    /** gorseller/<simge>.webp: başlıkta ve ders listesinde görünen küçük proje çizimi (süs; alt metni boş) */
+    simge: z.string().default(''),
   }),
 });
 

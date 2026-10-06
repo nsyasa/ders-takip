@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO R3 CH340","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"HC-SR04","adet":"","not":""},{"ad":"5 V’a uygun I²C 16×2 LCD, PCF8574 arayüzü ve erkek başlık","adet":"","not":"set dışı"}]
 kodlar: ["ekk1_lcd_mesafe","ekk1_aralik_500"]
 gorseller: ["proje-25-breadboard-1"]
+simge: "proje-25-simge"
 adimSayisi: 8
 yazSayisi: 7
 ---

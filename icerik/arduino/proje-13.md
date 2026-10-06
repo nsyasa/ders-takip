@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"IR engel sensörü","adet":"","not":""},{"ad":"kırmızı LED","adet":"","not":""},{"ad":"220 Ω direnç","adet":"","not":""},{"ad":"Küçük, düz bir cisim (engel olarak)","adet":"","not":"sınıf aracı"}]
 kodlar: ["p13_gecis_sayaci","p13_bekleme_5","p13_engel_high"]
 gorseller: ["proje-13-breadboard-1"]
+simge: "proje-13-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

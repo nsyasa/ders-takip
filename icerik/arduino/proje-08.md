@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"LM35","adet":"","not":""},{"ad":"Referans termometre; model ve paket bilgisi için üretici veri sayfası","adet":"","not":"sınıf aracı"}]
 kodlar: ["p08_lm35_ile_sicaklik_olc","p08_esik_25"]
 gorseller: ["proje-08-breadboard-1"]
+simge: "proje-08-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

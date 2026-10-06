@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"buton","adet":"","not":""},{"ad":"kırmızı LED","adet":"","not":""},{"ad":"220 Ω direnç","adet":"","not":""},{"ad":"10 kΩ direnç","adet":"","not":""}]
 kodlar: ["p04_butonla_led_kontrolu","p04_pin_d3"]
 gorseller: ["proje-04-breadboard-1"]
+simge: "proje-04-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

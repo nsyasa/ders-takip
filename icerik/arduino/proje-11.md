@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"potansiyometre","adet":"","not":""},{"ad":"yüksüz SG90","adet":"","not":""},{"ad":"Sabit, düz bir çalışma yeri","adet":"","not":"sınıf aracı"}]
 kodlar: ["p11_potansiyometreyle_servo","p11_ust_105"]
 gorseller: ["proje-11-breadboard-1"]
+simge: "proje-11-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

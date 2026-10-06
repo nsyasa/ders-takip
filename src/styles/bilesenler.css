@@ -341,7 +341,31 @@
 
 /* ── Föy sayfası: başlık ─────────────────────────────────────────────────── */
 .foy-ust {
+  display: flow-root; /* sağdaki proje simgesi (float) başlık alanında kalsın */
   padding-top: 0.5rem;
+}
+/* Proje simgesi (frontmatter: simge): kitaptaki küçük çizim; beyaz zeminli olduğu için kart gibi çerçevelenir */
+.foy-simge {
+  float: right;
+  width: 4.75rem;
+  height: auto;
+  margin: 0 0 0.6rem 1rem;
+  border: 1px solid var(--cizgi-hafif);
+  border-radius: 14px;
+  background: #fff;
+}
+@media (min-width: 40rem) {
+  .foy-simge {
+    width: 6.5rem;
+  }
+}
+.foy-satir-simge {
+  width: 3rem;
+  height: auto;
+  margin-top: 0.25rem;
+  border: 1px solid var(--cizgi-hafif);
+  border-radius: 10px;
+  background: #fff;
 }
 .foy-etiket {
   display: flex;
@@ -608,6 +632,22 @@ details.bolum > summary h2 {
 .kutu-yz {
   --k: var(--k-yz);
 }
+/* Kitaptan gelen kutu renkleri ({renk=…}; Arduino kitabı): rengi kitaptaki kutu taşır */
+.kutu-r-mavi {
+  --k: var(--k-bilgi);
+}
+.kutu-r-gri {
+  --k: var(--cizgi);
+}
+.kutu-r-sari {
+  --k: var(--k-rutin);
+}
+.kutu-r-yesil {
+  --k: var(--k-fen);
+}
+.kutu-r-kirmizi {
+  --k: var(--k-dikkat);
+}
 .kutu-baslik {
   display: flex;
   flex-wrap: wrap;
@@ -709,6 +749,92 @@ label.adim:has(.adim-kutu:checked) .adim-metin {
 }
 .yaz textarea:focus-visible {
   border-color: var(--odak);
+}
+/* Tablodaki boş hücre = yazma alanı (remark-icerik.mjs: tabloAlanlari). Kâğıttaki boş kutu gibi: kesik alt çizgi */
+.tablo-yaz {
+  display: block;
+  width: 100%;
+  min-width: 7rem;
+  min-height: 2.4rem;
+  padding: 0.3rem 0.45rem;
+  border: 0;
+  border-bottom: 2px dashed var(--cizgi);
+  border-radius: var(--yaricap) var(--yaricap) 0 0;
+  background: color-mix(in srgb, var(--yazi) 4%, transparent);
+  color: var(--yazi);
+  font: inherit;
+  line-height: 1.45;
+  resize: vertical;
+  field-sizing: content;
+}
+.tablo-yaz:focus-visible {
+  outline: 2px solid var(--odak);
+  outline-offset: 1px;
+  border-bottom-style: solid;
+}
+
+/* ── Adım yolu, "okunur" tema: çalışma kâğıdındaki onay satırı (Yol.astro okunur) ── */
+.yol.yol-okunur {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 0.6rem 0 0;
+  border-top: 1px solid var(--cizgi-hafif);
+  border-left: 1px solid var(--cizgi-hafif);
+  counter-reset: yol-adim;
+}
+@media (min-width: 36rem) {
+  .yol.yol-okunur {
+    grid-template-columns: repeat(var(--adim-sayisi, 6), minmax(0, 1fr));
+  }
+}
+.yol-okunur .yol-adim {
+  counter-increment: yol-adim;
+  border-right: 1px solid var(--cizgi-hafif);
+  border-bottom: 1px solid var(--cizgi-hafif);
+}
+.yol-okunur .yol-adim::after,
+.yol-okunur .yol-halka {
+  display: none;
+}
+.yol-okunur .yol-etiket {
+  gap: 0.4rem;
+  min-height: 4.4rem;
+  padding: 0.65rem 0.2rem 0.5rem;
+}
+.yol-okunur .yol-kutu {
+  margin: 0;
+}
+.yol-okunur .yol-ad {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.yol-okunur .yol-ad::before {
+  content: counter(yol-adim) '\00a0';
+  color: var(--soluk);
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+}
+.yol-okunur .yol-adim.siradaki {
+  box-shadow: inset 0 -3px 0 var(--vurgu);
+}
+.yol-okunur .yol-adim.siradaki .yol-ad {
+  color: var(--vurgu);
+  font-weight: 700;
+}
+.yol-okunur .yol-etiket:has(.yol-kutu:checked) .yol-ad {
+  color: var(--soluk);
+}
+.yol-alt.yol-alt-okunur a {
+  border: var(--kalin) solid var(--yazi);
+  border-radius: var(--yaricap);
+  background: transparent;
+  font-family: var(--f-mono);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.yol-alt.yol-alt-okunur a:hover {
+  background: var(--yazi);
+  color: var(--zemin);
 }
 
 /* ── Kod blokları ────────────────────────────────────────────────────────── */

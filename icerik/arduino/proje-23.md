@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"tek haneli 7 segment","adet":"","not":""},{"ad":"7 × 220 Ω direnç","adet":"","not":""},{"ad":"HC-SR04","adet":"","not":""},{"ad":"Cetvel; düz ve sert bir hedef","adet":"","not":"sınıf aracı"}]
 kodlar: ["p23_mesafeyi_7_segmentte_goster","p23_aralik_20","p23_ortak_anot"]
 gorseller: ["proje-23-breadboard-1"]
+simge: "proje-23-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

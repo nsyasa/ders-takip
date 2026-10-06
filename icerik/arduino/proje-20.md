@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"NTC termistör","adet":"","not":""},{"ad":"10 kΩ direnç","adet":"","not":""},{"ad":"LM35","adet":"","not":""},{"ad":"Referans termometre (oda termometresi); sensörlerin yanında sabit bir yer","adet":"","not":"sınıf aracı"}]
 kodlar: ["p20_termistor_mu_lm35_mi","p20_aralik_2000"]
 gorseller: ["proje-20-breadboard-1"]
+simge: "proje-20-simge"
 adimSayisi: 8
 yazSayisi: 9
 ---

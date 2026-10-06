@@ -24,7 +24,7 @@ Görsel yolları föy dosyasına göre göreli: `./gorseller/foy4.svg`. Astro'nu
 | `tema` | `"okunur"` (varsayılan) ya da `"sevimli"`: renkli, çocuk dostu görünüm (LED rakamlar, Bit maskotu, adım yolu; bölümler akordeon değil, hepsi açık). |
 | `kapak`, `kapakAlt` | `gorseller/<kapak>.webp`: ders kartı ve ders sayfası başlığındaki çizim ve alt metni. |
 | `etiketler` | Ders kartındaki kısa etiketler (ör. `["5. sınıf", "10–11 yaş"]`). |
-| `adimEtiketleri` | `[{ad, aciklama}]`: proje sayfasının üstündeki adım yolu (ör. Bak, Tahmin et, Kodla, Dene, Anlat, Değiştir). Her adım bir onay kutusudur; `adimSayisi` bu sayıdır. |
+| `adimEtiketleri` | `[{ad, aciklama}]`: proje sayfasının üstündeki adım yolu (ör. Bak, Tahmin et, Kodla, Dene, Anlat, Değiştir). Her adım bir onay kutusudur; `adimSayisi` bu sayıdır. İki temada da görünür ("okunur" temada çalışma kâğıdı satırı). |
 | `uniteler` | `[{ad, ilk, son, renk}]`: ders sayfasında projeler bu numara aralıklarına göre gruplanır. Aralıklar çakışmamalı. |
 
 ## 3. Föy frontmatter alanları
@@ -40,7 +40,8 @@ Görsel yolları föy dosyasına göre göreli: `./gorseller/foy4.svg`. Astro'nu
 | `hedefler` | "…yapabilirim" cümleleri |
 | `malzemeler` | `{ad, adet, not}` listesi |
 | `kodlar`, `gorseller` | bu föyde geçen kod klasörleri ve görseller |
-| `adimSayisi`, `yazSayisi` | onay kutusu ve yazma alanı sayısı. Adım yolu olan derslerde `adimSayisi` = metindeki `- [ ]` sayısı + `adimEtiketleri` uzunluğu |
+| `simge` | isteğe bağlı; `gorseller/<simge>.webp`: başlıkta ve ders listesinde görünen küçük süs çizimi (alt metni boştur) |
+| `adimSayisi`, `yazSayisi` | onay kutusu ve yazma alanı sayısı (`yazSayisi` yalnız `::yaz`; tablo hücreleri sayılmaz). Adım yolu olan derslerde `adimSayisi` = metindeki `- [ ]` sayısı + `adimEtiketleri` uzunluğu |
 
 Proje derslerinde `hedefler` boş olabilir (kitapta hedef cümlesi yoktur); `onkosulFoyler` bu dersin hangi projelerinin önce yapılması gerektiğini söyler (sayfada durum rozetiyle gösterilir). Föy gövdesinde H1 yoktur; sayfa başlığı frontmatter'dan gelir. Her `##` başlığı bir bölümdür (katlanır). Sabit bölüm adları: Hedeflerim, Malzemeler, Kavram…, Bağlantı, Etkinlik N — …, Deney, Kodu Tamamla (Föy 9–12), Hata Avcısı, Şimdi Sıra Sende, YZ ile Destek Al, Kendimi Kontrol Ediyorum.
 
@@ -51,7 +52,7 @@ Proje derslerinde `hedefler` boş olabilir (kitapta hedef cümlesi yoktur); `onk
 içerik (paragraf, liste)
 :::
 ```
-Türler: `bilgi` (mavi), `dikkat` (kırmızı, güvenlik), `fen` (yeşil, fen bağlantısı), `rutin` (turuncu), `yz` (turkuaz). Başlık köşeli parantez içindedir; olmayabilir.
+Türler: `bilgi` (mavi), `dikkat` (kırmızı, güvenlik), `fen` (yeşil, fen bağlantısı), `rutin` (turuncu), `yz` (turkuaz). Başlık köşeli parantez içindedir; olmayabilir. Kitaptan gelen kutularda renk özniteliği olabilir: `:::bilgi[Önce düşün]{renk=sari}` (`kirmizi`, `mavi`, `gri`, `sari`, `yesil`); başlığı olan renkli kutuda tür etiketi yazılmaz.
 
 **Yazma alanı** (leaf directive): `::yaz[Etiket]{satir=3}` = öğrencinin tahmin/gözlem/cevap yazacağı kutu (`textarea`, `satir` kadar yükseklik). İçerik `localStorage`'a kaydedilir; kimlik: föy slug'ı + sıra numarası.
 
@@ -80,7 +81,7 @@ Türler: `bilgi` (mavi), `dikkat` (kırmızı, güvenlik), `fen` (yeşil, fen ba
 - Arduino IDE için klasör adı ile `.ino` adı aynı olmalıdır; klasör yapısını değiştirmeyin.
 - "Kodu Tamamla" kodlarındaki ``` `___1___` ``` işaretleri boşluktur; bilerek derlenmez.
 
-**Tablolar:** GFM. Başlığı boş olan ya da hücreleri boş bırakılmış tablolar öğrencinin dolduracağı tablolardır. İlk sürümde düz gösterin; sonraki sürümde hücreleri düzenlenebilir yapabilirsiniz. Dar ekranda yatay kaydırılabilir olmalı.
+**Tablolar:** GFM. Başlığı boş olan ya da hücreleri boş bırakılmış tablolar öğrencinin dolduracağı tablolardır. Boş hücre, sütunu gövdede bütünüyle boşsa ya da satırında ilk hücreden sonrası bütünüyle boşsa yazma alanı olur (kimlik `t<tablo>-<satır>-<sütun>`, `localStorage`); ara sıra boş kalan hücre (ör. malzeme tablosunun "Not" sütunu) düz kalır. Dar ekranda yatay kaydırılabilir olmalı.
 
 **Görseller:** `![alt](./gorseller/x.svg)`. Dar ekranda taşmamalı; dokunarak büyütme iyi olur.
 

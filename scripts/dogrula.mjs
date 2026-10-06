@@ -135,6 +135,7 @@ function foyDenetle(dosya, klasor, ders, hedefler) {
   for (const g of fm.gorseller ?? []) {
     if (!fs.existsSync(path.join(klasor, 'gorseller', `${g}.svg`))) hata(ad, `frontmatter görseli yok: gorseller/${g}.svg`);
   }
+  if (fm.simge && !fs.existsSync(path.join(klasor, 'gorseller', `${fm.simge}.webp`))) hata(ad, `proje simgesi yok: gorseller/${fm.simge}.webp`);
 
   // Kod klasörleri
   for (const k of fm.kodlar ?? []) {

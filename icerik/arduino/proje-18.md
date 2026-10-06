@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"su seviye sensörü","adet":"","not":""},{"ad":"kırmızı, sarı ve yeşil LED","adet":"","not":""},{"ad":"3 × 220 Ω direnç","adet":"","not":""},{"ad":"uygun aktif buzzer","adet":"","not":""},{"ad":"Sabit su kabı ve cetvel","adet":"","not":"sınıf aracı"}]
 kodlar: ["p18_su_seviyesi_uyarisi","p18_marj_0","p18_ters_okuma"]
 gorseller: ["proje-18-breadboard-1"]
+simge: "proje-18-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

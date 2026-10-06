@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"HC-SR04","adet":"","not":""},{"ad":"SG90","adet":"","not":""},{"ad":"Cetvel ve düz hedef; servo yalnız kendi koluyla","adet":"","not":"sınıf aracı"}]
 kodlar: ["p22_akilli_cop_kutusu","p22_acik_tutma_3000"]
 gorseller: ["proje-22-breadboard-1"]
+simge: "proje-22-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

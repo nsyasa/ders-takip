@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"buton","adet":"","not":""},{"ad":"10 kΩ direnç","adet":"","not":""},{"ad":"Kâğıt ve kalem (skor tablosu için)","adet":"","not":"sınıf aracı"}]
 kodlar: ["p12_butonla_skor_oyunu","p12_artis_1","p12_hedef_30"]
 gorseller: ["proje-12-breadboard-1"]
+simge: "proje-12-simge"
 adimSayisi: 8
 yazSayisi: 9
 ---

@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"2 kırmızı, 2 yeşil ve 1 sarı LED","adet":"","not":""},{"ad":"5 × 220 Ω direnç","adet":"","not":""},{"ad":"buton","adet":"","not":""},{"ad":"Kâğıt ve kalem (ışık tablosu için)","adet":"","not":"sınıf aracı"}]
 kodlar: ["p21_yaya_gecidi_trafik_isiklari","p21_titresim_50","p21_yaya_3000"]
 gorseller: ["proje-21-breadboard-1"]
+simge: "proje-21-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

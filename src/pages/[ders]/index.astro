@@ -108,7 +108,7 @@ const ilkFoy = foyler[0];
     }
 
     {
-      sevimli && gruplar.length > 0 ? (
+      gruplar.length > 0 ? (
         gruplar.map((g, i) => (
           <section
             class="unite"
@@ -127,11 +127,20 @@ const ilkFoy = foyler[0];
             <p class="ilerleme-metni unite-metin" data-ilerleme-metin>
               0 / {g.foyler.length} {s.kucuk} bitti
             </p>
-            <ol class="proje-izgara">
-              {g.foyler.map((f) => (
-                <ProjeKarti foy={f} s={s} />
-              ))}
-            </ol>
+            {/* Üniteler iki temada da: "sevimli"de kart ızgarası, "okunur"da föy satırları */}
+            {sevimli ? (
+              <ol class="proje-izgara">
+                {g.foyler.map((f) => (
+                  <ProjeKarti foy={f} s={s} />
+                ))}
+              </ol>
+            ) : (
+              <ol class="foy-listesi">
+                {g.foyler.map((f) => (
+                  <FoySatiri foy={f} s={s} />
+                ))}
+              </ol>
+            )}
           </section>
         ))
       ) : (

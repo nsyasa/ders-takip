@@ -1,6 +1,6 @@
 ---
 import type { Foy, Sozluk } from '../lib/veri';
-import { foyKimligi, foyYolu, FOY_SOZLUGU } from '../lib/veri';
+import { foyKimligi, foyYolu, yol, FOY_SOZLUGU } from '../lib/veri';
 import Direnc from './Direnc.astro';
 
 interface Props {
@@ -15,6 +15,7 @@ const d = foy.data;
   <div class="foy-sol" aria-hidden="true">
     <Direnc numara={d.numara} boyut="kucuk" />
     <span class="foy-no">{s.tek} {String(d.numara).padStart(2, '0')}</span>
+    {d.simge && <img class="foy-satir-simge" src={yol(`/${d.ders}/gorseller/${d.simge}.webp`)} width="192" height="192" alt="" loading="lazy" decoding="async" />}
   </div>
   <div class="foy-sag">
     <h3 class="foy-baslik">

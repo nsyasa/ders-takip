@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"HC-SR04","adet":"","not":""},{"ad":"pasif buzzer","adet":"","not":""},{"ad":"Cetvel ve sabit, düz bir hedef","adet":"","not":"sınıf aracı"}]
 kodlar: ["p24_akilli_baston_egitim_prototipi","p24_yakin_30"]
 gorseller: ["proje-24-breadboard-1"]
+simge: "proje-24-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

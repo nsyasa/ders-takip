@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"iki bacaklı eğim anahtarı","adet":"","not":""},{"ad":"kırmızı LED","adet":"","not":""},{"ad":"220 Ω direnç","adet":"","not":""},{"ad":"uygun aktif buzzer","adet":"","not":""},{"ad":"Eğilebilen düz bir karton altlık","adet":"","not":"sınıf aracı"}]
 kodlar: ["p14_egim_alarmi","p14_bekleme_50","p14_egik_high"]
 gorseller: ["proje-14-breadboard-1"]
+simge: "proje-14-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

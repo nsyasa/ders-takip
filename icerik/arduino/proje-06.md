@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"dört bacaklı RGB LED","adet":"","not":""},{"ad":"3 × 220 Ω direnç","adet":"","not":""},{"ad":"Yapışkan etiket; doğruladığın uçları kendi çiziminde işaretle","adet":"","not":"sınıf aracı"}]
 kodlar: ["p06_rgb_led_ile_renk_uret","p06_ortak_anot"]
 gorseller: ["proje-06-cizim-1","proje-06-cizim-2","proje-06-breadboard-3"]
+simge: "proje-06-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

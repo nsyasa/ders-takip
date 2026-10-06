@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"analog ses sensörü","adet":"","not":""},{"ad":"kırmızı LED","adet":"","not":""},{"ad":"220 Ω direnç","adet":"","not":""},{"ad":"Sessiz bir çalışma köşesi; denemeler normal ses düzeyinde","adet":"","not":"sınıf aracı"}]
 kodlar: ["p17_alkisla_yanan_lamba","p17_esik_50"]
 gorseller: ["proje-17-breadboard-1"]
+simge: "proje-17-simge"
 adimSayisi: 8
 yazSayisi: 9
 ---

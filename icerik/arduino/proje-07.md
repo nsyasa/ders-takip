@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"LDR","adet":"","not":""},{"ad":"kırmızı LED","adet":"","not":""},{"ad":"220 Ω direnç","adet":"","not":""},{"ad":"10 kΩ direnç","adet":"","not":""}]
 kodlar: ["p07_karanlikta_yanan_lamba","p07_esik_700"]
 gorseller: ["proje-07-breadboard-1"]
+simge: "proje-07-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"DHT11 modülü","adet":"","not":""},{"ad":"kırmızı LED","adet":"","not":""},{"ad":"220 Ω direnç","adet":"","not":""},{"ad":"Referans termometre (sıcaklığı karşılaştırmak için)","adet":"","not":"sınıf aracı"}]
 kodlar: ["p19_sicaklik_ve_nem_istasyonu","p19_sicaklik_35"]
 gorseller: ["proje-19-breadboard-1"]
+simge: "proje-19-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

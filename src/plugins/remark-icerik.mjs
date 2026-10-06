@@ -18,6 +18,8 @@ const KUTULAR = {
   rutin: 'Rutin',
   yz: 'YZ',
 };
+/** Kutu rengi özniteliği ({renk=…}): kitaptaki kutu renkleri; CSS'te .kutu-r-<renk> */
+const KUTU_RENKLERI = new Set(['kirmizi', 'mavi', 'gri', 'sari', 'yesil']);
 
 const metin = (value) => ({ type: 'text', value });
 const sarmal = (hName, siniflar, children, ekstra = {}) => ({
@@ -83,6 +85,42 @@ export default function remarkIcerik() {
     let adimNo = 0;
     let yazNo = 0;
     let semaNo = 0;
+    let tabloNo = 0;
+
+    /**
+     * Boş tablo hücresi → yazma alanı (CONTENT-SPEC §4 Tablolar). Bir hücre, sütunu gövdede bütünüyle boşsa
+     * (ör. "Tahminim", "Benim deliğim") ya da satırında ilk hücreden sonrası bütünüyle boşsa ("Kendi örneğin")
+     * yazılabilir. Malzeme tablosundaki ara sıra boş "Not" hücreleri bu kurallara uymaz, düz kalır.
+     * Kimlik t<tablo>-<satır>-<sütun>: ::yaz numaralarından (1, 2, …) ayrıdır; eski kayıtlar kaymaz.
+     */
+    function tabloAlanlari(tablo, no) {
+      const duz = (d) => (d.value ?? '') + (d.children ?? []).map(duz).join('');
+      const [baslik, ...govde] = tablo.children;
+      if (!govde.length) return;
+      const bos = (h) => h && duz(h).trim() === '';
+      const sutunSayisi = Math.max(...tablo.children.map((r) => r.children.length));
+      const bosSutun = Array.from({ length: sutunSayisi }, (_, c) => govde.every((r) => bos(r.children[c])));
+      govde.forEach((satir, r) => {
+        const bosSatir = satir.children.length > 1 && !bos(satir.children[0]) && satir.children.slice(1).every(bos);
+        satir.children.forEach((hucre, c) => {
+          if (!bos(hucre) || !(bosSutun[c] || (bosSatir && c > 0))) return;
+          const sutunAdi = duz(baslik.children[c] ?? { value: '' }).trim();
+          const satirAdi = duz(satir.children[0] ?? { value: '' }).trim();
+          const etiket = [sutunAdi, satirAdi].filter(Boolean).join(' — ') || `Tablo ${no}, satır ${r + 1}`;
+          const kimlik = `t${no}-${r + 1}-${c + 1}`;
+          hucre.children = [
+            {
+              type: 'paragraph',
+              data: {
+                hName: 'textarea',
+                hProperties: { className: ['tablo-yaz'], id: `yaz-${kimlik}`, name: `yaz-${kimlik}`, rows: 1, dataYaz: kimlik, maxLength: 500, ariaLabel: etiket },
+              },
+              children: [],
+            },
+          ];
+        });
+      });
+    }
 
     /** "proje:31", "foy:6", "genel:sozluk" → sitenin gerçek adresi (taban yoluyla) */
     function baglantiCoz(url) {
@@ -274,14 +312,19 @@ export default function remarkIcerik() {
           return;
         }
 
-        node.data = { hName: 'div', hProperties: { className: ['kutu', `kutu-${tur}`], role: 'note' } };
+        // {renk=sari}: kitaptan gelen kutunun kendi rengi (Arduino kitabı). Başlığı olan renkli kutuda tür etiketi
+        // ("Bilgi") yazılmaz, kitaptaki gibi yalnız başlık görünür; güvenlik kutusunda "Dikkat" her zaman kalır.
+        const renk = KUTU_RENKLERI.has(node.attributes?.renk) ? node.attributes.renk : '';
+        if (node.attributes?.renk && !renk) uyar(`bilinmeyen kutu rengi: ${node.attributes.renk}`);
+        const turYaz = !(renk && baslik.length && tur !== 'dikkat');
+        node.data = { hName: 'div', hProperties: { className: ['kutu', `kutu-${tur}`, ...(renk ? [`kutu-r-${renk}`] : [])], role: 'note' } };
         node.children = [
           {
             type: 'paragraph',
             data: { hName: 'p', hProperties: { className: ['kutu-baslik'] } },
             children: [
-              sarmal('span', ['kutu-tur'], [metin(KUTULAR[tur])]),
-              ...(baslik.length ? [metin(' '), sarmal('span', ['kutu-ad'], baslik)] : []),
+              ...(turYaz ? [sarmal('span', ['kutu-tur'], [metin(KUTULAR[tur])])] : []),
+              ...(baslik.length ? [...(turYaz ? [metin(' ')] : []), sarmal('span', ['kutu-ad'], baslik)] : []),
             ],
           },
           {
@@ -320,8 +363,10 @@ export default function remarkIcerik() {
         return;
       }
 
-      // — Tablolar yatay kaydırılabilir bir kapsayıcıya girer
+      // — Tablolar yatay kaydırılabilir bir kapsayıcıya girer; öğrencinin dolduracağı boş hücreler yazma alanı olur
       if (node.type === 'table' && parent) {
+        tabloNo += 1;
+        tabloAlanlari(node, tabloNo);
         parent.children[index] = {
           type: 'blockquote',
           data: {

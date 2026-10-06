@@ -443,6 +443,7 @@ for (const p of kitap.projeler) {
 
   fm.kodlar = [...ctx.kodlar];
   fm.gorseller = ctx.gorseller;
+  if (resimDosyalari.has(`${slug}-simge.webp`)) fm.simge = `${slug}-simge`;
   fm.adimSayisi = 0; // ders.json adimEtiketleri eklenir (aşağıda)
   fm.yazSayisi = ctx.yaz;
   projeler.push({ no, slug, id: p.id, fm, govde });

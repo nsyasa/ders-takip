@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"toprak nem sensörü","adet":"","not":""},{"ad":"kırmızı ve yeşil LED","adet":"","not":""},{"ad":"2 × 220 Ω direnç","adet":"","not":""},{"ad":"Aynı topraktan kuru ve hafif nemli iki örnek; saksı","adet":"","not":"sınıf aracı"}]
 kodlar: ["p16_bitki_icin_nem_olcer","p16_esik_50","p16_esit_noktalar"]
 gorseller: ["proje-16-breadboard-1"]
+simge: "proje-16-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

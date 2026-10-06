@@ -3,11 +3,13 @@
 // Kutular `input.adim-kutu` olduğu için ilerleme depoya foy.ts tarafından kaydedilir (data-adim = 1, 2, …).
 interface Props {
   adimlar: { ad: string; aciklama: string }[];
+  /** "okunur" temada çalışma kâğıdı görünümü: kare onay kutusu, numara ve ad (bilesenler.css .yol-okunur) */
+  okunur?: boolean;
 }
-const { adimlar } = Astro.props;
+const { adimlar, okunur = false } = Astro.props;
 ---
 
-<ol class="yol" data-yol>
+<ol class:list={['yol', { 'yol-okunur': okunur }]} data-yol style={okunur ? `--adim-sayisi:${adimlar.length}` : undefined}>
   {
     adimlar.map((a, i) => (
       <li class="yol-adim" data-ad={a.ad} data-aciklama={a.aciklama}>

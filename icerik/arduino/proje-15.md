@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"5 V’a uygun PIR modülü","adet":"","not":""},{"ad":"kırmızı LED","adet":"","not":""},{"ad":"220 Ω direnç","adet":"","not":""},{"ad":"uygun aktif buzzer","adet":"","not":""},{"ad":"Küçük düz tornavida (ayar vidaları için)","adet":"","not":"sınıf aracı"}]
 kodlar: ["p15_hareket_alarmi","p15_alarm_2000"]
 gorseller: ["proje-15-breadboard-1"]
+simge: "proje-15-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"HC-SR04","adet":"","not":""},{"ad":"Cetvel ve düz, sert hedef; hedefe cetvelin sıfırından ölç","adet":"","not":"sınıf aracı"}]
 kodlar: ["p09_ultrasonik_sensorle_mesafe","p09_esik_20"]
 gorseller: ["proje-09-breadboard-1"]
+simge: "proje-09-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---

@@ -33,9 +33,11 @@ const kimlik = foyKimligi(foy);
 const nn = String(d.numara).padStart(2, '0');
 const baslik = `${s.tek} ${d.numara} — ${d.baslik}`;
 
-// "Sevimli" temada ilerleme, ders.json'daki adım yoludur (Bak, Tahmin et, …): her adım bir onay kutusu.
+// Adım yolu (ders.json: adimEtiketleri, ör. Bak, Tahmin et, …): her adım bir onay kutusu. "Sevimli" temada
+// renkli halkalar, "okunur" temada çalışma kâğıdı görünümü. Adım yolu olmayan derste ilerleme çubuğu gösterilir.
 const yolAdimlari = dd.adimEtiketleri.length === d.adimSayisi ? dd.adimEtiketleri : [];
-const yolVar = sevimli && yolAdimlari.length > 0;
+const yolVar = yolAdimlari.length > 0;
+const simgeYolu = d.simge ? yol(`/${ders.id}/gorseller/${d.simge}.webp`) : '';
 
 // Önkoşullar: `onkosul` okunabilir metinlerdir ("Föy 5 (millis)"); içlerinde "Föy N" / "Proje N" geçenler
 // o föye bağlanır ve durum rozeti alır. `onkosulFoyler`de olup metinlerde geçmeyen numaralar eklenir.
@@ -76,6 +78,7 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
       data-pagefind-body
     >
       <header class="foy-ust">
+        {simgeYolu && <img class="foy-simge" src={simgeYolu} width="192" height="192" alt="" decoding="async" />}
         <div class="foy-etiket" aria-hidden="true">
           {sevimli ? <LedSayi numara={d.numara} boyut="buyuk" /> : <Direnc numara={d.numara} boyut="buyuk" />}
           <span>{s.tek} {nn}</span>
@@ -177,11 +180,11 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
           <strong data-foy-adim-metin>0 / {d.adimSayisi} adım</strong>
           <span class="rozet rozet-baslamadi" data-foy-durum>Başlamadı</span>
         </div>
-        {yolVar ? <Yol adimlar={yolAdimlari} /> : <Ilerleme etiket={`${s.tek} ilerlemesi`} />}
+        {yolVar ? <Yol adimlar={yolAdimlari} okunur={!sevimli} /> : <Ilerleme etiket={`${s.tek} ilerlemesi`} />}
       </section>
 
       {
-        yolVar && (
+        yolVar && sevimli && (
           <aside class="odul" data-odul hidden data-pagefind-ignore>
             <div class="odul-led">
               <LedSayi numara={d.numara} boyut="buyuk" />
@@ -259,7 +262,7 @@ const malzemeNotu = d.malzemeler.some((m) => m.not.trim() !== '');
       </div>
       {
         yolVar && (
-          <p class="yol-alt" data-pagefind-ignore>
+          <p class:list={['yol-alt', { 'yol-alt-okunur': !sevimli }]} data-pagefind-ignore>
             <a href="#ilerleme-yolu">↑ Adımları işaretle</a>
           </p>
         )

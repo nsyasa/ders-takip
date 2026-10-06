@@ -15,6 +15,7 @@ hedefler: []
 malzemeler: [{"ad":"UNO kartı","adet":"","not":""},{"ad":"USB veri kablosu","adet":"","not":""},{"ad":"orta boy breadboard","adet":"","not":""},{"ad":"erkek-erkek jumper","adet":"","not":""},{"ad":"1 kırmızı LED","adet":"","not":""},{"ad":"1 × 220 Ω direnç","adet":"","not":""}]
 kodlar: ["p01_ilk_led_im"]
 gorseller: ["proje-01-breadboard-1"]
+simge: "proje-01-simge"
 adimSayisi: 8
 yazSayisi: 8
 ---
