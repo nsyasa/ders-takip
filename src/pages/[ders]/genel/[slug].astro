@@ -45,7 +45,7 @@ const { Content } = await render(sayfa);
         Bu tarayıcı kayıt tutmaya izin vermiyor (gizli sekme olabilir). Yazdıkların ve işaretlerin yalnız bu sayfa açıkken kalır.
       </p>
     </article>
-    <p><a href={yol(`/${ders.id}/`)}>← {ders.data.ad} sayfasına dön</a></p>
+    <p data-yazdirma-gizle><a href={yol(`/${ders.id}/`)}>← {ders.data.ad} sayfasına dön</a></p>
   </div>
 </Taban>
 

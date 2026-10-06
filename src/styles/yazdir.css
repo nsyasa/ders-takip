@@ -229,7 +229,8 @@
   .gorsel-ipucu {
     display: none;
   }
-  .gorsel img {
+  .gorsel img,
+  .gorsel svg {
     width: auto;
     max-width: 100%;
     max-height: 150mm;
